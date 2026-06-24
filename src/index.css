@@ -451,7 +451,7 @@ body.menu-open .menu-drawer {
 
 .hero-brand-logo {
     height: 240px;
-    width: auto;
+    width: 240px;
     object-fit: contain;
     filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));
 }
@@ -459,6 +459,7 @@ body.menu-open .menu-drawer {
 @media (max-width: 768px) {
     .hero-brand-logo {
         height: 160px;
+        width: 160px;
     }
 
     .hero-logo-hero {
