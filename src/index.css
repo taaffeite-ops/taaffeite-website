@@ -803,7 +803,7 @@ body.menu-open .menu-drawer {
     .about-showcase-grid {
         grid-template-columns: 1fr 1fr;
         gap: 80px;
-        align-items: start;
+        align-items: center;
         padding-top: 170px;
         padding: 0 40px;
     }
