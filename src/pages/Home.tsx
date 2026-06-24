@@ -242,13 +242,13 @@ export const Home: React.FC = () => {
           </div>
           <div className="hero-overlay"></div>
           <div className="hero-content">
-            <img 
-              src="/assets/images/logo.png" 
-              alt="Taaffeite Events" 
-              className="hero-brand-logo" 
+            <img
+              src="/assets/images/logo.png"
+              alt="Taaffeite Events"
+              className="hero-brand-logo"
               width={180}
               height={180}
-              style={{ marginTop: '-130px', marginBottom: '20px' }}
+              style={{ marginTop: '-170px', marginBottom: '20px' }}
             />
             <div className="hero-quotes-container">
               {quotes.map((quote, idx) => (
