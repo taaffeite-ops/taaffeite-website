@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taaffeite Events | Luxury Event Planning & Design</title>
+  <meta name="description"
+    content="Taaffeite is a high-end luxury events planning agency specializing in elegant, warm, and minimal celebrations. Named after one of the rarest gemstones in the world." />
+  <link rel="shortcut icon" href="/assets/images/logo.png" type="image/png" />
+  <style>
+    /* Instant Loading Screen Styles */
+    .global-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fdfdfd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+      transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+    }
+
+    .loader-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @keyframes logoFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .loader-logo {
+      width: 300px;
+      height: auto;
+      object-fit: contain;
+      opacity: 0;
+      animation: logoFadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    @media (max-width: 768px) {
+      .loader-logo {
+        width: 180px;
+      }
+    }
+
+    /* Content fade-out animations when finished */
+    .global-loader.fade-out-content .loader-logo {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    /* Sliding panel animation */
+    .global-loader.slide-up {
+      transform: translateY(-100%);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Global Loader -->
+  <div id="global-loader" class="global-loader">
+    <div class="loader-content">
+      <img src="/assets/images/Untitled - 23 June 2026 at 00.03.06.gif" id="global-loader-logo" class="loader-logo"
+        alt="Taaffeite Events Loading">
+    </div>
+  </div>
+  <script>
+    (function () {
+      // Immediately lock page scrolling
+      document.body.style.overflow = 'hidden';
+
+      var loader = document.getElementById('global-loader');
+
+      function dismissLoader() {
+        setTimeout(function () {
+          if (loader) {
+            loader.classList.add('fade-out-content');
+          }
+
+          setTimeout(function () {
+            if (loader) {
+              loader.classList.add('slide-up');
+            }
+            document.body.style.overflow = '';
+
+            // Clean up the DOM once the slide animation finishes
+            setTimeout(function () {
+              if (loader) loader.remove();
+            }, 1200);
+          }, 350);
+        }, 350);
+      }
+
+      if (document.readyState === 'complete') {
+        // Visual buffer of 3.0s if page is already cached/complete
+        setTimeout(dismissLoader, 3000);
+      } else {
+        var startTime = Date.now();
+        window.addEventListener('load', function () {
+          var elapsedTime = Date.now() - startTime;
+          var minDisplayTime = 3000; // Total min visibility time (3 seconds)
+          var delay = Math.max(0, minDisplayTime - elapsedTime);
+          setTimeout(dismissLoader, delay);
+        });
+
+        // Safety timeout (8s)
+        setTimeout(dismissLoader, 8000);
+      }
+    })();
+  </script>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>
