@@ -248,7 +248,7 @@ export const Home: React.FC = () => {
               className="hero-brand-logo" 
               width={240}
               height={240}
-              style={{ marginBottom: '20px' }}
+              style={{ marginTop: '-90px', marginBottom: '20px' }}
             />
             <div className="hero-quotes-container">
               {quotes.map((quote, idx) => (
