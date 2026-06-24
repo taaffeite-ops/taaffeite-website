@@ -11,8 +11,8 @@ export const Footer: React.FC = () => {
             src="/assets/images/logo.png" 
             alt="Taaffeite Events Logo" 
             className="footer-logo" 
-            width={4500}
-            height={4500}
+            width={80}
+            height={80}
             loading="lazy"
             decoding="async"
           />

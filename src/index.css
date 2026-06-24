@@ -3,8 +3,7 @@
    Luxury Aesthetic: White & Golden Palette, Sophisticated Typography, Smooth Animations
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
-
+/* Google Fonts loaded via link tag preconnects in index.html for faster loading & CLS prevention */
 :root {
     --bg-cream: #faf9f6;
     --bg-cream-dark: #f0ede6;
@@ -1442,7 +1441,7 @@ body.menu-open .menu-drawer {
 
 .footer-logo {
     height: 80px;
-    width: auto;
+    width: 80px;
     object-fit: contain;
     margin-bottom: 25px;
 }
