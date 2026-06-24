@@ -190,49 +190,49 @@ export const Home: React.FC = () => {
 
   const marqueeImages = [
     {
-      src: "/assets/05 PHOTOS/Weddings/AKR05567.jpg",
+      src: "/assets/05 PHOTOS/Weddings/AKR05567.webp",
       alt: "Floral Mandap styling detail",
       width: 2400,
       height: 3600
     },
     {
-      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR02776.jpg",
+      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR02776.webp",
       alt: "Luxury guest welcome hampers",
       width: 2400,
       height: 3600
     },
     {
-      src: "/assets/05 PHOTOS/Reception/WEVA1312 2.jpeg",
+      src: "/assets/05 PHOTOS/Reception/WEVA1312 2.webp",
       alt: "Luxury reception table setting detail",
       width: 3651,
       height: 5477
     },
     {
-      src: "/assets/05 PHOTOS/Weddings/AKR07499.jpg",
+      src: "/assets/05 PHOTOS/Weddings/AKR07499.webp",
       alt: "Elegant wedding ceremony mandap",
       width: 2400,
       height: 3600
     },
     {
-      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR02772.jpg",
+      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR02772.webp",
       alt: "Vibrant Haldi celebration setup",
       width: 2400,
       height: 3600
     },
     {
-      src: "/assets/05 PHOTOS/Weddings/AKR05590.jpg",
+      src: "/assets/05 PHOTOS/Weddings/AKR05590.webp",
       alt: "Elegant wedding floral arch details",
       width: 2400,
       height: 3600
     },
     {
-      src: "/assets/05 PHOTOS/Reception/WEVA1313 2.jpeg",
+      src: "/assets/05 PHOTOS/Reception/WEVA1313 2.webp",
       alt: "Bespoke dinner banquet design",
       width: 4000,
       height: 2666
     },
     {
-      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03432.jpg",
+      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03432.webp",
       alt: "Exotic floral canopy styling",
       width: 2400,
       height: 3600
@@ -241,10 +241,10 @@ export const Home: React.FC = () => {
 
   // Hero Background Images Slideshow
   const heroImages = [
-    { src: "/assets/05 PHOTOS/Proposal/0039.JPG", width: 4671, height: 7006 },
-    { src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316.jpg", width: 3600, height: 2400 },
-    { src: "/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.jpg", width: 4608, height: 3072 },
-    { src: "/assets/05 PHOTOS/Weddings/AKR07379.jpg", width: 3600, height: 2400 }
+    { src: "/assets/05 PHOTOS/Proposal/0039.webp", width: 4671, height: 7006 },
+    { src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316.webp", width: 3600, height: 2400 },
+    { src: "/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.webp", width: 4608, height: 3072 },
+    { src: "/assets/05 PHOTOS/Weddings/AKR07379.webp", width: 3600, height: 2400 }
   ];
   const [heroImageIndex, setHeroImageIndex] = useState(0);
 
@@ -328,7 +328,7 @@ export const Home: React.FC = () => {
               </div>
               <div className="about-showcase-image-wrapper">
                 <img
-                  src="/assets/05 PHOTOS/Weddings/AKR05567.jpg"
+                  src="/assets/05 PHOTOS/Weddings/AKR05567.webp"
                   alt="Taaffeite Beliefs & Proposal Setup"
                   className="about-showcase-image"
                   width={2400}
@@ -351,7 +351,7 @@ export const Home: React.FC = () => {
               </div>
               <div className="about-showcase-image-wrapper">
                 <img
-                  src="/assets/05 PHOTOS/Weddings/Sanhita & Benny-317 2.jpg"
+                  src="/assets/05 PHOTOS/Weddings/Sanhita & Benny-317 2.webp"
                   alt="Taaffeite Luxury Wedding Ceremony Setup"
                   className="about-showcase-image"
                   width={4631}
@@ -374,7 +374,7 @@ export const Home: React.FC = () => {
               </div>
               <div className="about-showcase-image-wrapper">
                 <img
-                  src="/assets/05 PHOTOS/Reception/Weva1701.jpeg"
+                  src="/assets/05 PHOTOS/Reception/Weva1701.webp"
                   alt="Taaffeite Luxury Reception Design"
                   className="about-showcase-image"
                   width={3645}
