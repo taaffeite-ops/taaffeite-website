@@ -1662,63 +1662,164 @@ body.menu-open .menu-drawer {
     }
 }
 
-.service-card {
-    background: #fff;
-    border: 1px solid rgba(197, 160, 89, 0.1);
-    padding: 25px 20px;
-    border-radius: 2px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01);
-    transition: var(--transition-smooth);
+.service-card-new {
+    position: relative;
+    height: 480px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--bg-cream-dark);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.5s ease, box-shadow 0.5s ease;
+    cursor: pointer;
 }
 
-@media(min-width: 768px) {
-    .service-card {
-        padding: 40px;
-    }
+.service-card-new:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-gold);
+    box-shadow: 0 20px 40px rgba(197, 160, 89, 0.12);
 }
 
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(197, 160, 89, 0.05);
-    border-color: rgba(197, 160, 89, 0.25);
+.service-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
-.service-card h3 {
-    font-size: 1.5rem;
-    color: var(--color-charcoal);
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.15);
-    padding-bottom: 15px;
+.service-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.service-card-new:hover .service-bg-image {
+    transform: scale(1.06);
+}
+
+.service-overlay-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(18, 16, 15, 0.85) 0%, rgba(18, 16, 15, 0.4) 50%, rgba(18, 16, 15, 0.1) 100%);
+    z-index: 1;
+}
+
+.service-title-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    z-index: 2;
+    color: #ffffff;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+}
+
+.service-title-wrapper h3 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    line-height: 1.3;
+    color: var(--color-gold-light);
+    margin: 0 0 10px 0;
+    font-weight: 300;
+}
+
+.service-hover-indicator {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    transition: var(--transition-fast);
 }
 
-.service-card h3::after {
-    content: '';
-    width: 25px;
-    height: 1px;
-    background-color: var(--color-gold);
+.service-card-new:hover .service-hover-indicator {
+    color: var(--color-gold);
 }
 
-.service-items-list {
+.service-hover-indicator svg {
+    transition: transform 0.4s ease;
+}
+
+.service-card-new:hover .service-hover-indicator svg {
+    transform: rotate(180deg);
+}
+
+/* Slide up details dropdown menu panel on hover */
+.service-hover-details {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(18, 16, 15, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 40px 30px;
+    z-index: 3;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.service-card-new:hover .service-hover-details {
+    transform: translateY(0);
+}
+
+.service-hover-details h4 {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--color-gold-light);
+    margin-bottom: 25px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+    padding-bottom: 10px;
+}
+
+.service-items-list-new {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.service-items-list li {
+.service-items-list-new li {
     font-size: 0.95rem;
-    color: var(--color-charcoal-light);
+    line-height: 1.6;
     margin-bottom: 12px;
     padding-left: 20px;
     position: relative;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-.service-items-list li::before {
+.service-items-list-new li::before {
     content: '•';
     color: var(--color-gold);
     position: absolute;
     left: 0;
     top: 0;
+}
+
+@media (max-width: 576px) {
+    .service-card-new {
+        height: 380px;
+    }
+    .service-title-wrapper h3 {
+        font-size: 1.4rem;
+    }
+    .service-hover-details {
+        padding: 30px 20px;
+    }
 }
 
 .catering-disclaimer {

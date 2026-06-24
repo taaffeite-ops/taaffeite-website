@@ -6,6 +6,7 @@ export const Services: React.FC = () => {
     {
       id: 'planning',
       title: 'Wedding Planning & Coordination',
+      image: '/assets/05 PHOTOS/Weddings/Sanhita & Benny-317 2.webp',
       items: [
         'End-to-end wedding planning',
         'Wedding day coordination',
@@ -18,6 +19,7 @@ export const Services: React.FC = () => {
     {
       id: 'decor',
       title: 'Décor & Styling',
+      image: '/assets/05 PHOTOS/Weddings/AKR05567.webp',
       items: [
         'Wedding décor conceptualization',
         'Stage & mandap styling',
@@ -30,6 +32,7 @@ export const Services: React.FC = () => {
     {
       id: 'pre-wedding',
       title: 'Pre-Wedding Celebrations',
+      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR03316.webp',
       items: [
         'Mehendi planning & styling',
         'Haldi setup & coordination',
@@ -41,6 +44,7 @@ export const Services: React.FC = () => {
     {
       id: 'hospitality',
       title: 'Hospitality & Guest Experience',
+      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02776.webp',
       items: [
         'Guest management',
         'Welcome experiences',
@@ -53,6 +57,7 @@ export const Services: React.FC = () => {
     {
       id: 'production',
       title: 'Entertainment & Production',
+      image: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_44222.webp',
       items: [
         'Artist coordination',
         'Sound & light coordination',
@@ -64,6 +69,7 @@ export const Services: React.FC = () => {
     {
       id: 'logistics',
       title: 'Logistics & Execution',
+      image: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_26Kaushal_Story349.webp',
       items: [
         'Venue layout planning',
         'Seating plans',
@@ -76,6 +82,7 @@ export const Services: React.FC = () => {
     {
       id: 'essentials',
       title: 'Wedding Essentials',
+      image: '/assets/05 PHOTOS/Reception/WEVA1313 2.webp',
       items: [
         'Invitations & stationery coordination',
         'Bridal entry concepts',
@@ -87,6 +94,7 @@ export const Services: React.FC = () => {
     {
       id: 'bespoke',
       title: 'Bespoke Celebrations',
+      image: '/assets/05 PHOTOS/Proposal/0039.webp',
       items: [
         'Intimate weddings',
         'Destination weddings',
@@ -111,13 +119,28 @@ export const Services: React.FC = () => {
       <section className="services-list-section">
         <div className="services-grid-list">
           {serviceCategories.map((category) => (
-            <div key={category.id} className="service-card reveal-on-scroll" id={category.id}>
-              <h3>{category.title}</h3>
-              <ul className="service-items-list">
-                {category.items.map((item, idx) => (
-                  <li key={idx}>{item}</li>
-                ))}
-              </ul>
+            <div key={category.id} className="service-card-new reveal-on-scroll" id={category.id}>
+              <div className="service-image-container">
+                <img src={category.image} alt={category.title} className="service-bg-image" />
+                <div className="service-overlay-gradient"></div>
+                <div className="service-title-wrapper">
+                  <h3>{category.title}</h3>
+                  <div className="service-hover-indicator">
+                    <span>View Details</span>
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="service-hover-details">
+                <h4>What's Included</h4>
+                <ul className="service-items-list-new">
+                  {category.items.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>
