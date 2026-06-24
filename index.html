@@ -8,6 +8,7 @@
   <meta name="description"
     content="Taaffeite is a high-end luxury events planning agency specializing in elegant, warm, and minimal celebrations. Named after one of the rarest gemstones in the world." />
   <link rel="shortcut icon" href="/assets/images/logo.png" type="image/png" />
+  <link rel="preload" as="image" href="/assets/05 PHOTOS/Proposal/0039.webp" fetchpriority="high" />
   <style>
     /* Instant Loading Screen Styles */
     .global-loader {
@@ -104,24 +105,24 @@
             setTimeout(function () {
               if (loader) loader.remove();
             }, 1200);
-          }, 350);
-        }, 350);
+          }, 200);
+        }, 200);
       }
 
       if (document.readyState === 'complete') {
-        // Visual buffer of 3.0s if page is already cached/complete
-        setTimeout(dismissLoader, 3000);
+        // Visual buffer of 600ms if page is already cached/complete
+        setTimeout(dismissLoader, 600);
       } else {
         var startTime = Date.now();
         window.addEventListener('load', function () {
           var elapsedTime = Date.now() - startTime;
-          var minDisplayTime = 3000; // Total min visibility time (3 seconds)
+          var minDisplayTime = 600; // Total min visibility time (600ms)
           var delay = Math.max(0, minDisplayTime - elapsedTime);
           setTimeout(dismissLoader, delay);
         });
 
-        // Safety timeout (8s)
-        setTimeout(dismissLoader, 8000);
+        // Safety timeout (5s)
+        setTimeout(dismissLoader, 5000);
       }
     })();
   </script>

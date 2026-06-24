@@ -118,55 +118,7 @@ export const Home: React.FC = () => {
     };
   }, []);
 
-  // Wheel-based scroll snapping logic for about showcase section
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (window.innerWidth < 992) {
-        return;
-      }
-
-      const container = aboutShowcaseRef.current;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const isSticky = rect.top <= 0 && rect.bottom >= window.innerHeight;
-
-      if (!isSticky) return;
-
-      const totalScrollableHeight = rect.height - window.innerHeight;
-
-      if (totalScrollableHeight <= 0) return;
-
-      const currentSlide = activeAboutSlideRef.current;
-
-      let targetSlide = currentSlide;
-      if (e.deltaY > 0) {
-        if (currentSlide < 2) targetSlide = currentSlide + 1;
-      } else if (e.deltaY < 0) {
-        if (currentSlide > 0) targetSlide = currentSlide - 1;
-      }
-
-      if (targetSlide !== currentSlide) {
-        e.preventDefault();
-
-        const didTransition = requestSlideTransition(targetSlide);
-        if (didTransition) {
-          const containerPageTop = window.scrollY + rect.top;
-          const targetScrollY = containerPageTop + (targetSlide * totalScrollableHeight / 2);
-
-          window.scrollTo({
-            top: targetScrollY,
-            behavior: 'smooth'
-          });
-        }
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-    };
-  }, []);
+  // Note: Custom wheel-based scroll snapping listener has been removed to restore passive native scrolling and eliminate scroll-hijacking & thread blocking warnings.
 
   // Accordion list details
   const accordionItems = [
@@ -260,9 +212,9 @@ export const Home: React.FC = () => {
     setActiveAccordion(prev => (prev === index ? null : index));
   };
 
+  const scale = 1 - scrollProgress * 0.18;
   const heroStyle = {
-    width: `${100 - scrollProgress * 18}%`,
-    height: `${100 - scrollProgress * 18}vh`,
+    transform: `scale(${scale})`,
     borderRadius: `${scrollProgress * 40}px`
   };
 
