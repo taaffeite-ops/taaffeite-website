@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Header } from './components/Header';
 import { MenuDrawer } from './components/MenuDrawer';
 import { Footer } from './components/Footer';
@@ -105,6 +106,7 @@ function App() {
         </main>
         
         <Footer />
+        <SpeedInsights />
       </div>
     </Router>
   );
