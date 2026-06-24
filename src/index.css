@@ -1415,13 +1415,20 @@ body.menu-open .menu-drawer {
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 50px;
+    gap: 40px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .footer-container {
-        grid-template-columns: 1.2fr 1fr 1fr;
-        gap: 80px;
+        grid-template-columns: 1.3fr 0.8fr 0.8fr 1.1fr;
+        gap: 60px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px 60px;
     }
 }
 
@@ -1473,9 +1480,11 @@ body.menu-open .menu-drawer {
     padding-left: 5px;
 }
 
-.footer-contact p {
+.footer-contact li {
     font-size: 0.95rem;
-    margin-bottom: 15px;
+    color: var(--color-charcoal-light);
+    line-height: 1.6;
+    margin-bottom: 12px;
 }
 
 .footer-social-icons {

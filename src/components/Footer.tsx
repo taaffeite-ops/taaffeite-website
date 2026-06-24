@@ -32,19 +32,25 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
-        {/* Contact detail */}
+        {/* Profile Links */}
+        <div className="footer-nav">
+          <h4>Links</h4>
+          <ul className="footer-links">
+            <li><a href="https://www.wedmegood.com/profile/Taaffeite-Events-25042588?srsltid=AfmBOop_bgaeRe3LCx6eg9jacDSxhOKk-9glpzOU3wzwjiCIgl-829hI" target="_blank" rel="noopener noreferrer">WedMeGood</a></li>
+            <li><a href="https://ar.pinterest.com/thetaaffeiteevents/_created/" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
+            <li><a href="https://www.linkedin.com/company/taaffeiteevents/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://www.youtube.com/@Taaffeiteevents" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          </ul>
+        </div>
+
+        {/* Contact details */}
         <div className="footer-contact">
           <h4>Connect with Us</h4>
-          <p>Email: <a href="mailto:thetaaffeiteevents@gmail.com" style={{ color: 'var(--color-gold-dark)' }}>thetaaffeiteevents@gmail.com</a></p>
-          <p>WhatsApp: <a href="https://wa.me/919148990266" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-gold-dark)' }}>+91 91489 90266</a></p>
-
-          <div className="footer-social-icons">
-            <a href="https://www.instagram.com/taaffeiteevents/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://www.wedmegood.com/profile/Taaffeite-Events-25042588?srsltid=AfmBOop_bgaeRe3LCx6eg9jacDSxhOKk-9glpzOU3wzwjiCIgl-829hI" target="_blank" rel="noopener noreferrer">WedMeGood</a>
-            <a href="https://www.linkedin.com/company/taaffeiteevents/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://ar.pinterest.com/thetaaffeiteevents/_created/" target="_blank" rel="noopener noreferrer">Pinterest</a>
-            <a href="https://www.youtube.com/@Taaffeiteevents" target="_blank" rel="noopener noreferrer">YouTube</a>
-          </div>
+          <ul className="footer-links">
+            <li>Email: <a href="mailto:thetaaffeiteevents@gmail.com" style={{ color: 'var(--color-gold-dark)' }}>thetaaffeiteevents@gmail.com</a></li>
+            <li>WhatsApp: <a href="https://wa.me/919148990266" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-gold-dark)' }}>+91 91489 90266</a></li>
+            <li>Instagram: <a href="https://www.instagram.com/taaffeiteevents/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-gold-dark)' }}>@taaffeiteevents</a></li>
+          </ul>
         </div>
       </div>
 
