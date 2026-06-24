@@ -48,7 +48,8 @@
 
     .loader-logo {
       width: 300px;
-      height: auto;
+      height: 225px;
+      aspect-ratio: 4 / 3;
       object-fit: contain;
       opacity: 0;
       animation: logoFadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -58,6 +59,7 @@
     @media (max-width: 768px) {
       .loader-logo {
         width: 180px;
+        height: 135px;
       }
     }
 
@@ -79,7 +81,7 @@
   <div id="global-loader" class="global-loader">
     <div class="loader-content">
       <img src="/assets/images/Untitled - 23 June 2026 at 00.03.06.gif" id="global-loader-logo" class="loader-logo"
-        alt="Taaffeite Events Loading">
+        width="300" height="225" alt="Taaffeite Events Loading">
     </div>
   </div>
   <script>

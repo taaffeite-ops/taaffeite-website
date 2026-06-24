@@ -41,6 +41,7 @@ html {
 body {
     overflow-x: hidden;
     line-height: 1.6;
+    scrollbar-gutter: stable;
 }
 
 /* Typography & Links */
