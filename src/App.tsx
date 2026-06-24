@@ -26,32 +26,66 @@ const ScrollRevealTrigger: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    
-    if ('IntersectionObserver' in window && revealElements.length > 0) {
-      const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            observer.unobserve(entry.target);
+    const setupReveal = () => {
+      const revealElements = document.querySelectorAll('.reveal-on-scroll');
+      
+      if ('IntersectionObserver' in window && revealElements.length > 0) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => {
+          if (!el.classList.contains('active')) {
+            revealObserver.observe(el);
           }
         });
-      }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px'
-      });
 
-      revealElements.forEach(el => {
-        el.classList.remove('active'); // Reset state on page change
-        revealObserver.observe(el);
-      });
+        return revealObserver;
+      } else {
+        revealElements.forEach(el => el.classList.add('active'));
+        return null;
+      }
+    };
 
-      return () => {
-        revealObserver.disconnect();
-      };
-    } else {
-      revealElements.forEach(el => el.classList.add('active'));
+    // Initial setup (if elements are already in the DOM)
+    let observer = setupReveal();
+
+    // Reset reveal elements active class on pathname change
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    revealElements.forEach(el => {
+      el.classList.remove('active');
+    });
+
+    // Use MutationObserver to observe when lazy loaded page components are injected into .main-content
+    const targetNode = document.querySelector('.main-content');
+    let mutationObserver: MutationObserver | null = null;
+    
+    if (targetNode) {
+      mutationObserver = new MutationObserver(() => {
+        if (observer) {
+          observer.disconnect();
+        }
+        observer = setupReveal();
+      });
+      mutationObserver.observe(targetNode, { childList: true, subtree: true });
     }
+
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+      if (mutationObserver) {
+        mutationObserver.disconnect();
+      }
+    };
   }, [pathname]);
 
   return null;
