@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { MenuDrawer } from './components/MenuDrawer';
 import { Footer } from './components/Footer';
-import { Home } from './pages/Home';
-import { Services } from './pages/Services';
-import { Media } from './pages/Media';
-import { Enquire } from './pages/Enquire';
+
+// Lazy load pages for performance optimization (code splitting)
+const Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
+const Services = React.lazy(() => import('./pages/Services').then(module => ({ default: module.Services })));
+const Media = React.lazy(() => import('./pages/Media').then(module => ({ default: module.Media })));
+const Enquire = React.lazy(() => import('./pages/Enquire').then(module => ({ default: module.Enquire })));
 
 // Scroll to top component on route changes
 const ScrollToTop: React.FC = () => {
@@ -76,14 +78,30 @@ function App() {
         <MenuDrawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         
         <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/media" element={<Media />} />
-            <Route path="/enquire" element={<Enquire />} />
-            {/* Fallback redirect */}
-            <Route path="*" element={<Home />} />
-          </Routes>
+          <Suspense fallback={
+            <div className="page-loader" style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '50vh',
+              fontFamily: 'var(--font-sans)',
+              color: 'var(--color-gold)',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              fontSize: '0.9rem'
+            }}>
+              Loading...
+            </div>
+          }>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/media" element={<Media />} />
+              <Route path="/enquire" element={<Enquire />} />
+              {/* Fallback redirect */}
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </Suspense>
         </main>
         
         <Footer />
