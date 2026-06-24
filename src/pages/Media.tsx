@@ -54,13 +54,7 @@ export const Media: React.FC = () => {
     { src: '/assets/05 PHOTOS/Weddings/AKR05590.webp', alt: 'Courtyard Floral Stage Setup details', width: 2400, height: 3600 }
   ];
 
-  // Preload all gallery images immediately on mount
-  useEffect(() => {
-    photos.forEach((photo) => {
-      const img = new Image();
-      img.src = photo.src;
-    });
-  }, []);
+  // Note: automatic eager preloading of all 40 high-res gallery images has been removed to reduce thread blocking and network saturation.
 
   // Lock scrolling when lightbox is open
   useEffect(() => {
@@ -151,7 +145,7 @@ export const Media: React.FC = () => {
                 alt={photo.alt} 
                 width={photo.width}
                 height={photo.height}
-                loading="eager"
+                loading="lazy"
                 decoding="async"
               />
             </div>

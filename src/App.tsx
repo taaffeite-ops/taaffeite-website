@@ -26,15 +26,21 @@ const ScrollRevealTrigger: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    let observer: IntersectionObserver | null = null;
+
     const setupReveal = () => {
+      if (observer) {
+        observer.disconnect();
+      }
+
       const revealElements = document.querySelectorAll('.reveal-on-scroll');
       
       if ('IntersectionObserver' in window && revealElements.length > 0) {
-        const revealObserver = new IntersectionObserver((entries, observer) => {
+        observer = new IntersectionObserver((entries, obs) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('active');
-              observer.unobserve(entry.target);
+              obs.unobserve(entry.target);
             }
           });
         }, {
@@ -43,48 +49,36 @@ const ScrollRevealTrigger: React.FC = () => {
         });
 
         revealElements.forEach(el => {
-          if (!el.classList.contains('active')) {
-            revealObserver.observe(el);
+          if (!el.classList.contains('active') && observer) {
+            observer.observe(el);
           }
         });
-
-        return revealObserver;
-      } else {
+      } else if (!('IntersectionObserver' in window)) {
         revealElements.forEach(el => el.classList.add('active'));
-        return null;
       }
     };
 
-    // Initial setup (if elements are already in the DOM)
-    let observer = setupReveal();
-
-    // Reset reveal elements active class on pathname change
+    // Reset reveal elements active class on pathname change to animate them again
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
     revealElements.forEach(el => {
       el.classList.remove('active');
     });
 
-    // Use MutationObserver to observe when lazy loaded page components are injected into .main-content
-    const targetNode = document.querySelector('.main-content');
-    let mutationObserver: MutationObserver | null = null;
-    
-    if (targetNode) {
-      mutationObserver = new MutationObserver(() => {
-        if (observer) {
-          observer.disconnect();
-        }
-        observer = setupReveal();
-      });
-      mutationObserver.observe(targetNode, { childList: true, subtree: true });
-    }
+    // Run setup immediately
+    setupReveal();
+
+    // Trigger setup on delays to catch lazy loaded content once mounted
+    const timer1 = setTimeout(setupReveal, 100);
+    const timer2 = setTimeout(setupReveal, 350);
+    const timer3 = setTimeout(setupReveal, 800);
 
     return () => {
       if (observer) {
         observer.disconnect();
       }
-      if (mutationObserver) {
-        mutationObserver.disconnect();
-      }
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
     };
   }, [pathname]);
 
@@ -117,7 +111,7 @@ function App() {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '50vh',
+              height: '100vh',
               fontFamily: 'var(--font-sans)',
               color: 'var(--color-gold)',
               letterSpacing: '0.15em',
