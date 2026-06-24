@@ -1683,6 +1683,7 @@ body.menu-open .menu-drawer {
     transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.5s ease, box-shadow 0.5s ease;
     cursor: pointer;
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
 }
 
 .service-card-new:hover {
