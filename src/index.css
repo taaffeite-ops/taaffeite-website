@@ -450,16 +450,16 @@ body.menu-open .menu-drawer {
 }
 
 .hero-brand-logo {
-    height: 240px;
-    width: 240px;
+    height: 180px;
+    width: 180px;
     object-fit: contain;
     filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));
 }
 
 @media (max-width: 768px) {
     .hero-brand-logo {
-        height: 160px;
-        width: 160px;
+        height: 120px;
+        width: 120px;
     }
 
     .hero-logo-hero {

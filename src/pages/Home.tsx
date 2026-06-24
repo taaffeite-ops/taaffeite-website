@@ -246,8 +246,8 @@ export const Home: React.FC = () => {
               src="/assets/images/logo.png" 
               alt="Taaffeite Events" 
               className="hero-brand-logo" 
-              width={240}
-              height={240}
+              width={180}
+              height={180}
               style={{ marginTop: '-90px', marginBottom: '20px' }}
             />
             <div className="hero-quotes-container">
