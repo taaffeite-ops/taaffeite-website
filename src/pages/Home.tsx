@@ -453,7 +453,7 @@ export const Home: React.FC = () => {
             </div>
             <div className="philosophy-card">
               <h3>The Mission</h3>
-              <p>To create thoughtful and beautifully executed celebrations that feel deeply personal, seamless, and memorable for every couple, family, and guest. We handle the heavy lifting, allowing you to immerse yourselves fully in the magic of your day.</p>
+              <p>To create thoughtful and beautifully executed celebrations that feel deeply personal, seamless, and memorable for every couple, family, and guest. We handle the heavy lifting, allowing you to immerse yourselves fully in the magic of your day, while every detail unfolds with purpose, elegance, and effortless grace.</p>
             </div>
           </div>
         </div>
