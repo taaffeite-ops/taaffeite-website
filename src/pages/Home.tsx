@@ -369,7 +369,7 @@ export const Home: React.FC = () => {
               <div className="about-showcase-info">
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
-                  For us, luxury is not about doing more—it is about doing everything with intention. It is found in the details that guests may not notice but will always feel. From the flow of an event to the atmosphere of every space, we focus on creating experiences that are smooth, meaningful, and memorable.<br></br> Our goal is to remove the stress from planning so you can enjoy every moment with the people who matter most. At Taaffeite, we create celebrations that feel natural, elegant, and timeless—moments that stay with you long after the event is over.
+                  For us, luxury is not about doing more, it is about doing everything with intention. It is found in the details that guests may not notice but will always feel. From the flow of an event to the atmosphere of every space, we focus on creating experiences that are smooth, meaningful, and memorable.<br></br> Our goal is to remove the stress from planning so you can enjoy every moment with the people who matter most. At Taaffeite, we create celebrations that feel natural, elegant, and timeless moments that stay with you long after the event is over.
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
