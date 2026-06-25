@@ -433,7 +433,7 @@ export const Home: React.FC = () => {
             <div className="glimpse-divider"></div>
             <p className="glimpse-desc">
               From intimate gatherings shared among close family and friends to grand, multi-day celebrations filled with unforgettable moments, every event we create is thoughtfully designed to reflect the people at the heart of it. We believe that no two stories are ever the same, which is why every celebration we plan is approached with care, creativity, and a deep understanding of what matters most to our clients. From the first spark of an idea to the final farewell, we curate experiences that feel personal, meaningful, and effortlessly beautiful.
-              Each photograph in this collection represents more than a perfectly styled event—it captures emotions, connections, traditions, and memories that will be cherished for years to come. These are the moments that remind us why we do what we do, and the celebrations we have been honoured to bring to life.
+              Each photograph in this collection represents more than a perfectly styled event it captures emotions, connections, traditions, and memories that will be cherished for years to come. These are the moments that remind us why we do what we do, and the celebrations we have been honoured to bring to life.
             </p>
           </div>
 

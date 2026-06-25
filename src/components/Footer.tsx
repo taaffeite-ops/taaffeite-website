@@ -8,10 +8,10 @@ export const Footer: React.FC = () => {
       <div className="footer-container">
         {/* Brand description */}
         <div className="footer-brand">
-          <OptimizedImage 
-            src="/assets/images/logo.png" 
-            alt="Taaffeite Events Logo" 
-            className="footer-logo" 
+          <OptimizedImage
+            src="/assets/images/logo.png"
+            alt="Taaffeite Events Logo"
+            className="footer-logo"
             width={80}
             height={80}
             objectFit="contain"
@@ -57,11 +57,6 @@ export const Footer: React.FC = () => {
 
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} Taaffeite Events. All rights reserved.</p>
-        <div className="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="mailto:thetaaffeiteevents@gmail.com">Contact Support</a>
-        </div>
       </div>
     </footer>
   );
