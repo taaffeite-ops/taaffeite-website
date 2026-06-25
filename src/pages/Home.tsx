@@ -479,7 +479,7 @@ export const Home: React.FC = () => {
 
 
       {/* 8. CALL TO ACTION */}
-      <section className="cta-section reveal-on-scroll">
+      <section className="cta-section">
         <div className="cta-container">
           <h2 className="cta-title">"Because rare stories deserve rare celebrations."</h2>
         </div>
