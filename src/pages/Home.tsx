@@ -52,8 +52,7 @@ export const Home: React.FC = () => {
     return true;
   };
 
-  // 5. Accordion expand/collapse state
-  const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+
 
   // Quick Enquiry Form States
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
@@ -222,25 +221,7 @@ export const Home: React.FC = () => {
 
   // Note: Custom wheel-based scroll snapping listener has been removed to restore passive native scrolling and eliminate scroll-hijacking & thread blocking warnings.
 
-  // Accordion list details
-  const accordionItems = [
-    {
-      title: "Dedicated & Resolute",
-      content: "We pride ourselves on unwavering loyalty, complete discretion, and a calm, commanding presence amidst the complex planning processes. Our team maintains a steady hand, shielding you from operational friction so the planning experience remains as beautiful as the day itself."
-    },
-    {
-      title: "Adept & Knowledgeable",
-      content: "Drawing from deep expertise in multi-cultural wedding traditions, intricate etiquette guidelines, and complex logistical networks, we execute events with precision. We know the rules, we know the vendors, and we know how to blend standard schedules into high-art experiences."
-    },
-    {
-      title: "Engaged & Thoughtful",
-      content: "Anticipating needs before they surface, arranging personalized hospitality desks, and managing seamless RSVP flows. We design experiences around your guests, making sure every contact point feels curated, warm, and highly personal."
-    },
-    {
-      title: "Subtle & Discreet",
-      content: "We believe true luxury doesn't yell; it whispers. Our team works discreetly behind the scenes, ensuring the logistics slide into place invisibly. We coordinate every vendor and manage every timeline in a way that feels organic and effortless, letting the final production speak for itself."
-    }
-  ];
+
 
   const marqueeImages = [
     {
@@ -310,9 +291,7 @@ export const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleAccordionClick = (index: number) => {
-    setActiveAccordion(prev => (prev === index ? null : index));
-  };
+
 
   const scale = 1 - scrollProgress * 0.18;
   const heroStyle = {
