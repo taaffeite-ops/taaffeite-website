@@ -378,7 +378,7 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 0 ? 'active' : ''}`} id="about-slide-0">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
-                <h3 className="about-showcase-title">The Story</h3>
+                <h3 className="about-showcase-title">It Starts With Your Story</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
                   Every celebration begins with people, not plans.Before we think about colours, venues, or timelines, we take time to understand who you are, what matters to your family, and the moments you want to remember years from now. Every decision we make grows from your story, your traditions, and your vision, creating a celebration that feels deeply personal from beginning to end.
@@ -401,7 +401,7 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 1 ? 'active' : ''}`} id="about-slide-1">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
-                <h3 className="about-showcase-title">The Rarity</h3>
+                <h3 className="about-showcase-title">Inspired by Rarity</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
                   Taaffeite is one of the rarest gemstones in the world, and that belief shapes everything we create. We have never believed in celebrations that look copied or predictable. Every couple, every family, and every story deserves something uniquely their own. That is why we approach every event with fresh ideas, thoughtful design, and an unwavering attention to detail, creating experiences that feel timeless rather than trendy.
@@ -424,7 +424,7 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 2 ? 'active' : ''}`} id="about-slide-2">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
-                <h3 className="about-showcase-title">The Experience</h3>
+                <h3 className="about-showcase-title">Designed So You Can Be Present</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
                   The most memorable celebrations are the ones where you never have to think about what comes next. While you enjoy every conversation, embrace every loved one, and live every moment, we quietly manage everything behind the scenes. From planning and coordination to the smallest finishing touches, every detail is carefully orchestrated so your celebration unfolds effortlessly, exactly as it should.
@@ -497,55 +497,7 @@ export const Home: React.FC = () => {
       </section>
 
 
-      {/* 6. PHILOSOPHY & MISSION */}
-      <section className="philosophy-section reveal-on-scroll">
-        <div className="philosophy-container">
-          <span className="intro-title">Philosophy & Mission</span>
-          <h2 className="philosophy-essence">"Because rare stories deserve rare celebrations."</h2>
 
-          <div className="philosophy-grid">
-            <div className="philosophy-card">
-              <h3>The Philosophy</h3>
-              <p>At Taaffeite, we believe the most meaningful celebrations are the ones that feel personal. Not overly staged or overwhelming, but honest, warm, and deeply reflective of the people at the heart of them. We approach every wedding and event with intention, creating spaces, experiences, and moments that feel natural, elegant, and emotionally connected.</p>
-            </div>
-            <div className="philosophy-card">
-              <h3>The Mission</h3>
-              <p>To create thoughtful and beautifully executed celebrations that feel deeply personal, seamless, and memorable for every couple, family, and guest. We handle the heavy lifting, allowing you to immerse yourselves fully in the magic of your day, while every detail unfolds with purpose, elegance, and effortless grace.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. THE EXPERIENCE (ACCORDION SECTION) */}
-      <section className="experience-section reveal-on-scroll">
-        <div className="experience-container">
-          <div className="experience-header">
-            <h2>The Experience</h2>
-            <p>How we plan and execute luxury</p>
-          </div>
-
-          <div className="accordion-group">
-            {accordionItems.map((item, index) => (
-              <div
-                key={index}
-                className={`accordion-item ${activeAccordion === index ? 'active' : ''}`}
-              >
-                <button
-                  className="accordion-trigger"
-                  onClick={() => handleAccordionClick(index)}
-                  aria-expanded={activeAccordion === index ? 'true' : 'false'}
-                >
-                  <span className="accordion-title">{item.title}</span>
-                  <span className="accordion-icon" aria-hidden="true"></span>
-                </button>
-                <div className="accordion-content">
-                  <p className="accordion-text">{item.content}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 7.5. QUICK ENQUIRY SECTION */}
       <section className="quick-enquiry-section reveal-on-scroll">
@@ -709,7 +661,7 @@ export const Home: React.FC = () => {
       {/* 8. CALL TO ACTION */}
       <section className="cta-section reveal-on-scroll">
         <div className="cta-container">
-          <h2 className="cta-title">Rare stories deserve rare celebrations.</h2>
+          <h2 className="cta-title">"Because rare stories deserve rare celebrations."</h2>
           <Link to="/enquire" className="btn-luxury">Enquire with us</Link>
         </div>
       </section>
