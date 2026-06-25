@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 export const Services: React.FC = () => {
   const serviceCategories = [
@@ -121,7 +122,15 @@ export const Services: React.FC = () => {
           {serviceCategories.map((category) => (
             <div key={category.id} className="service-card-new reveal-on-scroll" id={category.id}>
               <div className="service-image-container">
-                <img src={category.image} alt={category.title} className="service-bg-image" />
+                <OptimizedImage
+                  src={category.image}
+                  alt={category.title}
+                  width={800}
+                  height={600}
+                  className="service-bg-image"
+                  containerStyle={{ height: '100%', width: '100%' }}
+                  aspectRatio="unset"
+                />
                 <div className="service-overlay-gradient"></div>
                 <div className="service-title-wrapper">
                   <h3>{category.title}</h3>

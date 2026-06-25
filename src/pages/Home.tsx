@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 export const Home: React.FC = () => {
 
@@ -53,6 +54,107 @@ export const Home: React.FC = () => {
 
   // 5. Accordion expand/collapse state
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+
+  // Quick Enquiry Form States
+  const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [enquirySubmitting, setEnquirySubmitting] = useState(false);
+  const [enquiryPhoneFocused, setEnquiryPhoneFocused] = useState(false);
+  const [enquiryError, setEnquiryError] = useState<string | null>(null);
+  const [enquiryData, setEnquiryData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    proposedDate: '',
+    celebrationType: 'Wedding Planning',
+    guestCount: '',
+    location: ''
+  });
+  const [enquiryOtherDetail, setEnquiryOtherDetail] = useState('');
+
+  const handleEnquiryChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    const keyMap: Record<string, string> = {
+      'quick-name': 'fullName',
+      'quick-email': 'email',
+      'quick-phone': 'phone',
+      'quick-date': 'proposedDate',
+      'quick-type': 'celebrationType',
+      'quick-guests': 'guestCount',
+      'quick-location': 'location'
+    };
+
+    const field = keyMap[id];
+    if (field) {
+      if (field === 'phone') {
+        let digits = value.replace(/\D/g, '');
+        if (digits.length === 12 && digits.startsWith('91')) {
+          digits = digits.slice(2);
+        } else if (digits.length === 11 && digits.startsWith('0')) {
+          digits = digits.slice(1);
+        }
+        digits = digits.slice(0, 10);
+        setEnquiryData(prev => ({ ...prev, [field]: digits }));
+      } else {
+        setEnquiryData(prev => ({ ...prev, [field]: value }));
+      }
+    }
+  };
+
+  const handleEnquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEnquirySubmitting(true);
+    setEnquiryError(null);
+
+    const { fullName, email, phone, proposedDate, celebrationType, guestCount, location } = enquiryData;
+    if (!fullName || !email || !phone || !proposedDate || !celebrationType || !guestCount || !location) {
+      setEnquiryError('Please fill in all required fields.');
+      setEnquirySubmitting(false);
+      return;
+    }
+
+    if (celebrationType === 'Other' && !enquiryOtherDetail.trim()) {
+      setEnquiryError('Please specify your celebration type.');
+      setEnquirySubmitting(false);
+      return;
+    }
+
+    if (phone.length !== 10) {
+      setEnquiryError('Please enter a valid 10-digit phone number.');
+      setEnquirySubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/enquire', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fullName,
+          email,
+          phone: `+91 ${phone}`,
+          proposedDate,
+          celebrationType: celebrationType === 'Other' ? `Other: ${enquiryOtherDetail}` : celebrationType,
+          guestCount: Number(guestCount),
+          location
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Something went wrong. Please try again.');
+      }
+
+      setEnquirySubmitted(true);
+    } catch (err: any) {
+      console.error('Error submitting enquiry form:', err);
+      setEnquiryError(err.message || 'Failed to submit form. Please check your connection and try again.');
+    } finally {
+      setEnquirySubmitting(false);
+    }
+  };
 
 
 
@@ -227,28 +329,30 @@ export const Home: React.FC = () => {
         <section className="hero-section" style={heroStyle}>
           <div className="hero-slideshow-container">
             {heroImages.map((img, idx) => (
-              <img
+              <OptimizedImage
                 key={idx}
                 src={img.src}
                 width={img.width}
                 height={img.height}
                 alt={`Luxury Celebration ${idx + 1}`}
                 className={`hero-slide-img ${idx === heroImageIndex ? 'active' : ''}`}
-                loading={idx === 0 ? "eager" : "lazy"}
-                fetchPriority={idx === 0 ? "high" : "low"}
-                decoding="async"
+                eager={idx === 0}
+                containerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                aspectRatio="unset"
               />
             ))}
           </div>
           <div className="hero-overlay"></div>
           <div className="hero-content">
-            <img
+            <OptimizedImage
               src="/assets/images/logo.png"
               alt="Taaffeite Events"
               className="hero-brand-logo"
               width={180}
               height={180}
-              style={{ marginTop: '-180px', marginBottom: '20px' }}
+              eager={true}
+              objectFit="contain"
+              containerStyle={{ width: '180px', height: '180px', marginTop: '-180px', marginBottom: '20px', backgroundColor: 'transparent' }}
             />
             <div className="hero-quotes-container">
               {quotes.map((quote, idx) => (
@@ -284,14 +388,13 @@ export const Home: React.FC = () => {
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
-                <img
+                <OptimizedImage
                   src="/assets/05 PHOTOS/Weddings/AKR05567.webp"
                   alt="Taaffeite Beliefs & Proposal Setup"
                   className="about-showcase-image"
                   width={2400}
                   height={3600}
-                  loading="lazy"
-                  decoding="async"
+                  aspectRatio="unset"
                 />
               </div>
             </div>
@@ -307,14 +410,13 @@ export const Home: React.FC = () => {
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
-                <img
+                <OptimizedImage
                   src="/assets/05 PHOTOS/Weddings/Sanhita & Benny-317 2.webp"
                   alt="Taaffeite Luxury Wedding Ceremony Setup"
                   className="about-showcase-image"
                   width={4631}
                   height={6946}
-                  loading="lazy"
-                  decoding="async"
+                  aspectRatio="unset"
                 />
               </div>
             </div>
@@ -330,14 +432,13 @@ export const Home: React.FC = () => {
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
-                <img
+                <OptimizedImage
                   src="/assets/05 PHOTOS/Reception/Weva1701.webp"
                   alt="Taaffeite Luxury Reception Design"
                   className="about-showcase-image"
                   width={3645}
                   height={5467}
-                  loading="lazy"
-                  decoding="async"
+                  aspectRatio="unset"
                 />
               </div>
             </div>
@@ -364,26 +465,26 @@ export const Home: React.FC = () => {
               {/* First Set */}
               {marqueeImages.map((img, idx) => (
                 <div key={`set1-${idx}`} className="glimpse-marquee-card">
-                  <img
+                  <OptimizedImage
                     src={img.src}
                     alt={img.alt}
                     width={img.width}
                     height={img.height}
-                    loading="lazy"
-                    decoding="async"
+                    aspectRatio="unset"
+                    containerStyle={{ width: '100%', height: '100%' }}
                   />
                 </div>
               ))}
               {/* Duplicate Set for infinite looping */}
               {marqueeImages.map((img, idx) => (
                 <div key={`set2-${idx}`} className="glimpse-marquee-card" aria-hidden="true">
-                  <img
+                  <OptimizedImage
                     src={img.src}
                     alt={img.alt}
                     width={img.width}
                     height={img.height}
-                    loading="lazy"
-                    decoding="async"
+                    aspectRatio="unset"
+                    containerStyle={{ width: '100%', height: '100%' }}
                   />
                 </div>
               ))}
@@ -444,6 +545,167 @@ export const Home: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 7.5. QUICK ENQUIRY SECTION */}
+      <section className="quick-enquiry-section reveal-on-scroll">
+        <div className="quick-enquiry-container">
+          <div className="quick-enquiry-header">
+            <span className="intro-title">Quick Enquiry</span>
+            <h2>Tell Us About Your Celebration</h2>
+            <p>Share the initial details of your vision, and we will get back to you within 24 hours.</p>
+          </div>
+
+          {!enquirySubmitted ? (
+            <form className="quick-enquiry-form" onSubmit={handleEnquirySubmit}>
+              {enquiryError && (
+                <div className="quick-enquiry-error">
+                  <span>⚠️</span> {enquiryError}
+                </div>
+              )}
+
+              {/* Row 1: Name and Email */}
+              <div className="form-row two-cols">
+                <div className="form-group">
+                  <label htmlFor="quick-name">Your Full Name *</label>
+                  <input
+                    type="text"
+                    id="quick-name"
+                    required
+                    disabled={enquirySubmitting}
+                    placeholder="e.g. Eleanor Vance"
+                    value={enquiryData.fullName}
+                    onChange={handleEnquiryChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="quick-email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="quick-email"
+                    required
+                    disabled={enquirySubmitting}
+                    placeholder="e.g. eleanor@example.com"
+                    value={enquiryData.email}
+                    onChange={handleEnquiryChange}
+                  />
+                </div>
+              </div>
+
+              {/* Row 2: Phone and Proposed Date */}
+              <div className="form-row two-cols">
+                <div className="form-group">
+                  <label htmlFor="quick-phone">Phone / WhatsApp Number *</label>
+                  <div className={`phone-input-wrapper ${enquiryPhoneFocused ? 'focused' : ''}`}>
+                    <span className="phone-prefix">+91</span>
+                    <input
+                      type="tel"
+                      id="quick-phone"
+                      required
+                      disabled={enquirySubmitting}
+                      placeholder="98765 43210"
+                      value={enquiryData.phone}
+                      onChange={handleEnquiryChange}
+                      onFocus={() => setEnquiryPhoneFocused(true)}
+                      onBlur={() => setEnquiryPhoneFocused(false)}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="quick-date">Proposed Date *</label>
+                  <input
+                    type="date"
+                    id="quick-date"
+                    required
+                    disabled={enquirySubmitting}
+                    value={enquiryData.proposedDate}
+                    onChange={handleEnquiryChange}
+                  />
+                </div>
+              </div>
+
+              {/* Row 3: Celebration Type and Guest Count */}
+              <div className="form-row two-cols">
+                <div className="form-group">
+                  <label htmlFor="quick-type">Celebration Type *</label>
+                  <select
+                    id="quick-type"
+                    required
+                    disabled={enquirySubmitting}
+                    value={enquiryData.celebrationType}
+                    onChange={handleEnquiryChange}
+                  >
+                    <option value="Wedding Planning">Wedding Celebration</option>
+                    <option value="Pre-Wedding Celebration">Pre-Wedding (Sangeet, Haldi, Mehendi)</option>
+                    <option value="Milestone Birthday">Milestone Birthday / Party</option>
+                    <option value="Bespoke Private Event">Bespoke Private Event</option>
+                    <option value="Destination Celebration">Destination Wedding / Celebration</option>
+                    <option value="Other">Others</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="quick-guests">Estimated Guest Count *</label>
+                  <input
+                    type="number"
+                    id="quick-guests"
+                    required
+                    disabled={enquirySubmitting}
+                    min="1"
+                    placeholder="e.g. 150"
+                    value={enquiryData.guestCount}
+                    onChange={handleEnquiryChange}
+                  />
+                </div>
+              </div>
+
+              {/* Row 4: Specify Celebration Type (Conditional) */}
+              {enquiryData.celebrationType === 'Other' && (
+                <div className="form-row animation-fade-in" style={{ animation: 'fadeInDown 0.4s ease' }}>
+                  <div className="form-group">
+                    <label htmlFor="quick-other-detail">Specify Celebration Type *</label>
+                    <input
+                      type="text"
+                      id="quick-other-detail"
+                      required
+                      disabled={enquirySubmitting}
+                      placeholder="e.g. Corporate Anniversary Gala, Proposal, Baby Shower"
+                      value={enquiryOtherDetail}
+                      onChange={(e) => setEnquiryOtherDetail(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Row 5: Proposed Location */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="quick-location">Proposed Location / City *</label>
+                  <input
+                    type="text"
+                    id="quick-location"
+                    required
+                    disabled={enquirySubmitting}
+                    placeholder="e.g. Bangalore, India"
+                    value={enquiryData.location}
+                    onChange={handleEnquiryChange}
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className="btn-form-submit" disabled={enquirySubmitting}>
+                {enquirySubmitting ? 'Sending Request...' : 'Send Inquiry'}
+              </button>
+            </form>
+          ) : (
+            <div className="quick-enquiry-success">
+              <h3>Thank You, {enquiryData.fullName}</h3>
+              <p>
+                Your inquiry for the <strong>{enquiryData.celebrationType === 'Other' ? enquiryOtherDetail : enquiryData.celebrationType}</strong> on <strong>{enquiryData.proposedDate}</strong> has been received successfully.
+                Our luxury planning directors will connect with you via email or WhatsApp within 24 hours.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

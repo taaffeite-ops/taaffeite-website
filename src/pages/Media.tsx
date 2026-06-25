@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { OptimizedImage } from '../components/OptimizedImage';
 
 interface MediaPhoto {
   src: string;
@@ -140,13 +141,11 @@ export const Media: React.FC = () => {
               onClick={() => openLightbox(index)}
               style={{ cursor: 'pointer' }}
             >
-              <img 
-                src={photo.src} 
-                alt={photo.alt} 
+              <OptimizedImage
+                src={photo.src}
+                alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                loading="lazy"
-                decoding="async"
               />
             </div>
           ))}

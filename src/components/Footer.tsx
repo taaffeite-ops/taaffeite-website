@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { OptimizedImage } from './OptimizedImage';
 
 export const Footer: React.FC = () => {
   return (
@@ -7,14 +8,14 @@ export const Footer: React.FC = () => {
       <div className="footer-container">
         {/* Brand description */}
         <div className="footer-brand">
-          <img 
+          <OptimizedImage 
             src="/assets/images/logo.png" 
             alt="Taaffeite Events Logo" 
             className="footer-logo" 
             width={80}
             height={80}
-            loading="lazy"
-            decoding="async"
+            objectFit="contain"
+            containerStyle={{ width: '80px', height: '80px', backgroundColor: 'transparent' }}
           />
           <p className="footer-desc">
             Taaffeite is a high-end luxury events planning agency specializing in elegant, warm, and minimal celebrations. Named after one of the rarest gemstones in the world.
