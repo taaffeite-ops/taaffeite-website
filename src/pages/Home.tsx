@@ -641,7 +641,6 @@ export const Home: React.FC = () => {
       <section className="cta-section reveal-on-scroll">
         <div className="cta-container">
           <h2 className="cta-title">"Because rare stories deserve rare celebrations."</h2>
-          <Link to="/enquire" className="btn-luxury">Enquire with us</Link>
         </div>
       </section>
     </div>
