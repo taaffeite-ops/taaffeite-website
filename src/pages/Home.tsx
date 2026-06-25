@@ -478,6 +478,13 @@ export const Home: React.FC = () => {
 
 
 
+      {/* 8. CALL TO ACTION */}
+      <section className="cta-section reveal-on-scroll">
+        <div className="cta-container">
+          <h2 className="cta-title">"Because rare stories deserve rare celebrations."</h2>
+        </div>
+      </section>
+
       {/* 7.5. QUICK ENQUIRY SECTION */}
       <section className="quick-enquiry-section reveal-on-scroll">
         <div className="quick-enquiry-container">
@@ -637,12 +644,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 8. CALL TO ACTION */}
-      <section className="cta-section reveal-on-scroll">
-        <div className="cta-container">
-          <h2 className="cta-title">"Because rare stories deserve rare celebrations."</h2>
-        </div>
-      </section>
+
     </div>
   );
 };
