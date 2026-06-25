@@ -660,22 +660,20 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Row 4: Specify Celebration Type (Conditional) */}
-              {enquiryData.celebrationType === 'Other' && (
-                <div className="form-row animation-fade-in" style={{ animation: 'fadeInDown 0.4s ease' }}>
-                  <div className="form-group">
-                    <label htmlFor="quick-other-detail">Specify Celebration Type *</label>
-                    <input
-                      type="text"
-                      id="quick-other-detail"
-                      required
-                      disabled={enquirySubmitting}
-                      placeholder="e.g. Corporate Anniversary Gala, Proposal, Baby Shower"
-                      value={enquiryOtherDetail}
-                      onChange={(e) => setEnquiryOtherDetail(e.target.value)}
-                    />
-                  </div>
+              <div className={`conditional-form-row ${enquiryData.celebrationType === 'Other' ? 'show' : ''}`}>
+                <div className="form-group">
+                  <label htmlFor="quick-other-detail">Specify Celebration Type *</label>
+                  <input
+                    type="text"
+                    id="quick-other-detail"
+                    required={enquiryData.celebrationType === 'Other'}
+                    disabled={enquirySubmitting}
+                    placeholder="e.g. Corporate Anniversary Gala, Proposal, Baby Shower"
+                    value={enquiryOtherDetail}
+                    onChange={(e) => setEnquiryOtherDetail(e.target.value)}
+                  />
                 </div>
-              )}
+              </div>
 
               {/* Row 5: Proposed Location */}
               <div className="form-row">

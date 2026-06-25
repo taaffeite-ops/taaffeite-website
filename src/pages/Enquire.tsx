@@ -286,22 +286,21 @@ export const Enquire: React.FC = () => {
                     </div>
                   </div>
 
-                  {formData.celebrationType === 'Other' && (
-                    <div className="form-row animation-fade-in" style={{ animation: 'fadeInDown 0.4s ease' }}>
-                      <div className="form-group">
-                        <label htmlFor="other-celebration-detail">Specify Celebration Type *</label>
-                        <input
-                          type="text"
-                          id="other-celebration-detail"
-                          required
-                          disabled={isSubmitting}
-                          placeholder="e.g. Corporate Anniversary Gala, Proposal, Baby Shower"
-                          value={otherCelebrationDetail}
-                          onChange={(e) => setOtherCelebrationDetail(e.target.value)}
-                        />
-                      </div>
+                  {/* Row 4: Specify Celebration Type (Conditional) */}
+                  <div className={`conditional-form-row ${formData.celebrationType === 'Other' ? 'show' : ''}`}>
+                    <div className="form-group">
+                      <label htmlFor="other-celebration-detail">Specify Celebration Type *</label>
+                      <input
+                        type="text"
+                        id="other-celebration-detail"
+                        required={formData.celebrationType === 'Other'}
+                        disabled={isSubmitting}
+                        placeholder="e.g. Corporate Anniversary Gala, Proposal, Baby Shower"
+                        value={otherCelebrationDetail}
+                        onChange={(e) => setOtherCelebrationDetail(e.target.value)}
+                      />
                     </div>
-                  )}
+                  </div>
 
                   {/* Row 4 */}
                   <div className="form-row">
