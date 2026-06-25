@@ -378,7 +378,6 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 0 ? 'active' : ''}`} id="about-slide-0">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
-                <span className="about-showcase-category">01 / Foundation</span>
                 <h3 className="about-showcase-title">The Story</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
@@ -402,7 +401,6 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 1 ? 'active' : ''}`} id="about-slide-1">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
-                <span className="about-showcase-category">02 / Philosophy</span>
                 <h3 className="about-showcase-title">The Rarity</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
@@ -426,7 +424,6 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 2 ? 'active' : ''}`} id="about-slide-2">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
-                <span className="about-showcase-category">03 / Promise</span>
                 <h3 className="about-showcase-title">The Experience</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
