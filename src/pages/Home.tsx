@@ -373,18 +373,16 @@ export const Home: React.FC = () => {
       {/* 2. SCROLL-LINKED ABOUT SECTION (3 PARTS) */}
       <div className="about-showcase-container" id="about-showcase" ref={aboutShowcaseRef}>
         <div className="about-showcase-sticky">
-          {/* Static Title Header */}
-          <div className="about-static-title-container">
-            <h2 className="about-static-title">Our Essence</h2>
-          </div>
 
           {/* Slide 1 */}
           <div className={`about-showcase-slide ${activeAboutSlide === 0 ? 'active' : ''}`} id="about-slide-0">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
+                <span className="about-showcase-category">01 / Foundation</span>
+                <h3 className="about-showcase-title">The Story</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
-                  Taaffeite was built on the belief that every celebration should feel personal, meaningful, and true to the people it brings together. We believe the most memorable weddings are not created through excess, but through thoughtful details and genuine moments. Every event begins with understanding your story, your style, and what matters most to you.<br></br> From intimate gatherings to grand celebrations, our focus remains the same: creating experiences that feel effortless, heartfelt, and unforgettable. We take pride in crafting events that allow you to be fully present, knowing every detail has been carefully considered and beautifully executed.
+                  Every celebration begins with people, not plans.Before we think about colours, venues, or timelines, we take time to understand who you are, what matters to your family, and the moments you want to remember years from now. Every decision we make grows from your story, your traditions, and your vision, creating a celebration that feels deeply personal from beginning to end.
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
@@ -404,9 +402,11 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 1 ? 'active' : ''}`} id="about-slide-1">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
+                <span className="about-showcase-category">02 / Philosophy</span>
+                <h3 className="about-showcase-title">The Rarity</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
-                  Named after one of the rarest gemstones in the world, Taaffeite represents individuality, rarity, and timeless beauty. These qualities inspire the way we approach every celebration we design. No two weddings are alike, and we believe every couple deserves an experience that reflects their unique journey. We work closely with families and couples to create spaces that feel welcoming, elegant, and deeply personal. <br></br>By combining thoughtful planning, refined aesthetics, and seamless coordination, we transform ideas into celebrations that feel authentic, memorable, and effortlessly beautiful from beginning to end.
+                  Taaffeite is one of the rarest gemstones in the world, and that belief shapes everything we create. We have never believed in celebrations that look copied or predictable. Every couple, every family, and every story deserves something uniquely their own. That is why we approach every event with fresh ideas, thoughtful design, and an unwavering attention to detail, creating experiences that feel timeless rather than trendy.
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
@@ -426,9 +426,11 @@ export const Home: React.FC = () => {
           <div className={`about-showcase-slide ${activeAboutSlide === 2 ? 'active' : ''}`} id="about-slide-2">
             <div className="about-showcase-grid">
               <div className="about-showcase-info">
+                <span className="about-showcase-category">03 / Promise</span>
+                <h3 className="about-showcase-title">The Experience</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
-                  For us, luxury is not about doing more, it is about doing everything with intention. It is found in the details that guests may not notice but will always feel. From the flow of an event to the atmosphere of every space, we focus on creating experiences that are smooth, meaningful, and memorable.<br></br> Our goal is to remove the stress from planning so you can enjoy every moment with the people who matter most. At Taaffeite, we create celebrations that feel natural, elegant, and timeless moments that stay with you long after the event is over.
+                  The most memorable celebrations are the ones where you never have to think about what comes next. While you enjoy every conversation, embrace every loved one, and live every moment, we quietly manage everything behind the scenes. From planning and coordination to the smallest finishing touches, every detail is carefully orchestrated so your celebration unfolds effortlessly, exactly as it should.
                 </p>
               </div>
               <div className="about-showcase-image-wrapper">
