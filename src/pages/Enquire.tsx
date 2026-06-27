@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
 export const Enquire: React.FC = () => {
+  useRevealAnimation();
   // Form submission state
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,18 +118,18 @@ export const Enquire: React.FC = () => {
       </section>
 
       {/* ENQUIRE WRAPPER */}
-      <section className="enquire-section-wrapper reveal-on-scroll">
+      <section className="enquire-section-wrapper">
         <div className="enquire-split-layout">
 
           {/* Left Column: Contact details and links */}
-          <div className="enquire-contact-column">
+          <div className="enquire-contact-column reveal-up">
             <span className="enquire-sub-title">Contact & Socials</span>
             <h2 className="enquire-main-title">Get in Touch</h2>
             <p className="enquire-desc">
               To start planning your signature event, please complete our detailed planning questionnaire on the right. Alternatively, feel free to reach out directly via phone, email, or explore our curated profile listings.
             </p>
 
-            <div className="enquire-contact-details">
+            <div className="enquire-contact-details reveal-fade" style={{ transitionDelay: '0.2s' }}>
               <div className="contact-detail-item">
                 <span className="detail-label">WhatsApp & Call</span>
                 <a href="https://wa.me/919148990266" target="_blank" rel="noopener noreferrer" className="detail-link">+91 91489 90266</a>
@@ -138,7 +140,7 @@ export const Enquire: React.FC = () => {
               </div>
             </div>
 
-            <div className="enquire-social-list">
+            <div className="enquire-social-list reveal-fade" style={{ transitionDelay: '0.35s' }}>
               <span className="social-list-title">Explore Our Work</span>
               <ul className="social-links-grid">
                 <li><a href="https://www.instagram.com/taaffeiteevents/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">Instagram</a></li>
@@ -151,7 +153,7 @@ export const Enquire: React.FC = () => {
           </div>
 
           {/* Right Column: Form or Success message */}
-          <div className="enquire-form-column">
+          <div className="enquire-form-column reveal-fade" style={{ transitionDelay: '0.15s' }}>
             {!isSubmitted ? (
               <>
                 <span className="enquire-sub-title">Plan Your Celebration</span>

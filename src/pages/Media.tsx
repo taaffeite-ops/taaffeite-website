@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { OptimizedImage } from '../components/OptimizedImage';
+import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
 interface MediaPhoto {
   src: string;
@@ -9,6 +10,7 @@ interface MediaPhoto {
 }
 
 export const Media: React.FC = () => {
+  useRevealAnimation();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [fadeActive, setFadeActive] = useState(true);
 
@@ -124,22 +126,25 @@ export const Media: React.FC = () => {
       </section>
 
       {/* MEDIA INTRO */}
-      <section className="media-intro reveal-on-scroll">
-        <p>
+      <section className="media-intro">
+        <p className="reveal-up">
           We curate moments that stay in memories forever. In our visual log, we share snippets of floral arrangements, architectural constructs, bespoke dinner styling, and guest hampers. Follow our ongoing journeys live on our social handles.
         </p>
-        <div className="intro-divider" style={{ margin: '30px auto 0' }}></div>
+        <div className="intro-divider reveal-fade" style={{ margin: '30px auto 0' }}></div>
       </section>
 
       {/* MASONRY GALLERY */}
       <section className="gallery-section">
         <div className="media-masonry" id="gallery-grid">
           {photos.map((photo, index) => (
-            <div 
-              key={index} 
-              className="media-item reveal-on-scroll" 
+            <div
+              key={index}
+              className="media-item reveal-scale"
               onClick={() => openLightbox(index)}
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor: 'pointer',
+                transitionDelay: `${(index % 4) * 0.08}s`,
+              }}
             >
               <OptimizedImage
                 src={photo.src}
@@ -187,10 +192,10 @@ export const Media: React.FC = () => {
       )}
 
       {/* CALL TO ACTION */}
-      <section className="cta-section reveal-on-scroll">
+      <section className="cta-section">
         <div className="cta-container">
-          <h2 className="cta-title">See more of our daily work on Instagram.</h2>
-          <a href="https://www.instagram.com/taaffeiteevents/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" className="btn-luxury">Visit Instagram</a>
+          <h2 className="cta-title reveal-scale reveal-slow">See more of our daily work on Instagram.</h2>
+          <a href="https://www.instagram.com/taaffeiteevents/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer" className="btn-luxury reveal-fade">Visit Instagram</a>
         </div>
       </section>
     </div>

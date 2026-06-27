@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { OptimizedImage } from '../components/OptimizedImage';
+import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
 export const Services: React.FC = () => {
+  useRevealAnimation();
+
   const serviceCategories = [
     {
       id: 'planning',
@@ -109,7 +112,7 @@ export const Services: React.FC = () => {
 
   return (
     <div className="services-page-container">
-      {/* PAGE BANNER */}
+      {/* PAGE BANNER — animated via CSS keyframes on load */}
       <section className="page-banner">
         <h1>Our Services</h1>
         <div className="page-banner-diamond"></div>
@@ -119,8 +122,11 @@ export const Services: React.FC = () => {
       {/* SERVICES CONTENT SECTION */}
       <section className="services-list-section">
         <div className="services-grid-list">
-          {serviceCategories.map((category) => (
-            <div key={category.id} className="service-card-new reveal-on-scroll" id={category.id}>
+          {serviceCategories.map((category, idx) => {
+            const revealDir = idx % 2 === 0 ? 'reveal-from-left' : 'reveal-from-right';
+            return (
+              <div key={category.id} className={`service-card-reveal-wrapper ${revealDir}`}>
+                <div className="service-card-new" id={category.id}>
               <div className="service-image-container">
                 <OptimizedImage
                   src={category.image}
@@ -145,17 +151,19 @@ export const Services: React.FC = () => {
               <div className="service-hover-details">
                 <h4>What's Included</h4>
                 <ul className="service-items-list-new">
-                  {category.items.map((item, idx) => (
-                    <li key={idx}>{item}</li>
+                  {category.items.map((item, i) => (
+                    <li key={i}>{item}</li>
                   ))}
                 </ul>
               </div>
-            </div>
-          ))}
+            </div>{/* end service-card-new */}
+          </div>/* end service-card-reveal-wrapper */
+            );
+          })}
         </div>
 
         {/* Disclaimers / Footnotes */}
-        <div className="catering-disclaimer reveal-on-scroll">
+        <div className="catering-disclaimer reveal-fade">
           <p>
             <strong>Note on Catering:</strong> Taaffeite currently does not undertake catering services directly, but coordinates seamlessly with premium catering partners chosen by the client to maintain absolute culinary alignment and event flow.
           </p>
@@ -163,10 +171,10 @@ export const Services: React.FC = () => {
       </section>
 
       {/* CALL TO ACTION */}
-      <section className="cta-section reveal-on-scroll">
+      <section className="cta-section">
         <div className="cta-container">
-          <h2 className="cta-title">Let's craft your milestone event.</h2>
-          <Link to="/enquire" className="btn-luxury">Enquire with us</Link>
+          <h2 className="cta-title reveal-scale reveal-slow">Let's craft your milestone event.</h2>
+          <Link to="/enquire" className="btn-luxury reveal-fade">Enquire with us</Link>
         </div>
       </section>
     </div>

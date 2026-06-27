@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { OptimizedImage } from '../components/OptimizedImage';
+import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
 export const Home: React.FC = () => {
 
@@ -52,7 +53,123 @@ export const Home: React.FC = () => {
     return true;
   };
 
+  // Founders Note Showcase state
+  const [activeFoundersSlide, _setActiveFoundersSlide] = useState<number>(0);
+  const activeFoundersSlideRef = useRef<number>(0);
+  const [foundersScrollProgress, setFoundersScrollProgress] = useState<number>(0);
+  const foundersShowcaseRef = useRef<HTMLDivElement>(null);
 
+  const setActiveFoundersSlide = (val: number) => {
+    activeFoundersSlideRef.current = val;
+    _setActiveFoundersSlide(val);
+  };
+
+  const requestFoundersTransition = (targetSlide: number) => {
+    const currentSlide = activeFoundersSlideRef.current;
+    if (targetSlide === currentSlide) {
+      return false;
+    }
+
+    setActiveFoundersSlide(targetSlide);
+    return true;
+  };
+
+  // Wire scroll-reveal animations for the whole page
+  useRevealAnimation();
+
+  // ── Wheel-event snap: one scroll = one slide ────────────────────────────
+  // Intercepts wheel events while a sticky showcase is pinned and immediately
+  // advances one slide, smooth-scrolling the window to the matching position
+  // so the scroll-position-based slide logic stays perfectly in sync.
+  useEffect(() => {
+    let snapLocked = false;
+    const SNAP_MS = 900; // matches CSS transition duration
+
+    const snapSection = (
+      containerEl: HTMLDivElement | null,
+      slideRef: React.MutableRefObject<number>,
+      maxSlide: number,
+      advance: (next: number) => void,
+      dir: number
+    ): boolean => {
+      if (!containerEl) return false;
+      const rect = containerEl.getBoundingClientRect();
+      // Section is sticky-pinned when its top <= 0 and bottom is still on screen
+      const isActive = rect.top <= 2 && rect.bottom > window.innerHeight - 2;
+      if (!isActive) return false;
+
+      const next = slideRef.current + dir;
+
+      // If going before first or after last slide, let natural scroll continue
+      if (next < 0 || next > maxSlide) return false;
+
+      // Snap this event
+      advance(next);
+
+      // Scroll window to the position that matches the new slide
+      const containerScrollTop = containerEl.getBoundingClientRect().top + window.scrollY;
+      const totalScrollable = containerEl.offsetHeight - window.innerHeight;
+      const targetProgress = next / maxSlide;
+      window.scrollTo({
+        top: containerScrollTop + totalScrollable * targetProgress + 1,
+        behavior: 'smooth',
+      });
+
+      return true;
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (snapLocked) {
+        // Still mid-transition — swallow extra scroll events so they don't
+        // accidentally scroll past the current sticky section.
+        const aboutRect = aboutShowcaseRef.current?.getBoundingClientRect();
+        const foundersRect = foundersShowcaseRef.current?.getBoundingClientRect();
+        const insideSticky =
+          (aboutRect && aboutRect.top <= 2 && aboutRect.bottom > window.innerHeight - 2) ||
+          (foundersRect && foundersRect.top <= 2 && foundersRect.bottom > window.innerHeight - 2);
+        if (insideSticky) e.preventDefault();
+        return;
+      }
+
+      const dir = e.deltaY > 0 ? 1 : -1;
+      let handled = false;
+
+      // About showcase
+      handled = snapSection(
+        aboutShowcaseRef.current,
+        activeAboutSlideRef,
+        2,
+        (next) => {
+          lastSlideTransitionTime.current = Date.now();
+          setActiveAboutSlide(next);
+        },
+        dir
+      );
+
+      // Founders showcase
+      if (!handled) {
+        handled = snapSection(
+          foundersShowcaseRef.current,
+          activeFoundersSlideRef,
+          2,
+          (next) => {
+            setFoundersScrollProgress((next / 2) * 0.99); // keep title-zoom in sync
+            setActiveFoundersSlide(next);
+          },
+          dir
+        );
+      }
+
+      if (handled) {
+        e.preventDefault();
+        snapLocked = true;
+        setTimeout(() => { snapLocked = false; }, SNAP_MS);
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Quick Enquiry Form States
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
@@ -219,6 +336,48 @@ export const Home: React.FC = () => {
     };
   }, []);
 
+  // Founders Note Showcase Scroll Link Logic
+  useEffect(() => {
+    const handleFoundersScroll = () => {
+      if (window.innerWidth < 992) {
+        return;
+      }
+      if (foundersShowcaseRef.current) {
+        const rect = foundersShowcaseRef.current.getBoundingClientRect();
+        const containerHeight = rect.height;
+        const scrolledIntoContainer = -rect.top;
+        const totalScrollableHeight = containerHeight - window.innerHeight;
+
+        if (totalScrollableHeight <= 0) return;
+
+        const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
+
+        // Track raw progress for scroll-driven title zoom animation
+        setFoundersScrollProgress(progress);
+
+        let calculatedSlide = 0;
+        if (progress < 0.33) {
+          calculatedSlide = 0;
+        } else if (progress < 0.66) {
+          calculatedSlide = 1;
+        } else {
+          calculatedSlide = 2;
+        }
+
+        if (calculatedSlide !== activeFoundersSlideRef.current) {
+          requestFoundersTransition(calculatedSlide);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleFoundersScroll, { passive: true });
+    window.addEventListener('resize', handleFoundersScroll);
+    return () => {
+      window.removeEventListener('scroll', handleFoundersScroll);
+      window.removeEventListener('resize', handleFoundersScroll);
+    };
+  }, []);
+
   // Note: Custom wheel-based scroll snapping listener has been removed to restore passive native scrolling and eliminate scroll-hijacking & thread blocking warnings.
 
 
@@ -349,6 +508,126 @@ export const Home: React.FC = () => {
         </section>
       </div>
 
+      {/* FOUNDERS NOTE SHOWCASE SECTION */}
+      <div className="founders-showcase-container" id="founders-showcase" ref={foundersShowcaseRef}>
+        <div className="founders-showcase-sticky">
+
+          {/* Slide 0: Why Taaffeite Title Entry */}
+          <div className={`founders-showcase-slide ${activeFoundersSlide === 0 ? 'active' : ''}`} id="founders-slide-0">
+            <section className="founders-title-section">
+              <div className="founders-title-card-content">
+                {(() => {
+                  // Normalize progress within slide 0's range (0 to 0.33) → 0 to 1
+                  const titleZoom = Math.min(foundersScrollProgress / 0.33, 1);
+                  const scale = 1 + titleZoom * 2.0; // grows from 1× to 3×
+                  const opacity = 1 - titleZoom;        // fades out as it zooms
+                  return (
+                    <h1
+                      className="founders-large-title"
+                      style={{
+                        transform: `scale(${scale})`,
+                        opacity,
+                        transition: 'none', // driven purely by scroll, no CSS easing
+                        willChange: 'transform, opacity',
+                      }}
+                    >
+                      Why <span>Taaffeite?</span>
+                    </h1>
+                  );
+                })()}
+              </div>
+            </section>
+          </div>
+
+          {/* Slide 1: Founder's Note */}
+          <div className={`founders-showcase-slide ${activeFoundersSlide === 1 ? 'active' : ''}`} id="founders-slide-1">
+            <section className="founders-note-section">
+              <div className="founders-note-container has-bg-image">
+                {/* Background Image wrapper */}
+                <div className="founders-note-bg-image">
+                  <OptimizedImage
+                    src="/assets/images/founders3.png"
+                    alt="Anya Daisy Vergis & Sipporah - Founders of Taaffeite Events"
+                    width={1200}
+                    height={800}
+                    aspectRatio="unset"
+                    containerStyle={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+                <div className="founders-note-bg-overlay"></div>
+
+                {/* Text Content */}
+                <div className="founders-note-content-wrapper">
+                  <div className="founders-note-header">
+                    <h2 className="founders-note-title">Why <span>Taaffeite?</span></h2>
+                    <div className="founders-note-divider"></div>
+                  </div>
+
+                  <div className="founders-note-content">
+                    <div className="founders-note-body">
+                      <center><p>
+                        "People often ask why we chose the name Taaffeite.
+                        It's one of my favourite questions."
+                      </p></center>
+                      <p>
+                        When Sipporah and I began building this company, we weren't searching for a name that sounded beautiful. We were searching for one that reflected what we believed.
+                      </p>
+                      <p>
+                        That's when we found Taaffeite, one of the rarest gemstones in the world. For years, it was mistaken for something else until someone looked a little closer and recognised its true rarity. That felt deeply familiar. Because every couple, every family, and every story deserves to be seen that way. That's the heart of Taaffeite. Not simply planning weddings, but honouring the people at the centre of them. The moment you walk through our doors, you stop being a client. You become family. And every beautiful celebration begins the same way. With your story.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="founders-note-signature-container">
+                    <span className="founders-note-signature">Anya Daisy Vergis</span>
+                    <span className="founders-note-designation">Founder, Taaffeite Events</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          {/* Slide 2: Why Taaffeite — Three images side by side */}
+          <div className={`founders-showcase-slide ${activeFoundersSlide === 2 ? 'active' : ''}`} id="founders-slide-2">
+            <section className="founders-grid-section">
+              <div className="founders-trio-row">
+                <div className="founders-trio-img founders-trio-img--1">
+                  <OptimizedImage
+                    src="/assets/images/1.webp"
+                    alt="Taaffeite Celebration 1"
+                    width={2400}
+                    height={3600}
+                    aspectRatio="unset"
+                    containerStyle={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+                <div className="founders-trio-img founders-trio-img--2">
+                  <OptimizedImage
+                    src="/assets/images/2.webp"
+                    alt="Taaffeite Celebration 2"
+                    width={2400}
+                    height={3600}
+                    aspectRatio="unset"
+                    containerStyle={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+                <div className="founders-trio-img founders-trio-img--3">
+                  <OptimizedImage
+                    src="/assets/images/3.webp"
+                    alt="Taaffeite Celebration 3"
+                    width={2400}
+                    height={3600}
+                    aspectRatio="unset"
+                    containerStyle={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+
+        </div>
+      </div>
+
       {/* 2. SCROLL-LINKED ABOUT SECTION (3 PARTS) */}
       <div className="about-showcase-container" id="about-showcase" ref={aboutShowcaseRef}>
         <div className="about-showcase-sticky">
@@ -425,15 +704,20 @@ export const Home: React.FC = () => {
       </div>
 
       {/* 4. A GLIMPSE INTO THE WORLD WE CREATE */}
-      <section className="glimpse-section reveal-on-scroll">
+      <section className="glimpse-section">
         <div className="glimpse-container">
-          <div className="glimpse-text-wrapper">
+          <div className="glimpse-text-wrapper reveal-up reveal-slow">
             <span className="glimpse-sub-label">A Glimpse Into</span>
             <h2 className="glimpse-title">The World We Create</h2>
             <div className="glimpse-divider"></div>
             <p className="glimpse-desc">
-              From intimate gatherings shared among close family and friends to grand, multi-day celebrations filled with unforgettable moments, every event we create is thoughtfully designed to reflect the people at the heart of it. We believe that no two stories are ever the same, which is why every celebration we plan is approached with care, creativity, and a deep understanding of what matters most to our clients. From the first spark of an idea to the final farewell, we curate experiences that feel personal, meaningful, and effortlessly beautiful.
-              Each photograph in this collection represents more than a perfectly styled event it captures emotions, connections, traditions, and memories that will be cherished for years to come. These are the moments that remind us why we do what we do, and the celebrations we have been honoured to bring to life.
+              Every celebration you see here began with a simple question...
+
+              "Can we trust you with one of the most important days of our lives?"
+
+              Our answer will always be the same.
+
+              Through our work.
             </p>
           </div>
 
@@ -469,7 +753,7 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="glimpse-action">
+          <div className="glimpse-action reveal-fade">
             <Link to="/media" className="btn-editorial">View Full Media Gallery</Link>
           </div>
         </div>
@@ -481,21 +765,21 @@ export const Home: React.FC = () => {
       {/* 8. CALL TO ACTION */}
       <section className="cta-section">
         <div className="cta-container">
-          <h2 className="cta-title">"Because rare stories deserve rare celebrations."</h2>
+          <h2 className="cta-title reveal-scale reveal-slow">"Because rare stories deserve rare celebrations."</h2>
         </div>
       </section>
 
       {/* 7.5. QUICK ENQUIRY SECTION */}
-      <section className="quick-enquiry-section reveal-on-scroll">
+      <section className="quick-enquiry-section">
         <div className="quick-enquiry-container">
-          <div className="quick-enquiry-header">
+          <div className="quick-enquiry-header reveal-up">
             <span className="intro-title">Quick Enquiry</span>
             <h2>Tell Us About Your Celebration</h2>
             <p>Share the initial details of your vision, and we will get back to you within 24 hours.</p>
           </div>
 
           {!enquirySubmitted ? (
-            <form className="quick-enquiry-form" onSubmit={handleEnquirySubmit}>
+            <form className="quick-enquiry-form reveal-fade" onSubmit={handleEnquirySubmit}>
               {enquiryError && (
                 <div className="quick-enquiry-error">
                   <span>⚠️</span> {enquiryError}
