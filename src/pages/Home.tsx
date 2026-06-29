@@ -532,39 +532,67 @@ export const Home: React.FC = () => {
             </section>
           </div>
 
-          {/* Slide 2: Why Taaffeite — Three images side by side */}
+          {/* Slide 2: Why Taaffeite — Brand Pillars */}
           <div className={`founders-showcase-slide ${activeFoundersSlide === 2 ? 'active' : ''}`} id="founders-slide-2">
             <section className="founders-grid-section">
-              <div className="founders-trio-row">
-                <div className="founders-trio-img founders-trio-img--1">
-                  <OptimizedImage
-                    src="/assets/images/1.webp"
-                    alt="Taaffeite Celebration 1"
-                    width={2400}
-                    height={3600}
-                    aspectRatio="unset"
-                    containerStyle={{ width: '100%', height: '100%' }}
-                  />
+              <div className="founders-pillars-container">
+                <div className="founders-pillars-header">
+                  <span className="founders-pillars-sub">Philosophy</span>
+                  <h2 className="founders-pillars-title">The Pillars of <span>Rarity</span></h2>
+                  <div className="founders-pillars-divider"></div>
                 </div>
-                <div className="founders-trio-img founders-trio-img--2">
-                  <OptimizedImage
-                    src="/assets/images/2.webp"
-                    alt="Taaffeite Celebration 2"
-                    width={2400}
-                    height={3600}
-                    aspectRatio="unset"
-                    containerStyle={{ width: '100%', height: '100%' }}
-                  />
-                </div>
-                <div className="founders-trio-img founders-trio-img--3">
-                  <OptimizedImage
-                    src="/assets/images/3.webp"
-                    alt="Taaffeite Celebration 3"
-                    width={2400}
-                    height={3600}
-                    aspectRatio="unset"
-                    containerStyle={{ width: '100%', height: '100%' }}
-                  />
+
+                <div className="founders-trio-row">
+                  <div className="founders-trio-card founders-trio-img--1">
+                    <div className="founders-trio-img-wrapper">
+                      <OptimizedImage
+                        src="/assets/images/1.webp"
+                        alt="Warm Celebrations"
+                        width={2400}
+                        height={3600}
+                        aspectRatio="unset"
+                        containerStyle={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                    <div className="founders-trio-card-content">
+                      <h3 className="founders-trio-card-label">Warm</h3>
+                      <p className="founders-trio-card-desc">Celebrations that feel intimate, personal, and deeply welcoming.</p>
+                    </div>
+                  </div>
+
+                  <div className="founders-trio-card founders-trio-img--2">
+                    <div className="founders-trio-img-wrapper">
+                      <OptimizedImage
+                        src="/assets/images/2.webp"
+                        alt="Minimal Styling"
+                        width={2400}
+                        height={3600}
+                        aspectRatio="unset"
+                        containerStyle={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                    <div className="founders-trio-card-content">
+                      <h3 className="founders-trio-card-label">Minimal</h3>
+                      <p className="founders-trio-card-desc">Quiet luxury, where every single detail serves a clear purpose.</p>
+                    </div>
+                  </div>
+
+                  <div className="founders-trio-card founders-trio-img--3">
+                    <div className="founders-trio-img-wrapper">
+                      <OptimizedImage
+                        src="/assets/images/3.webp"
+                        alt="Elegant Design"
+                        width={2400}
+                        height={3600}
+                        aspectRatio="unset"
+                        containerStyle={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                    <div className="founders-trio-card-content">
+                      <h3 className="founders-trio-card-label">Elegant</h3>
+                      <p className="founders-trio-card-desc">Refined orchestration paired with a timeless aesthetic.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>

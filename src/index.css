@@ -3106,7 +3106,7 @@ body.menu-open .menu-drawer {
     font-weight: 400;
 }
 
-/* Slide 2: Why Taaffeite Grid Layout Styles */
+/* Slide 2: Why Taaffeite Brand Pillars Styles */
 .founders-grid-section {
     width: 100%;
     height: 100%;
@@ -3116,37 +3116,77 @@ body.menu-open .menu-drawer {
     padding: 40px 60px;
 }
 
+.founders-pillars-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.founders-pillars-header {
+    text-align: center;
+}
+
+.founders-pillars-sub {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--color-gold-dark);
+    font-weight: 500;
+}
+
+.founders-pillars-title {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: #ffffff;
+    font-weight: 300;
+    margin-top: 5px;
+}
+
+.founders-pillars-title span {
+    color: var(--color-gold);
+}
+
+.founders-pillars-divider {
+    width: 40px;
+    height: 1.5px;
+    background-color: var(--color-gold);
+    margin: 15px auto 0;
+}
+
 /* Three-image side-by-side row for slide 3 */
 .founders-trio-row {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: 24px;
     width: 100%;
-    height: 100%;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
-.founders-trio-img {
-    flex: 0 1 calc(33.333% - 11px);
-    aspect-ratio: 1 / 1;
+.founders-trio-card {
+    flex: 0 1 calc(33.333% - 16px);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    text-align: center;
+    opacity: 0; /* default hidden until active animation */
+}
+
+.founders-trio-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1.1;
     overflow: hidden;
-    border-radius: 4px;
-    position: relative;
-    box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.18),
-        0 16px 48px rgba(0, 0, 0, 0.22);
-    transition: box-shadow 0.4s ease, transform 0.4s ease;
+    border-radius: 120px 20px 120px 20px; /* asymmetrical premium curves matching About section */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.founders-trio-img:hover {
-    box-shadow:
-        0 8px 28px rgba(0, 0, 0, 0.26),
-        0 24px 64px rgba(0, 0, 0, 0.3);
-    transform: translateY(-4px);
-}
-
-.founders-trio-img img {
+.founders-trio-img-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -3154,8 +3194,35 @@ body.menu-open .menu-drawer {
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.founders-trio-img:hover img {
-    transform: scale(1.04);
+.founders-trio-card:hover .founders-trio-img-wrapper {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(197, 160, 89, 0.2);
+}
+
+.founders-trio-card:hover .founders-trio-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.founders-trio-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 280px;
+}
+
+.founders-trio-card-label {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--color-gold-dark);
+    font-weight: 300;
+}
+
+.founders-trio-card-desc {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--color-charcoal-light);
+    line-height: 1.5;
+    font-weight: 300;
 }
 
 /* Entrance animation */
@@ -3168,11 +3235,6 @@ body.menu-open .menu-drawer {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
-}
-
-/* Default state — hidden until slide is active */
-.founders-trio-img {
-    opacity: 0;
 }
 
 /* Trigger animation when founders-slide-2 is active */
@@ -3413,17 +3475,30 @@ body.menu-open .menu-drawer {
     /* Stack trio images horizontally in a neat row to fit 100vh */
     .founders-trio-row {
         flex-direction: row !important;
-        gap: 10px !important;
+        gap: 12px !important;
         width: 100% !important;
         height: auto !important;
         justify-content: center !important;
     }
 
-    .founders-trio-img {
-        flex: 0 1 calc(33.333% - 7px) !important;
+    .founders-trio-card {
+        flex: 0 1 calc(33.333% - 8px) !important;
         width: auto !important;
-        aspect-ratio: 1 / 1.4 !important; /* Portrait aspect ratio fits the row perfectly */
         max-width: 120px !important;
+        opacity: 1 !important;
+    }
+
+    .founders-trio-img-wrapper {
+        border-radius: 60px 10px 60px 10px !important;
+        aspect-ratio: 1 / 1.1 !important;
+    }
+
+    .founders-trio-card-label {
+        font-size: 0.95rem !important;
+    }
+
+    .founders-trio-card-desc {
+        display: none !important;
     }
 
     .founders-grid-container {
