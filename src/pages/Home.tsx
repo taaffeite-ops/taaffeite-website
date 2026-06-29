@@ -190,9 +190,9 @@ export const Home: React.FC = () => {
   }, []);
 
   // Full-page wheel/touch interceptor — every scroll advances exactly one step.
-  // Steps: 0=hero | 1-3=founders slides | 4-6=about slides | 7=glimpse | 8=cta | 9=enquiry
+  // Steps: 0=hero | 1-3=founders slides | 4-6=about slides | 7=glimpse | 8=cta | 9=enquiry | 10=footer
   useEffect(() => {
-    const TOTAL_STEPS = 10;
+    const TOTAL_STEPS = 11;
     const THROTTLE_MS = 1000;
     const lastAdvance = { current: 0 };
     let touchStartY = 0;
@@ -213,6 +213,7 @@ export const Home: React.FC = () => {
       if (step === 7) return glimpseRef.current?.offsetTop ?? aTop + 3 * vh;
       if (step === 8) return ctaRef.current?.offsetTop ?? 0;
       if (step === 9) return enquiryRef.current?.offsetTop ?? 0;
+      if (step === 10) return document.documentElement.scrollHeight - vh;
       return 0;
     };
 

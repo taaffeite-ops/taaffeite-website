@@ -1091,14 +1091,20 @@ body.menu-open .menu-drawer {
 
 /* Glimpse Into Our World Section */
 .glimpse-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: -10px;
-    padding: 50px 20px 40px;
+    padding: 60px 20px;
     background-color: var(--bg-cream-dark);
     position: relative;
     z-index: 10;
+    box-sizing: border-box;
 }
 
 .glimpse-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
@@ -1455,20 +1461,25 @@ body.menu-open .menu-drawer {
     max-width: 800px;
 }
 
-/* Call-to-action Section */
 .cta-section {
-    padding: 120px 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
     background-color: var(--bg-cream-dark);
     color: var(--color-charcoal);
     text-align: center;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
-@media(min-width: 768px) {
-    .cta-section {
-        padding: 180px 20px;
-    }
+.cta-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    z-index: 2;
 }
 
 .cta-section::before {
@@ -2622,10 +2633,15 @@ body.menu-open .menu-drawer {
 
 /* Quick Enquiry Homepage Section */
 .quick-enquiry-section {
-    padding: 100px 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
     background-color: var(--bg-cream);
     text-align: center;
     position: relative;
+    box-sizing: border-box;
 }
 
 .quick-enquiry-container {
