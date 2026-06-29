@@ -79,9 +79,16 @@ export const Home: React.FC = () => {
 
   // Enable scroll snap class on document root for home page only
   useEffect(() => {
-    document.documentElement.classList.add('has-scroll-snap');
+    // Scroll to the top of the page instantly before snap initializes
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+
+    const timer = setTimeout(() => {
+      document.documentElement.classList.add('has-scroll-snap');
+    }, 150);
+
     return () => {
       document.documentElement.classList.remove('has-scroll-snap');
+      clearTimeout(timer);
     };
   }, []);
 

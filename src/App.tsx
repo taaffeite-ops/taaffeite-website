@@ -15,7 +15,7 @@ const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
   
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
   }, [pathname]);
   
   return null;
@@ -88,9 +88,11 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Signal to the global loader that React has mounted and the page is ready.
-  // The loader in index.html listens for this event to dismiss itself,
-  // replacing the window.load trigger which waited for all images to download.
+  // Also configure scroll restoration to manual to prevent automatic snap-to-old scroll positions.
   useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
     document.dispatchEvent(new Event('react-ready'));
   }, []);
 
