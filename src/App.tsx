@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-d
 import { Header } from './components/Header';
 import { MenuDrawer } from './components/MenuDrawer';
 import { Footer } from './components/Footer';
+import { Analytics } from '@vercel/analytics/react';
 
 // Lazy load pages for performance optimization (code splitting)
 const Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
@@ -142,6 +143,7 @@ function App() {
         
         <Footer />
       </div>
+      <Analytics />
     </Router>
   );
 }
