@@ -2895,8 +2895,8 @@ body.menu-open .menu-drawer {
     pointer-events: none;
     transform: translate3d(0, 70px, 0) scale(0.96);
     will-change: opacity, transform;
-    transition: opacity 1.0s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
     backface-visibility: hidden;
 }
 
@@ -2914,38 +2914,38 @@ body.menu-open .menu-drawer {
 .founders-grid-layout {
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.90s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.90s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #founders-slide-1.active .founders-note-header {
     opacity: 1;
     transform: none;
-    transition-delay: 0.18s;
+    transition-delay: 0.3s;
 }
 
 #founders-slide-1.active .founders-note-body {
     opacity: 1;
     transform: none;
-    transition-delay: 0.36s;
+    transition-delay: 0.65s;
 }
 
 #founders-slide-1.active .founders-note-signature-container {
     opacity: 1;
     transform: none;
-    transition-delay: 0.54s;
+    transition-delay: 1.0s;
 }
 
 #founders-slide-2.active .founders-grid-header {
     opacity: 1;
     transform: none;
-    transition-delay: 0.18s;
+    transition-delay: 0.3s;
 }
 
 #founders-slide-2.active .founders-grid-layout {
     opacity: 1;
     transform: none;
-    transition-delay: 0.35s;
+    transition-delay: 0.65s;
 }
 
 
