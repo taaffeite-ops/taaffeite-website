@@ -1091,7 +1091,8 @@ body.menu-open .menu-drawer {
 
 /* Glimpse Into Our World Section */
 .glimpse-section {
-    padding: 40px 20px 40px;
+    margin-top: -10px;
+    padding: 50px 20px 40px;
     background-color: var(--bg-cream-dark);
 }
 
