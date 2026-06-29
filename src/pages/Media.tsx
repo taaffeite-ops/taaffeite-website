@@ -25,7 +25,7 @@ export const Media: React.FC = () => {
     { src: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_26Kaushal_Story377_20copy.webp', alt: 'Reflective Mirrored Cake Pavilion', width: 5600, height: 4200 },
     { src: '/assets/05 PHOTOS/Weddings/Sanhita & Benny-27.webp', alt: 'Bride and Groom Grand Entrance Sparklers', width: 8640, height: 5760 },
     { src: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02772.webp', alt: 'Warm Yellow Draped Seating Area', width: 2400, height: 3600 },
-    { src: '/assets/05 PHOTOS/Proposal/0012.JPG', alt: 'Romantic Beachfront Proposal Dinner Table', width: 4644, height: 6966 },
+    { src: '/assets/05 PHOTOS/Proposal/0012.webp', alt: 'Romantic Beachfront Proposal Dinner Table', width: 4644, height: 6966 },
     { src: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.webp', alt: 'Suspended Wisteria Floral Installations', width: 4608, height: 3072 },
     { src: '/assets/05 PHOTOS/Weddings/AKR07379.webp', alt: 'Classic White and Hydrangea Altar', width: 3600, height: 2400 },
     { src: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02776.webp', alt: 'Hand-painted Pot arrangements and seating', width: 2400, height: 3600 },
@@ -159,9 +159,9 @@ export const Media: React.FC = () => {
 
       {/* LIGHTBOX MODAL */}
       {lightboxIndex !== null && (
-        <div 
-          id="gallery-lightbox" 
-          className="lightbox-modal active" 
+        <div
+          id="gallery-lightbox"
+          className="lightbox-modal active"
           role="dialog"
           onClick={(e) => {
             if (e.target === e.currentTarget || (e.target as HTMLElement).classList.contains('lightbox-content')) {
@@ -172,19 +172,19 @@ export const Media: React.FC = () => {
           <button className="lightbox-close" onClick={closeLightbox} aria-label="Close lightbox">&times;</button>
           <button className="lightbox-prev" onClick={showPrev} aria-label="Previous image">&#10216;</button>
           <div className="lightbox-content">
-            <img 
-              id="lightbox-img" 
-              src={photos[lightboxIndex].src} 
-              alt={photos[lightboxIndex].alt} 
+            <img
+              id="lightbox-img"
+              src={photos[lightboxIndex].src}
+              alt={photos[lightboxIndex].alt}
               width={photos[lightboxIndex].width}
               height={photos[lightboxIndex].height}
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              style={{ 
-                opacity: fadeActive ? 1 : 0, 
-                transition: 'opacity 0.2s ease' 
-              }} 
+              style={{
+                opacity: fadeActive ? 1 : 0,
+                transition: 'opacity 0.2s ease'
+              }}
             />
           </div>
           <button className="lightbox-next" onClick={showNext} aria-label="Next image">&#10217;</button>
