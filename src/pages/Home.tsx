@@ -428,17 +428,18 @@ export const Home: React.FC = () => {
             ))}
           </div>
           <div className="hero-overlay"></div>
-          <div className="hero-content">
+          <div className="hero-brand-logo-top-left">
             <OptimizedImage
               src="/assets/images/logo.webp"
               alt="Taaffeite Events"
-              className="hero-brand-logo"
-              width={180}
-              height={180}
+              width={150}
+              height={150}
               eager={true}
               objectFit="contain"
-              containerStyle={{ width: '180px', height: '180px', marginTop: '-180px', marginBottom: '20px', backgroundColor: 'transparent' }}
+              containerStyle={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
             />
+          </div>
+          <div className="hero-content">
             <div className="hero-quotes-container">
               {quotes.map((quote, idx) => (
                 <div

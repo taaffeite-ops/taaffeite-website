@@ -554,6 +554,16 @@ body.menu-open .menu-drawer {
     filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));
 }
 
+.hero-brand-logo-top-left {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    z-index: 10;
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));
+}
+
 @media (max-width: 768px) {
     .hero-brand-logo {
         height: 120px;
@@ -562,6 +572,15 @@ body.menu-open .menu-drawer {
 
     .hero-logo-hero {
         top: 30px;
+    }
+}
+
+@media(min-width: 768px) {
+    .hero-brand-logo-top-left {
+        top: 35px;
+        left: 40px;
+        width: 150px;
+        height: 150px;
     }
 }
 
