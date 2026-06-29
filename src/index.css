@@ -1488,9 +1488,17 @@ body.menu-open .menu-drawer {
     margin-bottom: 0;
 }
 
+.cta-title + .btn-luxury {
+    margin-top: 25px;
+}
+
 @media(min-width: 768px) {
     .cta-title {
         font-size: 2.8rem;
+    }
+
+    .cta-title + .btn-luxury {
+        margin-top: 40px;
     }
 }
 
