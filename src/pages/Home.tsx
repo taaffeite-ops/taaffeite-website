@@ -273,21 +273,33 @@ export const Home: React.FC = () => {
       navigateTo(currentStepRef.current + direction);
     };
 
+    let touchStartX = 0;
+    let touchStartY = 0;
     let touchTriggered = false;
 
     const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       touchTriggered = false;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (currentStepRef.current <= 7) {
-        // Prevent native browser momentum scroll wiggling during active snap steps
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const diffX = Math.abs(touchStartX - currentX);
+        const diffY = Math.abs(touchStartY - currentY);
+
+        // If the gesture is primarily horizontal, allow native swiping (e.g. for image trio slider)
+        if (diffX > diffY) {
+          return;
+        }
+
+        // Prevent native browser vertical momentum scroll wiggling during active snap steps
         e.preventDefault();
 
         if (touchTriggered) return;
 
-        const currentY = e.touches[0].clientY;
         const delta = touchStartY - currentY;
 
         if (Math.abs(delta) > 50) {
