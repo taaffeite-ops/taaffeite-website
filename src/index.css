@@ -3451,25 +3451,35 @@ body.menu-open .menu-drawer {
         padding: 0 15px;
     }
 
-    /* Stack trio images horizontally in a neat row to fit 100vh */
+    /* Mobile Touch-Swipe Gallery for Slide 3 */
     .founders-trio-row {
         flex-direction: row !important;
-        gap: 12px !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        gap: 16px !important;
+        padding: 10px 30px 20px !important;
         width: 100% !important;
-        height: auto !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .founders-trio-row::-webkit-scrollbar {
+        display: none;
     }
 
     .founders-trio-card {
-        flex: 0 1 calc(33.333% - 8px) !important;
-        width: auto !important;
-        max-width: 120px !important;
+        flex: 0 0 75% !important;
+        max-width: 280px !important;
+        scroll-snap-align: center !important;
         opacity: 1 !important;
     }
 
     .founders-trio-img-wrapper {
-        border-radius: 60px 10px 60px 10px !important;
-        aspect-ratio: 1 / 1.1 !important;
+        border-radius: 40px 10px 40px 10px !important;
+        aspect-ratio: 4 / 5 !important;
+        border: 1px solid rgba(197, 160, 89, 0.45) !important;
     }
 
     .founders-grid-container {
