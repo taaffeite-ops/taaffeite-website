@@ -1094,6 +1094,15 @@ body.menu-open .menu-drawer {
         border-bottom: 1px solid rgba(197, 160, 89, 0.1);
     }
 
+    .about-showcase-info .about-showcase-title,
+    .about-showcase-info .about-slide-gold-line,
+    .about-showcase-info .about-showcase-desc,
+    .about-showcase-image-wrapper {
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+    }
+
     .about-showcase-slide:last-child {
         border-bottom: none;
     }
@@ -3387,6 +3396,18 @@ body.menu-open .menu-drawer {
         border-bottom: 1px solid rgba(197, 160, 89, 0.1);
     }
 
+    /* Force visibility of scroll-linked inner elements on mobile */
+    .founders-note-header,
+    .founders-note-body,
+    .founders-note-signature-container,
+    .founders-grid-header,
+    .founders-grid-layout,
+    .founders-trio-img {
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+    }
+
     .founders-showcase-slide:last-child {
         border-bottom: none;
     }
@@ -3431,6 +3452,7 @@ body.menu-open .menu-drawer {
 
     .founders-note-content-wrapper {
         min-height: auto !important;
+        padding: 40px 24px !important;
     }
 
     .founders-note-signature-container {
@@ -3445,6 +3467,21 @@ body.menu-open .menu-drawer {
 
     .founders-grid-section {
         padding: 0 15px;
+    }
+
+    /* Stack trio images vertically and layout beautifully */
+    .founders-trio-row {
+        flex-direction: column !important;
+        gap: 20px !important;
+        height: auto !important;
+    }
+
+    .founders-trio-img {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        max-width: 450px !important;
+        aspect-ratio: 16 / 9 !important;
+        opacity: 1 !important;
     }
 
     .founders-grid-container {
