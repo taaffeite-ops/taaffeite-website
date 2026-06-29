@@ -1094,6 +1094,8 @@ body.menu-open .menu-drawer {
     margin-top: -10px;
     padding: 50px 20px 40px;
     background-color: var(--bg-cream-dark);
+    position: relative;
+    z-index: 10;
 }
 
 .glimpse-container {
