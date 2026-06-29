@@ -196,7 +196,6 @@ export const Home: React.FC = () => {
     const TOTAL_STEPS = 8;
     const THROTTLE_MS = 1000;
     const lastAdvance = { current: 0 };
-    let touchStartY = 0;
 
     // Compute the scroll target Y for a given step.
     const getScrollTarget = (step: number): number => {
