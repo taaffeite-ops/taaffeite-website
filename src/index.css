@@ -1112,7 +1112,7 @@ body.menu-open .menu-drawer {
 
 .glimpse-text-wrapper {
     max-width: 850px;
-    margin: 0 auto 30px;
+    margin: 0 auto 15px;
 }
 
 .glimpse-sub-label {
@@ -1121,21 +1121,21 @@ body.menu-open .menu-drawer {
     text-transform: uppercase;
     color: var(--color-gold-dark);
     display: block;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     font-weight: 500;
 }
 
 .glimpse-title {
     font-family: var(--font-serif);
-    font-size: 2.0rem;
+    font-size: 1.8rem;
     color: var(--color-charcoal);
-    margin-bottom: 25px;
+    margin-bottom: 12px;
     line-height: 1.2;
 }
 
 @media(min-width: 768px) {
     .glimpse-title {
-        font-size: 2.8rem;
+        font-size: 2.3rem;
     }
 }
 
@@ -1143,21 +1143,21 @@ body.menu-open .menu-drawer {
     width: 60px;
     height: 1px;
     background-color: var(--color-gold);
-    margin: 15px auto;
+    margin: 8px auto;
 }
 
 .glimpse-desc {
-    font-size: 1.05rem;
-    line-height: 1.85;
+    font-size: 0.95rem;
+    line-height: 1.6;
     color: var(--color-charcoal-light);
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .glimpse-desc.highlight {
     font-style: italic;
     color: var(--color-charcoal);
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.05rem;
 }
 
 /* Glimpse Gallery Infinite Marquee Slider */
@@ -1210,7 +1210,7 @@ body.menu-open .menu-drawer {
 }
 
 .glimpse-action {
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 @keyframes marqueeScroll {
