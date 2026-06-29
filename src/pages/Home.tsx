@@ -273,34 +273,35 @@ export const Home: React.FC = () => {
       navigateTo(currentStepRef.current + direction);
     };
 
+    let touchTriggered = false;
+
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
+      touchTriggered = false;
     };
 
-    const handleTouchEnd = (e: TouchEvent) => {
-      const delta = touchStartY - e.changedTouches[0].clientY;
-      if (Math.abs(delta) < 40) return;
-      const direction: 1 | -1 = delta > 0 ? 1 : -1;
+    const handleTouchMove = (e: TouchEvent) => {
+      if (currentStepRef.current <= 7) {
+        // Prevent native browser momentum scroll wiggling during active snap steps
+        e.preventDefault();
 
-      if (currentStepRef.current === 7 && direction === 1) {
-        currentStepRef.current = 8;
-        document.documentElement.classList.remove('has-scroll-snap');
-        return;
-      }
+        if (touchTriggered) return;
 
-      if (currentStepRef.current > 7 && direction === -1) {
-        const glimpseTop = glimpseRef.current?.offsetTop ?? 0;
-        if (window.scrollY <= glimpseTop + 15) {
-          navigateTo(7);
+        const currentY = e.touches[0].clientY;
+        const delta = touchStartY - currentY;
+
+        if (Math.abs(delta) > 50) {
+          touchTriggered = true;
+          const direction: 1 | -1 = delta > 0 ? 1 : -1;
+
+          if (currentStepRef.current === 7 && direction === 1) {
+            currentStepRef.current = 8;
+            document.documentElement.classList.remove('has-scroll-snap');
+          } else {
+            navigateTo(currentStepRef.current + direction);
+          }
         }
-        return;
       }
-
-      if (currentStepRef.current > 7) {
-        return;
-      }
-
-      navigateTo(currentStepRef.current + direction);
     };
 
     // Scroll listener to reset step back to 7 if user scrolls up past Glimpse section natively
@@ -315,13 +316,13 @@ export const Home: React.FC = () => {
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('scroll', handleScrollSync, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('scroll', handleScrollSync);
     };
   }, []);
