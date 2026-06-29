@@ -4,6 +4,11 @@ import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
 export const Enquire: React.FC = () => {
   useRevealAnimation();
+
+  // Reset scroll to top on mount to bypass lazy loading race conditions
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, []);
   // Form submission state
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);

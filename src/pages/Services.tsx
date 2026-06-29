@@ -6,6 +6,11 @@ import { useRevealAnimation } from '../hooks/useRevealAnimation';
 export const Services: React.FC = () => {
   useRevealAnimation();
 
+  // Reset scroll to top on mount to bypass lazy loading race conditions
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, []);
+
   const serviceCategories = [
     {
       id: 'planning',

@@ -59,8 +59,9 @@ export const Media: React.FC = () => {
 
   // Note: automatic eager preloading of all 40 high-res gallery images has been removed to reduce thread blocking and network saturation.
 
-  // Dynamic preload for the first image to optimize LCP
+  // Dynamic preload for the first image to optimize LCP and reset scroll
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
     const firstPhoto = photos[0];
     if (firstPhoto) {
       const link = document.createElement('link');
