@@ -190,9 +190,10 @@ export const Home: React.FC = () => {
   }, []);
 
   // Full-page wheel/touch interceptor — every scroll advances exactly one step.
-  // Steps: 0=hero | 1-3=founders slides | 4-6=about slides | 7=glimpse | 8=cta | 9=enquiry | 10=footer
+  // Snapping steps: 0=hero | 1-3=founders slides | 4-6=about slides | 7=glimpse
+  // After Glimpse (Step 7), native scrolling resumes.
   useEffect(() => {
-    const TOTAL_STEPS = 11;
+    const TOTAL_STEPS = 8;
     const THROTTLE_MS = 1000;
     const lastAdvance = { current: 0 };
     let touchStartY = 0;
@@ -211,9 +212,6 @@ export const Home: React.FC = () => {
       if (step >= 1 && step <= 3) return fTop + (step - 1) * vh;
       if (step >= 4 && step <= 6) return aTop + (step - 4) * vh;
       if (step === 7) return glimpseRef.current?.offsetTop ?? aTop + 3 * vh;
-      if (step === 8) return ctaRef.current?.offsetTop ?? 0;
-      if (step === 9) return enquiryRef.current?.offsetTop ?? 0;
-      if (step === 10) return 99999;
       return 0;
     };
 
@@ -246,8 +244,32 @@ export const Home: React.FC = () => {
     };
 
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
       const direction: 1 | -1 = e.deltaY > 0 ? 1 : -1;
+
+      // If we are on Glimpse (Step 7) and scrolling down, allow native scroll (free scroll mode)
+      if (currentStepRef.current === 7 && direction === 1) {
+        currentStepRef.current = 8; // entering free scroll mode
+        document.documentElement.classList.remove('has-scroll-snap');
+        return;
+      }
+
+      // If we are in free scroll mode and scrolling up, monitor position
+      if (currentStepRef.current > 7 && direction === -1) {
+        const glimpseTop = glimpseRef.current?.offsetTop ?? 0;
+        if (window.scrollY <= glimpseTop + 15) {
+          e.preventDefault();
+          navigateTo(7);
+        }
+        return;
+      }
+
+      // If we are in free scroll mode and scrolling down, let it scroll normally
+      if (currentStepRef.current > 7) {
+        return;
+      }
+
+      // Otherwise, intercept and slide/section snap (Steps 0 to 7)
+      e.preventDefault();
       navigateTo(currentStepRef.current + direction);
     };
 
@@ -258,17 +280,49 @@ export const Home: React.FC = () => {
     const handleTouchEnd = (e: TouchEvent) => {
       const delta = touchStartY - e.changedTouches[0].clientY;
       if (Math.abs(delta) < 40) return;
-      navigateTo(currentStepRef.current + (delta > 0 ? 1 : -1));
+      const direction: 1 | -1 = delta > 0 ? 1 : -1;
+
+      if (currentStepRef.current === 7 && direction === 1) {
+        currentStepRef.current = 8;
+        document.documentElement.classList.remove('has-scroll-snap');
+        return;
+      }
+
+      if (currentStepRef.current > 7 && direction === -1) {
+        const glimpseTop = glimpseRef.current?.offsetTop ?? 0;
+        if (window.scrollY <= glimpseTop + 15) {
+          navigateTo(7);
+        }
+        return;
+      }
+
+      if (currentStepRef.current > 7) {
+        return;
+      }
+
+      navigateTo(currentStepRef.current + direction);
+    };
+
+    // Scroll listener to reset step back to 7 if user scrolls up past Glimpse section natively
+    const handleScrollSync = () => {
+      const scrollY = window.scrollY;
+      const glimpseTop = glimpseRef.current?.offsetTop ?? 0;
+      if (currentStepRef.current > 7 && scrollY <= glimpseTop - 5) {
+        currentStepRef.current = 7;
+        document.documentElement.classList.add('has-scroll-snap');
+      }
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('scroll', handleScrollSync, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('scroll', handleScrollSync);
     };
   }, []);
 

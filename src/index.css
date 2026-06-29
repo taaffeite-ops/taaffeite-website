@@ -3624,15 +3624,8 @@ html.has-scroll-snap {
 
 .hero-wrapper,
 .showcase-snap-point,
-.glimpse-section,
-.cta-section,
-.quick-enquiry-section {
+.glimpse-section {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
-}
-
-.site-footer {
-    scroll-snap-align: end;
     scroll-snap-stop: always;
 }
 
