@@ -1177,7 +1177,7 @@ body.menu-open .menu-drawer {
     flex-shrink: 0;
     position: relative;
     width: 260px;
-    height: 340px;
+    height: 400px;
     overflow: hidden;
     border-radius: 4px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
@@ -1457,7 +1457,7 @@ body.menu-open .menu-drawer {
 
 /* Call-to-action Section */
 .cta-section {
-    padding: 80px 20px;
+    padding: 120px 20px;
     background-color: var(--bg-cream-dark);
     color: var(--color-charcoal);
     text-align: center;
@@ -1467,7 +1467,7 @@ body.menu-open .menu-drawer {
 
 @media(min-width: 768px) {
     .cta-section {
-        padding: 120px 20px;
+        padding: 180px 20px;
     }
 }
 
@@ -2914,18 +2914,20 @@ body.menu-open .menu-drawer {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0.55);
     transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 #founders-slide-0.active {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
 }
+
 #founders-slide-0.exited {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(3.0);
     pointer-events: none;
     transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Staggered inner reveal for Founders slides */
