@@ -3183,6 +3183,7 @@ body.menu-open .menu-drawer {
     overflow: hidden;
     border-radius: 120px 20px 120px 20px; /* asymmetrical premium curves matching About section */
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(197, 160, 89, 0.35); /* simple gold outline */
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -3201,28 +3202,6 @@ body.menu-open .menu-drawer {
 
 .founders-trio-card:hover .founders-trio-img-wrapper img {
     transform: scale(1.05);
-}
-
-.founders-trio-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    max-width: 280px;
-}
-
-.founders-trio-card-label {
-    font-family: var(--font-serif);
-    font-size: 1.4rem;
-    color: var(--color-gold-dark);
-    font-weight: 300;
-}
-
-.founders-trio-card-desc {
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    color: var(--color-charcoal-light);
-    line-height: 1.5;
-    font-weight: 300;
 }
 
 /* Entrance animation */
@@ -3491,14 +3470,6 @@ body.menu-open .menu-drawer {
     .founders-trio-img-wrapper {
         border-radius: 60px 10px 60px 10px !important;
         aspect-ratio: 1 / 1.1 !important;
-    }
-
-    .founders-trio-card-label {
-        font-size: 0.95rem !important;
-    }
-
-    .founders-trio-card-desc {
-        display: none !important;
     }
 
     .founders-grid-container {

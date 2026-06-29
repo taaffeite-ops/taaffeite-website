@@ -554,10 +554,6 @@ export const Home: React.FC = () => {
                         containerStyle={{ width: '100%', height: '100%' }}
                       />
                     </div>
-                    <div className="founders-trio-card-content">
-                      <h3 className="founders-trio-card-label">Warm</h3>
-                      <p className="founders-trio-card-desc">Celebrations that feel intimate, personal, and deeply welcoming.</p>
-                    </div>
                   </div>
 
                   <div className="founders-trio-card founders-trio-img--2">
@@ -571,10 +567,6 @@ export const Home: React.FC = () => {
                         containerStyle={{ width: '100%', height: '100%' }}
                       />
                     </div>
-                    <div className="founders-trio-card-content">
-                      <h3 className="founders-trio-card-label">Minimal</h3>
-                      <p className="founders-trio-card-desc">Quiet luxury, where every single detail serves a clear purpose.</p>
-                    </div>
                   </div>
 
                   <div className="founders-trio-card founders-trio-img--3">
@@ -587,10 +579,6 @@ export const Home: React.FC = () => {
                         aspectRatio="unset"
                         containerStyle={{ width: '100%', height: '100%' }}
                       />
-                    </div>
-                    <div className="founders-trio-card-content">
-                      <h3 className="founders-trio-card-label">Elegant</h3>
-                      <p className="founders-trio-card-desc">Refined orchestration paired with a timeless aesthetic.</p>
                     </div>
                   </div>
                 </div>
