@@ -2906,6 +2906,25 @@ body.menu-open .menu-drawer {
     transform: translate3d(0, 0, 0) scale(1);
 }
 
+/* Slide 0 Custom Zoom Transitions */
+#founders-slide-0 {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.55);
+    transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+#founders-slide-0.active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+#founders-slide-0.exited {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(3.0);
+    pointer-events: none;
+    transition: opacity 1.3s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Staggered inner reveal for Founders slides */
 .founders-note-header,
 .founders-note-body,
