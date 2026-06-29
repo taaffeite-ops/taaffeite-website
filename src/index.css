@@ -3045,6 +3045,7 @@ body.menu-open .menu-drawer {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 30% 50%;
 }
 
 .founders-note-bg-overlay {
@@ -3468,6 +3469,10 @@ body.menu-open .menu-drawer {
 
     .founders-note-section {
         padding: 0 15px;
+    }
+
+    .founders-note-bg-image img {
+        object-position: center center !important;
     }
 
     .founders-note-container {

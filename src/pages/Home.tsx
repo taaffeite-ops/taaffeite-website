@@ -514,7 +514,6 @@ export const Home: React.FC = () => {
                     height={800}
                     aspectRatio="unset"
                     containerStyle={{ width: '100%', height: '100%' }}
-                    style={{ objectPosition: '30% 50%' }}
                   />
                 </div>
                 <div className="founders-note-bg-overlay"></div>
