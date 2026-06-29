@@ -213,7 +213,7 @@ export const Home: React.FC = () => {
       if (step === 7) return glimpseRef.current?.offsetTop ?? aTop + 3 * vh;
       if (step === 8) return ctaRef.current?.offsetTop ?? 0;
       if (step === 9) return enquiryRef.current?.offsetTop ?? 0;
-      if (step === 10) return document.documentElement.scrollHeight - vh;
+      if (step === 10) return 99999;
       return 0;
     };
 
@@ -232,7 +232,17 @@ export const Home: React.FC = () => {
         setActiveAboutSlide(step - 4);
       }
 
+      // Temporarily remove snap scroll during programmatic smooth scrollTo transition
+      document.documentElement.classList.remove('has-scroll-snap');
+
       window.scrollTo({ top: getScrollTarget(step), behavior: 'smooth' });
+
+      // Re-enable snap scroll after the 1000ms transition finishes
+      setTimeout(() => {
+        if (currentStepRef.current === step) {
+          document.documentElement.classList.add('has-scroll-snap');
+        }
+      }, 1000);
     };
 
     const handleWheel = (e: WheelEvent) => {

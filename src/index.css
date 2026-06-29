@@ -1462,10 +1462,6 @@ body.menu-open .menu-drawer {
 }
 
 .cta-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 60px 20px;
     background-color: var(--bg-cream-dark);
     color: var(--color-charcoal);
@@ -1480,6 +1476,12 @@ body.menu-open .menu-drawer {
     max-width: 1200px;
     margin: 0 auto;
     z-index: 2;
+}
+
+@media(min-width: 768px) {
+    .cta-section {
+        padding: 80px 20px;
+    }
 }
 
 .cta-section::before {
@@ -3624,9 +3626,13 @@ html.has-scroll-snap {
 .showcase-snap-point,
 .glimpse-section,
 .cta-section,
-.quick-enquiry-section,
-.site-footer {
+.quick-enquiry-section {
     scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.site-footer {
+    scroll-snap-align: end;
     scroll-snap-stop: always;
 }
 
