@@ -3490,7 +3490,7 @@ html.has-scroll-snap {
     scroll-behavior: smooth;
 }
 
-.hero-section,
+.hero-wrapper,
 .showcase-snap-point,
 .glimpse-section,
 .cta-section,
@@ -3501,14 +3501,21 @@ html.has-scroll-snap {
 }
 
 .showcase-snap-point {
-    height: 100vh;
+    position: absolute;
     width: 100%;
-    position: relative;
+    height: 100vh;
     pointer-events: none;
-    margin-top: -100vh;
     z-index: 5;
 }
 
-.showcase-snap-point:first-child {
-    margin-top: 0;
+.showcase-snap-point:nth-of-type(1) {
+    top: 0;
+}
+
+.showcase-snap-point:nth-of-type(2) {
+    top: 100vh;
+}
+
+.showcase-snap-point:nth-of-type(3) {
+    top: 200vh;
 }
