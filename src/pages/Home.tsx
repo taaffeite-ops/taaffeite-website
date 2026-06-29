@@ -20,7 +20,6 @@ export const Home: React.FC = () => {
   // 4. Scroll-Linked About Showcase state
   const [activeAboutSlide, _setActiveAboutSlide] = useState<number>(0);
   const activeAboutSlideRef = useRef<number>(0);
-  const lastSlideTransitionTime = useRef<number>(0);
   const aboutShowcaseRef = useRef<HTMLDivElement>(null);
 
   const setActiveAboutSlide = (val: number) => {
@@ -28,50 +27,14 @@ export const Home: React.FC = () => {
     _setActiveAboutSlide(val);
   };
 
-  const requestSlideTransition = (targetSlide: number) => {
-    const now = Date.now();
-    // Enforce 1300ms transition time to let the 1.2s smooth CSS transition complete
-    if (now - lastSlideTransitionTime.current < 1300) {
-      return false;
-    }
-
-    const currentSlide = activeAboutSlideRef.current;
-    if (targetSlide === currentSlide) {
-      return false;
-    }
-
-    // Force strictly one-by-one transitions!
-    let nextSlide = currentSlide;
-    if (targetSlide > currentSlide) {
-      nextSlide = currentSlide + 1;
-    } else {
-      nextSlide = currentSlide - 1;
-    }
-
-    lastSlideTransitionTime.current = now;
-    setActiveAboutSlide(nextSlide);
-    return true;
-  };
-
   // Founders Note Showcase state
   const [activeFoundersSlide, _setActiveFoundersSlide] = useState<number>(0);
   const activeFoundersSlideRef = useRef<number>(0);
-  const [foundersScrollProgress, setFoundersScrollProgress] = useState<number>(0);
   const foundersShowcaseRef = useRef<HTMLDivElement>(null);
 
   const setActiveFoundersSlide = (val: number) => {
     activeFoundersSlideRef.current = val;
     _setActiveFoundersSlide(val);
-  };
-
-  const requestFoundersTransition = (targetSlide: number) => {
-    const currentSlide = activeFoundersSlideRef.current;
-    if (targetSlide === currentSlide) {
-      return false;
-    }
-
-    setActiveFoundersSlide(targetSlide);
-    return true;
   };
 
   // Wire scroll-reveal animations for the whole page
@@ -218,100 +181,97 @@ export const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Stacked About Showcase Scroll Link Logic — deferred to yield to first paint
+  // Wheel/touch interceptor: advances exactly one slide per gesture inside showcase sections.
+  // When at the boundary (first/last slide), does NOT preventDefault — CSS snap takes over
+  // and naturally advances to the adjacent top-level section.
   useEffect(() => {
-    let cleanup: (() => void) | null = null;
+    const THROTTLE_MS = 1200;
+    const lastAdvance = { current: 0 };
+    let touchStartY = 0;
 
-    const timerId = window.setTimeout(() => {
-      const handleAboutScroll = () => {
-        if (aboutShowcaseRef.current) {
-          const rect = aboutShowcaseRef.current.getBoundingClientRect();
-          const containerHeight = rect.height;
-          const scrolledIntoContainer = -rect.top;
-          const totalScrollableHeight = containerHeight - window.innerHeight;
+    // Returns which showcase the current scrollY is snapped inside, or null.
+    const getShowcaseState = (): { type: 'founders' | 'about'; slideIndex: number } | null => {
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight;
+      const fContainer = foundersShowcaseRef.current;
+      const aContainer = aboutShowcaseRef.current;
+      if (!fContainer || !aContainer) return null;
 
-          if (totalScrollableHeight <= 0) return;
+      const fTop = fContainer.offsetTop;
+      const aTop = aContainer.offsetTop;
 
-          const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
-
-          let calculatedSlide = 0;
-          if (progress < 0.33) {
-            calculatedSlide = 0;
-          } else if (progress < 0.66) {
-            calculatedSlide = 1;
-          } else {
-            calculatedSlide = 2;
-          }
-
-          if (calculatedSlide !== activeAboutSlideRef.current) {
-            requestSlideTransition(calculatedSlide);
-          }
+      for (let i = 0; i < 3; i++) {
+        if (Math.abs(scrollY - (fTop + i * vh)) < vh * 0.45) {
+          return { type: 'founders', slideIndex: i };
         }
-      };
+      }
+      for (let i = 0; i < 3; i++) {
+        if (Math.abs(scrollY - (aTop + i * vh)) < vh * 0.45) {
+          return { type: 'about', slideIndex: i };
+        }
+      }
+      return null;
+    };
 
-      window.addEventListener('scroll', handleAboutScroll, { passive: true });
-      window.addEventListener('resize', handleAboutScroll);
-      cleanup = () => {
-        window.removeEventListener('scroll', handleAboutScroll);
-        window.removeEventListener('resize', handleAboutScroll);
-      };
-    }, 0);
+    const advance = (direction: 1 | -1) => {
+      const now = Date.now();
+      if (now - lastAdvance.current < THROTTLE_MS) return;
+      const showcase = getShowcaseState();
+      if (!showcase) return;
+
+      const { type, slideIndex } = showcase;
+      const nextSlide = slideIndex + direction;
+      // Out of range → let CSS snap handle the section transition
+      if (nextSlide < 0 || nextSlide > 2) return;
+
+      lastAdvance.current = now;
+      const vh = window.innerHeight;
+
+      if (type === 'founders') {
+        setActiveFoundersSlide(nextSlide);
+        const fTop = foundersShowcaseRef.current!.offsetTop;
+        window.scrollTo({ top: fTop + nextSlide * vh, behavior: 'smooth' });
+      } else {
+        setActiveAboutSlide(nextSlide);
+        const aTop = aboutShowcaseRef.current!.offsetTop;
+        window.scrollTo({ top: aTop + nextSlide * vh, behavior: 'smooth' });
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      const direction: 1 | -1 = e.deltaY > 0 ? 1 : -1;
+      const showcase = getShowcaseState();
+      if (showcase) {
+        const nextSlide = showcase.slideIndex + direction;
+        // Only prevent default when scrolling within the showcase (not at boundary)
+        if (nextSlide >= 0 && nextSlide <= 2) {
+          e.preventDefault();
+        }
+        advance(direction);
+      }
+      // Non-showcase sections: let native CSS scroll-snap handle it
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const delta = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(delta) < 40) return;
+      advance(delta > 0 ? 1 : -1);
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
-      clearTimeout(timerId);
-      cleanup?.();
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
-
-  // Founders Note Showcase Scroll Link Logic — deferred to yield to first paint
-  useEffect(() => {
-    let cleanup: (() => void) | null = null;
-
-    const timerId = window.setTimeout(() => {
-      const handleFoundersScroll = () => {
-        if (foundersShowcaseRef.current) {
-          const rect = foundersShowcaseRef.current.getBoundingClientRect();
-          const containerHeight = rect.height;
-          const scrolledIntoContainer = -rect.top;
-          const totalScrollableHeight = containerHeight - window.innerHeight;
-
-          if (totalScrollableHeight <= 0) return;
-
-          const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
-
-          // Track raw progress for scroll-driven title zoom animation
-          setFoundersScrollProgress(progress);
-
-          let calculatedSlide = 0;
-          if (progress < 0.33) {
-            calculatedSlide = 0;
-          } else if (progress < 0.66) {
-            calculatedSlide = 1;
-          } else {
-            calculatedSlide = 2;
-          }
-
-          if (calculatedSlide !== activeFoundersSlideRef.current) {
-            requestFoundersTransition(calculatedSlide);
-          }
-        }
-      };
-
-      window.addEventListener('scroll', handleFoundersScroll, { passive: true });
-      window.addEventListener('resize', handleFoundersScroll);
-      cleanup = () => {
-        window.removeEventListener('scroll', handleFoundersScroll);
-        window.removeEventListener('resize', handleFoundersScroll);
-      };
-    }, 0);
-
-    return () => {
-      clearTimeout(timerId);
-      cleanup?.();
-    };
-  }, []);
-
-  // Note: Custom wheel-based scroll snapping listener has been removed to restore passive native scrolling and eliminate scroll-hijacking & thread blocking warnings.
 
 
 
@@ -467,25 +427,9 @@ export const Home: React.FC = () => {
           <div className={`founders-showcase-slide ${activeFoundersSlide === 0 ? 'active' : ''}`} id="founders-slide-0">
             <section className="founders-title-section">
               <div className="founders-title-card-content">
-                {(() => {
-                  // Normalize progress within slide 0's range (0 to 0.33) → 0 to 1
-                  const titleZoom = Math.min(foundersScrollProgress / 0.33, 1);
-                  const scale = 1 + titleZoom * 2.0; // grows from 1× to 3×
-                  const opacity = 1 - titleZoom;        // fades out as it zooms
-                  return (
-                    <h1
-                      className="founders-large-title"
-                      style={{
-                        transform: `scale(${scale})`,
-                        opacity,
-                        transition: 'none', // driven purely by scroll, no CSS easing
-                        willChange: 'transform, opacity',
-                      }}
-                    >
-                      Why <span>Taaffeite?</span>
-                    </h1>
-                  );
-                })()}
+                <h1 className="founders-large-title">
+                  Why <span>Taaffeite?</span>
+                </h1>
               </div>
             </section>
           </div>
@@ -682,7 +626,7 @@ export const Home: React.FC = () => {
             <h2 className="glimpse-title">The World We Create</h2>
             <div className="glimpse-divider"></div>
             <p className="glimpse-desc">
-              Every celebration you see here began with a simple question...
+              Every celebration you see here began with a simple question...<br></br>
 
               "Can we trust you with one of the most important days of our lives?"
 

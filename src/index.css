@@ -559,7 +559,7 @@ body.menu-open .menu-drawer {
     top: 25px;
     left: 20px;
     z-index: 10;
-    width: 10px;
+    width: 120px;
     height: 120px;
     filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));
 }
@@ -577,10 +577,10 @@ body.menu-open .menu-drawer {
 
 @media(min-width: 768px) {
     .hero-brand-logo-top-left {
-        top: 35px;
-        left: 40px;
+        top: 5px;
+        left: 10px;
         width: 150px;
-        height: 150px;
+        height: 140px;
     }
 }
 
