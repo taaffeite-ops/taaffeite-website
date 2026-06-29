@@ -59,6 +59,22 @@ export const Media: React.FC = () => {
 
   // Note: automatic eager preloading of all 40 high-res gallery images has been removed to reduce thread blocking and network saturation.
 
+  // Dynamic preload for the first image to optimize LCP
+  useEffect(() => {
+    const firstPhoto = photos[0];
+    if (firstPhoto) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = firstPhoto.src;
+      link.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(link);
+      return () => {
+        document.head.removeChild(link);
+      };
+    }
+  }, []);
+
   // Lock scrolling when lightbox is open
   useEffect(() => {
     if (lightboxIndex !== null) {
@@ -151,6 +167,7 @@ export const Media: React.FC = () => {
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
+                eager={index < 8}
               />
             </div>
           ))}
