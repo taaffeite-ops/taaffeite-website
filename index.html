@@ -130,15 +130,27 @@
         setTimeout(dismissLoader, 600);
       } else {
         var startTime = Date.now();
-        window.addEventListener('load', function () {
-          var elapsedTime = Date.now() - startTime;
-          var minDisplayTime = 600; // Total min visibility time (600ms)
-          var delay = Math.max(0, minDisplayTime - elapsedTime);
-          setTimeout(dismissLoader, delay);
-        });
+        var dismissed = false;
 
-        // Safety timeout (5s)
-        setTimeout(dismissLoader, 5000);
+        function tryDismiss() {
+          // Guard against double-invocation if both react-ready and window.load fire
+          if (dismissed) return;
+          dismissed = true;
+          var elapsed = Date.now() - startTime;
+          var delay = Math.max(0, 600 - elapsed); // preserve 600ms min display time
+          setTimeout(dismissLoader, delay);
+        }
+
+        // Primary trigger: React dispatches this after its first render commit,
+        // meaning content is in the DOM well before images finish loading.
+        document.addEventListener('react-ready', tryDismiss, { once: true });
+
+        // Fallback: window.load — catches edge cases where react-ready never fires
+        // (e.g. JS errors, very old browsers). No longer the primary path.
+        window.addEventListener('load', tryDismiss, { once: true });
+
+        // Safety valve: reduced from 5s to 3s
+        setTimeout(dismissLoader, 3000);
       }
     })();
   </script>

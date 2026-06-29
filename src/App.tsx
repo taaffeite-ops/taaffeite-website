@@ -64,10 +64,9 @@ const ScrollRevealTrigger: React.FC = () => {
       el.classList.remove('active');
     });
 
-    // Run setup immediately
-    setupReveal();
-
-    // Trigger setup on delays to catch lazy loaded content once mounted
+    // Deferred timers catch lazy-loaded content after route transitions.
+    // The immediate synchronous call is intentionally omitted — useRevealAnimation
+    // in each page component handles initial setup via requestIdleCallback.
     const timer1 = setTimeout(setupReveal, 100);
     const timer2 = setTimeout(setupReveal, 350);
     const timer3 = setTimeout(setupReveal, 800);
@@ -87,6 +86,13 @@ const ScrollRevealTrigger: React.FC = () => {
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Signal to the global loader that React has mounted and the page is ready.
+  // The loader in index.html listens for this event to dismiss itself,
+  // replacing the window.load trigger which waited for all images to download.
+  useEffect(() => {
+    document.dispatchEvent(new Event('react-ready'));
+  }, []);
 
   // Lock page scrolling when menu drawer is open
   useEffect(() => {
