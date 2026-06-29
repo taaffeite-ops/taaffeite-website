@@ -1060,7 +1060,6 @@ body.menu-open .menu-drawer {
     }
 }
 
-@media (max-width: 991px) {
     .about-static-title-container {
         position: relative;
         top: 0;
@@ -1070,43 +1069,6 @@ body.menu-open .menu-drawer {
         padding: 40px 40px 10px;
         text-align: left;
     }
-
-    .about-showcase-container {
-        height: auto;
-    }
-
-    .about-showcase-sticky {
-        position: relative;
-        height: auto;
-        display: block;
-        overflow: visible;
-        padding: 20px 0 50px;
-    }
-
-    .about-showcase-slide {
-        position: relative;
-        opacity: 1;
-        pointer-events: auto;
-        transform: none;
-        height: auto;
-        display: block;
-        padding: 60px 20px;
-        border-bottom: 1px solid rgba(197, 160, 89, 0.1);
-    }
-
-    .about-showcase-info .about-showcase-title,
-    .about-showcase-info .about-slide-gold-line,
-    .about-showcase-info .about-showcase-desc,
-    .about-showcase-image-wrapper {
-        opacity: 1 !important;
-        transform: none !important;
-        pointer-events: auto !important;
-    }
-
-    .about-showcase-slide:last-child {
-        border-bottom: none;
-    }
-}
 
 /* Glimpse Into Our World Section */
 .glimpse-section {
@@ -3371,47 +3333,7 @@ body.menu-open .menu-drawer {
     justify-content: center;
 }
 
-/* Responsive Media Queries */
-@media (max-width: 991px) {
-    .founders-showcase-container {
-        height: auto !important;
-    }
-
-    .founders-showcase-sticky {
-        position: relative !important;
-        height: auto !important;
-        display: block !important;
-        overflow: visible !important;
-        padding: 40px 0;
-    }
-
-    .founders-showcase-slide {
-        position: relative !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transform: none !important;
-        height: auto !important;
-        display: block !important;
-        padding: 40px 0;
-        border-bottom: 1px solid rgba(197, 160, 89, 0.1);
-    }
-
-    /* Force visibility of scroll-linked inner elements on mobile */
-    .founders-note-header,
-    .founders-note-body,
-    .founders-note-signature-container,
-    .founders-grid-header,
-    .founders-grid-layout,
-    .founders-trio-img {
-        opacity: 1 !important;
-        transform: none !important;
-        pointer-events: auto !important;
-    }
-
-    .founders-showcase-slide:last-child {
-        border-bottom: none;
-    }
-}
+/* No showcase resets needed under 991px since sticky scrolling is now enabled on mobile */
 
 @media (max-width: 768px) {
     .founders-title-section {
@@ -3419,7 +3341,7 @@ body.menu-open .menu-drawer {
     }
 
     .founders-title-card-container {
-        padding: 40px 20px;
+        padding: 20px;
     }
 
     .founders-title-card-content {
@@ -3427,7 +3349,7 @@ body.menu-open .menu-drawer {
     }
 
     .founders-large-title {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
     }
 
     .founders-note-section {
@@ -3435,68 +3357,88 @@ body.menu-open .menu-drawer {
     }
 
     .founders-note-container {
-        padding: 40px 20px;
+        padding: 20px;
     }
 
     .founders-note-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem !important;
+    }
+
+    .founders-note-header {
+        margin-bottom: 10px !important;
+    }
+
+    .founders-note-divider {
+        margin: 10px auto 0 !important;
     }
 
     .founders-note-quote {
-        font-size: 1.15rem;
+        font-size: 1.0rem;
+    }
+
+    .founders-note-body {
+        font-size: 0.8rem !important;
+        line-height: 1.5 !important;
+        gap: 8px !important;
     }
 
     .founders-note-content {
-        font-size: 0.95rem;
+        font-size: 0.8rem !important;
     }
 
     .founders-note-content-wrapper {
         min-height: auto !important;
-        padding: 40px 24px !important;
+        padding: 24px 16px !important;
     }
 
     .founders-note-signature-container {
+        margin-top: 12px !important;
         margin-right: 0;
         align-items: center;
         text-align: center;
     }
 
     .founders-note-signature {
-        font-size: 1.5rem;
+        font-size: 1.25rem !important;
+    }
+
+    .founders-note-designation {
+        font-size: 0.75rem !important;
     }
 
     .founders-grid-section {
         padding: 0 15px;
     }
 
-    /* Stack trio images vertically and layout beautifully */
+    /* Stack trio images horizontally in a neat row to fit 100vh */
     .founders-trio-row {
-        flex-direction: column !important;
-        gap: 20px !important;
+        flex-direction: row !important;
+        gap: 10px !important;
+        width: 100% !important;
         height: auto !important;
+        justify-content: center !important;
     }
 
     .founders-trio-img {
-        flex: 1 1 100% !important;
-        width: 100% !important;
-        max-width: 450px !important;
-        aspect-ratio: 16 / 9 !important;
-        opacity: 1 !important;
+        flex: 0 1 calc(33.333% - 7px) !important;
+        width: auto !important;
+        aspect-ratio: 1 / 1.4 !important; /* Portrait aspect ratio fits the row perfectly */
+        max-width: 120px !important;
     }
 
     .founders-grid-container {
-        padding: 30px 20px;
-        gap: 20px;
+        padding: 20px;
+        gap: 15px;
     }
 
     .founders-grid-layout {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 15px;
         height: auto !important;
     }
 
     .founders-grid-right-col {
-        gap: 20px;
+        gap: 15px;
     }
 
     .founders-grid-card {
@@ -3506,11 +3448,38 @@ body.menu-open .menu-drawer {
 
     .founders-grid-card .founders-card-image-wrapper {
         width: 100% !important;
-        height: 200px !important;
+        height: 150px !important;
     }
 
     .founders-grid-card .founders-card-text {
         width: 100% !important;
-        padding: 20px !important;
+        padding: 15px !important;
+    }
+
+    /* Scale About section components to fit 100vh on mobile */
+    .about-showcase-grid {
+        gap: 15px !important;
+    }
+
+    .about-showcase-image {
+        height: 200px !important;
+    }
+
+    .about-showcase-title {
+        font-size: 1.5rem !important;
+        margin-bottom: 12px !important;
+    }
+
+    .about-showcase-desc {
+        font-size: 0.85rem !important;
+        line-height: 1.6 !important;
+    }
+
+    .about-slide-gold-line {
+        margin-bottom: 15px !important;
+    }
+
+    .about-showcase-info {
+        padding: 10px 0 !important;
     }
 }
