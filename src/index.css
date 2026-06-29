@@ -559,7 +559,7 @@ body.menu-open .menu-drawer {
     top: 25px;
     left: 20px;
     z-index: 10;
-    width: 120px;
+    width: 10px;
     height: 120px;
     filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));
 }
