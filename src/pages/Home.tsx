@@ -363,9 +363,6 @@ export const Home: React.FC = () => {
 
     const timerId = window.setTimeout(() => {
       const handleFoundersScroll = () => {
-        if (window.innerWidth < 992) {
-          return;
-        }
         if (foundersShowcaseRef.current) {
           const rect = foundersShowcaseRef.current.getBoundingClientRect();
           const containerHeight = rect.height;
