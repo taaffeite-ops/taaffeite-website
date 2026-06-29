@@ -1060,15 +1060,15 @@ body.menu-open .menu-drawer {
     }
 }
 
-    .about-static-title-container {
-        position: relative;
-        top: 0;
-        left: 0;
-        transform: none;
-        max-width: 100%;
-        padding: 40px 40px 10px;
-        text-align: left;
-    }
+.about-static-title-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    max-width: 100%;
+    padding: 40px 40px 10px;
+    text-align: left;
+}
 
 /* Glimpse Into Our World Section */
 .glimpse-section {
@@ -1488,7 +1488,7 @@ body.menu-open .menu-drawer {
     margin-bottom: 0;
 }
 
-.cta-title + .btn-luxury {
+.cta-title+.btn-luxury {
     margin-top: 25px;
 }
 
@@ -1497,7 +1497,7 @@ body.menu-open .menu-drawer {
         font-size: 2.8rem;
     }
 
-    .cta-title + .btn-luxury {
+    .cta-title+.btn-luxury {
         margin-top: 40px;
     }
 }
@@ -3149,7 +3149,7 @@ body.menu-open .menu-drawer {
 .founders-pillars-title {
     font-family: var(--font-serif);
     font-size: 2.5rem;
-    color: #ffffff;
+    color: #000000;
     font-weight: 300;
     margin-top: 5px;
 }
@@ -3182,16 +3182,19 @@ body.menu-open .menu-drawer {
     gap: 15px;
     align-items: center;
     text-align: center;
-    opacity: 0; /* default hidden until active animation */
+    opacity: 0;
+    /* default hidden until active animation */
 }
 
 .founders-trio-img-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1.1;
     overflow: hidden;
-    border-radius: 120px 20px 120px 20px; /* asymmetrical premium curves matching About section */
+    border-radius: 120px 20px 120px 20px;
+    /* asymmetrical premium curves matching About section */
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(197, 160, 89, 0.35); /* simple gold outline */
+    border: 1px solid rgba(197, 160, 89, 0.35);
+    /* simple gold outline */
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -3218,6 +3221,7 @@ body.menu-open .menu-drawer {
         opacity: 0;
         transform: translateY(32px) scale(0.97);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);

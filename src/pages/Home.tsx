@@ -545,7 +545,7 @@ export const Home: React.FC = () => {
               <div className="founders-pillars-container">
                 <div className="founders-pillars-header">
                   <span className="founders-pillars-sub">Philosophy</span>
-                  <h2 className="founders-pillars-title">The Pillars of <span>Rarity</span></h2>
+                  <h2 className="founders-pillars-title">Story Behind Our <span>Logo</span></h2>
                   <div className="founders-pillars-divider"></div>
                 </div>
 
