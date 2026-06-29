@@ -48,8 +48,10 @@ export const Home: React.FC = () => {
   // Wire scroll-reveal animations for the whole page
   useRevealAnimation();
 
-  // Enable scroll snap class on document root for home page only
+  // Enable scroll snap class on document root for home page only (Desktop only)
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+
     // Scroll to the top of the page instantly before snap initializes
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
 
@@ -191,8 +193,10 @@ export const Home: React.FC = () => {
 
   // Full-page wheel/touch interceptor — every scroll advances exactly one step.
   // Snapping steps: 0=hero | 1-3=founders slides | 4-6=about slides | 7=glimpse
-  // After Glimpse (Step 7), native scrolling resumes.
+  // After Glimpse (Step 7), native scrolling resumes. (Desktop only)
   useEffect(() => {
+    if (window.innerWidth < 768) return;
+
     const TOTAL_STEPS = 8;
     const THROTTLE_MS = 1000;
     const lastAdvance = { current: 0 };
@@ -336,6 +340,46 @@ export const Home: React.FC = () => {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('scroll', handleScrollSync);
     };
+  }, []);
+
+  // Passive scroll listener for mobile to update slide transitions naturally as they scroll
+  useEffect(() => {
+    if (window.innerWidth >= 768) return;
+
+    const handleMobileScroll = () => {
+      const fContainer = foundersShowcaseRef.current;
+      const aContainer = aboutShowcaseRef.current;
+      const vh = window.innerHeight;
+
+      if (fContainer) {
+        const rect = fContainer.getBoundingClientRect();
+        const scrolled = -rect.top;
+        const total = rect.height - vh;
+        if (total > 0) {
+          const progress = Math.max(0, Math.min(scrolled / total, 1));
+          const slide = progress < 0.33 ? 0 : progress < 0.66 ? 1 : 2;
+          if (slide !== activeFoundersSlideRef.current) {
+            setActiveFoundersSlide(slide);
+          }
+        }
+      }
+
+      if (aContainer) {
+        const rect = aContainer.getBoundingClientRect();
+        const scrolled = -rect.top;
+        const total = rect.height - vh;
+        if (total > 0) {
+          const progress = Math.max(0, Math.min(scrolled / total, 1));
+          const slide = progress < 0.33 ? 0 : progress < 0.66 ? 1 : 2;
+          if (slide !== activeAboutSlideRef.current) {
+            setActiveAboutSlide(slide);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleMobileScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleMobileScroll);
   }, []);
 
 
