@@ -81,94 +81,106 @@ export const Home: React.FC = () => {
   // Intercepts wheel events while a sticky showcase is pinned and immediately
   // advances one slide, smooth-scrolling the window to the matching position
   // so the scroll-position-based slide logic stays perfectly in sync.
+  // ── Wheel-event snap: deferred with setTimeout(0) to yield to first paint ──
   useEffect(() => {
-    let snapLocked = false;
-    const SNAP_MS = 900; // matches CSS transition duration
+    // removeListener is captured after the timeout fires so cleanup can call it
+    // even when the component unmounts after the listener was registered.
+    let removeListener: (() => void) | null = null;
 
-    const snapSection = (
-      containerEl: HTMLDivElement | null,
-      slideRef: React.MutableRefObject<number>,
-      maxSlide: number,
-      advance: (next: number) => void,
-      dir: number
-    ): boolean => {
-      if (!containerEl) return false;
-      const rect = containerEl.getBoundingClientRect();
-      // Section is sticky-pinned when its top <= 0 and bottom is still on screen
-      const isActive = rect.top <= 2 && rect.bottom > window.innerHeight - 2;
-      if (!isActive) return false;
+    const timerId = window.setTimeout(() => {
+      let snapLocked = false;
+      const SNAP_MS = 900; // matches CSS transition duration
 
-      const next = slideRef.current + dir;
+      const snapSection = (
+        containerEl: HTMLDivElement | null,
+        slideRef: React.MutableRefObject<number>,
+        maxSlide: number,
+        advance: (next: number) => void,
+        dir: number
+      ): boolean => {
+        if (!containerEl) return false;
+        const rect = containerEl.getBoundingClientRect();
+        // Section is sticky-pinned when its top <= 0 and bottom is still on screen
+        const isActive = rect.top <= 2 && rect.bottom > window.innerHeight - 2;
+        if (!isActive) return false;
 
-      // If going before first or after last slide, let natural scroll continue
-      if (next < 0 || next > maxSlide) return false;
+        const next = slideRef.current + dir;
 
-      // Snap this event
-      advance(next);
+        // If going before first or after last slide, let natural scroll continue
+        if (next < 0 || next > maxSlide) return false;
 
-      // Scroll window to the position that matches the new slide
-      const containerScrollTop = containerEl.getBoundingClientRect().top + window.scrollY;
-      const totalScrollable = containerEl.offsetHeight - window.innerHeight;
-      const targetProgress = next / maxSlide;
-      window.scrollTo({
-        top: containerScrollTop + totalScrollable * targetProgress + 1,
-        behavior: 'smooth',
-      });
+        // Snap this event
+        advance(next);
 
-      return true;
-    };
+        // Scroll window to the position that matches the new slide
+        const containerScrollTop = containerEl.getBoundingClientRect().top + window.scrollY;
+        const totalScrollable = containerEl.offsetHeight - window.innerHeight;
+        const targetProgress = next / maxSlide;
+        window.scrollTo({
+          top: containerScrollTop + totalScrollable * targetProgress + 1,
+          behavior: 'smooth',
+        });
 
-    const handleWheel = (e: WheelEvent) => {
-      if (snapLocked) {
-        // Still mid-transition — swallow extra scroll events so they don't
-        // accidentally scroll past the current sticky section.
-        const aboutRect = aboutShowcaseRef.current?.getBoundingClientRect();
-        const foundersRect = foundersShowcaseRef.current?.getBoundingClientRect();
-        const insideSticky =
-          (aboutRect && aboutRect.top <= 2 && aboutRect.bottom > window.innerHeight - 2) ||
-          (foundersRect && foundersRect.top <= 2 && foundersRect.bottom > window.innerHeight - 2);
-        if (insideSticky) e.preventDefault();
-        return;
-      }
+        return true;
+      };
 
-      const dir = e.deltaY > 0 ? 1 : -1;
-      let handled = false;
+      const handleWheel = (e: WheelEvent) => {
+        if (snapLocked) {
+          // Still mid-transition — swallow extra scroll events so they don't
+          // accidentally scroll past the current sticky section.
+          const aboutRect = aboutShowcaseRef.current?.getBoundingClientRect();
+          const foundersRect = foundersShowcaseRef.current?.getBoundingClientRect();
+          const insideSticky =
+            (aboutRect && aboutRect.top <= 2 && aboutRect.bottom > window.innerHeight - 2) ||
+            (foundersRect && foundersRect.top <= 2 && foundersRect.bottom > window.innerHeight - 2);
+          if (insideSticky) e.preventDefault();
+          return;
+        }
 
-      // About showcase
-      handled = snapSection(
-        aboutShowcaseRef.current,
-        activeAboutSlideRef,
-        2,
-        (next) => {
-          lastSlideTransitionTime.current = Date.now();
-          setActiveAboutSlide(next);
-        },
-        dir
-      );
+        const dir = e.deltaY > 0 ? 1 : -1;
+        let handled = false;
 
-      // Founders showcase
-      if (!handled) {
+        // About showcase
         handled = snapSection(
-          foundersShowcaseRef.current,
-          activeFoundersSlideRef,
+          aboutShowcaseRef.current,
+          activeAboutSlideRef,
           2,
           (next) => {
-            setFoundersScrollProgress((next / 2) * 0.99); // keep title-zoom in sync
-            setActiveFoundersSlide(next);
+            lastSlideTransitionTime.current = Date.now();
+            setActiveAboutSlide(next);
           },
           dir
         );
-      }
 
-      if (handled) {
-        e.preventDefault();
-        snapLocked = true;
-        setTimeout(() => { snapLocked = false; }, SNAP_MS);
-      }
+        // Founders showcase
+        if (!handled) {
+          handled = snapSection(
+            foundersShowcaseRef.current,
+            activeFoundersSlideRef,
+            2,
+            (next) => {
+              setFoundersScrollProgress((next / 2) * 0.99); // keep title-zoom in sync
+              setActiveFoundersSlide(next);
+            },
+            dir
+          );
+        }
+
+        if (handled) {
+          e.preventDefault();
+          snapLocked = true;
+          setTimeout(() => { snapLocked = false; }, SNAP_MS);
+        }
+      };
+
+      window.addEventListener('wheel', handleWheel, { passive: false });
+      removeListener = () => window.removeEventListener('wheel', handleWheel);
+    }, 0);
+
+    return () => {
+      clearTimeout(timerId);
+      removeListener?.();
     };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Quick Enquiry Form States
@@ -297,84 +309,102 @@ export const Home: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Stacked About Showcase Scroll Link Logic
+  // Stacked About Showcase Scroll Link Logic — deferred to yield to first paint
   useEffect(() => {
-    const handleAboutScroll = () => {
-      if (window.innerWidth < 992) {
-        return;
-      }
-      if (aboutShowcaseRef.current) {
-        const rect = aboutShowcaseRef.current.getBoundingClientRect();
-        const containerHeight = rect.height;
-        const scrolledIntoContainer = -rect.top;
-        const totalScrollableHeight = containerHeight - window.innerHeight;
+    let cleanup: (() => void) | null = null;
 
-        if (totalScrollableHeight <= 0) return;
-
-        const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
-
-        let calculatedSlide = 0;
-        if (progress < 0.33) {
-          calculatedSlide = 0;
-        } else if (progress < 0.66) {
-          calculatedSlide = 1;
-        } else {
-          calculatedSlide = 2;
+    const timerId = window.setTimeout(() => {
+      const handleAboutScroll = () => {
+        if (window.innerWidth < 992) {
+          return;
         }
+        if (aboutShowcaseRef.current) {
+          const rect = aboutShowcaseRef.current.getBoundingClientRect();
+          const containerHeight = rect.height;
+          const scrolledIntoContainer = -rect.top;
+          const totalScrollableHeight = containerHeight - window.innerHeight;
 
-        if (calculatedSlide !== activeAboutSlideRef.current) {
-          requestSlideTransition(calculatedSlide);
+          if (totalScrollableHeight <= 0) return;
+
+          const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
+
+          let calculatedSlide = 0;
+          if (progress < 0.33) {
+            calculatedSlide = 0;
+          } else if (progress < 0.66) {
+            calculatedSlide = 1;
+          } else {
+            calculatedSlide = 2;
+          }
+
+          if (calculatedSlide !== activeAboutSlideRef.current) {
+            requestSlideTransition(calculatedSlide);
+          }
         }
-      }
-    };
+      };
 
-    window.addEventListener('scroll', handleAboutScroll, { passive: true });
-    window.addEventListener('resize', handleAboutScroll);
+      window.addEventListener('scroll', handleAboutScroll, { passive: true });
+      window.addEventListener('resize', handleAboutScroll);
+      cleanup = () => {
+        window.removeEventListener('scroll', handleAboutScroll);
+        window.removeEventListener('resize', handleAboutScroll);
+      };
+    }, 0);
+
     return () => {
-      window.removeEventListener('scroll', handleAboutScroll);
-      window.removeEventListener('resize', handleAboutScroll);
+      clearTimeout(timerId);
+      cleanup?.();
     };
   }, []);
 
-  // Founders Note Showcase Scroll Link Logic
+  // Founders Note Showcase Scroll Link Logic — deferred to yield to first paint
   useEffect(() => {
-    const handleFoundersScroll = () => {
-      if (window.innerWidth < 992) {
-        return;
-      }
-      if (foundersShowcaseRef.current) {
-        const rect = foundersShowcaseRef.current.getBoundingClientRect();
-        const containerHeight = rect.height;
-        const scrolledIntoContainer = -rect.top;
-        const totalScrollableHeight = containerHeight - window.innerHeight;
+    let cleanup: (() => void) | null = null;
 
-        if (totalScrollableHeight <= 0) return;
-
-        const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
-
-        // Track raw progress for scroll-driven title zoom animation
-        setFoundersScrollProgress(progress);
-
-        let calculatedSlide = 0;
-        if (progress < 0.33) {
-          calculatedSlide = 0;
-        } else if (progress < 0.66) {
-          calculatedSlide = 1;
-        } else {
-          calculatedSlide = 2;
+    const timerId = window.setTimeout(() => {
+      const handleFoundersScroll = () => {
+        if (window.innerWidth < 992) {
+          return;
         }
+        if (foundersShowcaseRef.current) {
+          const rect = foundersShowcaseRef.current.getBoundingClientRect();
+          const containerHeight = rect.height;
+          const scrolledIntoContainer = -rect.top;
+          const totalScrollableHeight = containerHeight - window.innerHeight;
 
-        if (calculatedSlide !== activeFoundersSlideRef.current) {
-          requestFoundersTransition(calculatedSlide);
+          if (totalScrollableHeight <= 0) return;
+
+          const progress = Math.max(0, Math.min(scrolledIntoContainer / totalScrollableHeight, 1));
+
+          // Track raw progress for scroll-driven title zoom animation
+          setFoundersScrollProgress(progress);
+
+          let calculatedSlide = 0;
+          if (progress < 0.33) {
+            calculatedSlide = 0;
+          } else if (progress < 0.66) {
+            calculatedSlide = 1;
+          } else {
+            calculatedSlide = 2;
+          }
+
+          if (calculatedSlide !== activeFoundersSlideRef.current) {
+            requestFoundersTransition(calculatedSlide);
+          }
         }
-      }
-    };
+      };
 
-    window.addEventListener('scroll', handleFoundersScroll, { passive: true });
-    window.addEventListener('resize', handleFoundersScroll);
+      window.addEventListener('scroll', handleFoundersScroll, { passive: true });
+      window.addEventListener('resize', handleFoundersScroll);
+      cleanup = () => {
+        window.removeEventListener('scroll', handleFoundersScroll);
+        window.removeEventListener('resize', handleFoundersScroll);
+      };
+    }, 0);
+
     return () => {
-      window.removeEventListener('scroll', handleFoundersScroll);
-      window.removeEventListener('resize', handleFoundersScroll);
+      clearTimeout(timerId);
+      cleanup?.();
     };
   }, []);
 
@@ -477,6 +507,9 @@ export const Home: React.FC = () => {
                 eager={idx === 0}
                 containerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                 aspectRatio="unset"
+                // sizes='100vw' on the LCP image (idx===0) tells the preload scanner the image fills
+                // the full viewport. Future CDN integration: add srcSet with resized variants here.
+                {...(idx === 0 ? { sizes: '100vw' } : {})}
               />
             ))}
           </div>

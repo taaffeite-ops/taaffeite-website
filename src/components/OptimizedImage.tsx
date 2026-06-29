@@ -13,6 +13,10 @@ interface OptimizedImageProps {
   containerStyle?: React.CSSProperties;
   style?: React.CSSProperties;
   aspectRatio?: string;
+  /** Responsive image candidates, e.g. "img-800.webp 800w, img-1600.webp 1600w" */
+  srcSet?: string;
+  /** Hint to browser about rendered image width, e.g. "100vw" or "(max-width: 600px) 100vw, 50vw" */
+  sizes?: string;
 }
 
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
@@ -27,7 +31,9 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   objectFit = 'cover',
   containerStyle = {},
   style = {},
-  aspectRatio
+  aspectRatio,
+  srcSet,
+  sizes,
 }) => {
   const [isInView, setIsInView] = useState(eager);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -52,7 +58,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           });
         },
         {
-          rootMargin: '400px 0px 400px 0px', // start loading 400px before scroll
+          rootMargin: '200px 0px 300px 0px', // 300px lookahead (down), 200px lookback (up)
           threshold: 0.01
         }
       );
@@ -94,6 +100,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
           loading={eager ? 'eager' : 'lazy'}
           fetchPriority={eager ? 'high' : 'auto'}
           decoding="async"
+          srcSet={srcSet}
+          sizes={srcSet ? (sizes ?? '100vw') : undefined}
           onLoad={() => setIsLoaded(true)}
           className={`optimized-img ${imgClassName} ${isLoaded ? 'loaded' : ''}`}
           style={{
