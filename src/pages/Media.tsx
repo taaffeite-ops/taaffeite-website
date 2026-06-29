@@ -61,7 +61,10 @@ export const Media: React.FC = () => {
 
   // Dynamic preload for the first image to optimize LCP and reset scroll
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    const scrollTimer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    }, 50);
+
     const firstPhoto = photos[0];
     if (firstPhoto) {
       const link = document.createElement('link');
@@ -72,8 +75,10 @@ export const Media: React.FC = () => {
       document.head.appendChild(link);
       return () => {
         document.head.removeChild(link);
+        clearTimeout(scrollTimer);
       };
     }
+    return () => clearTimeout(scrollTimer);
   }, []);
 
   // Lock scrolling when lightbox is open
