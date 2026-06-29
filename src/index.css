@@ -3437,11 +3437,11 @@ body.menu-open .menu-drawer {
     }
 
     .founders-note-header {
-        margin-bottom: 10px !important;
+        margin-bottom: 6px !important;
     }
 
     .founders-note-divider {
-        margin: 10px auto 0 !important;
+        margin: 6px auto 10px !important;
     }
 
     .founders-note-quote {
@@ -3449,9 +3449,9 @@ body.menu-open .menu-drawer {
     }
 
     .founders-note-body {
-        font-size: 0.8rem !important;
-        line-height: 1.5 !important;
-        gap: 8px !important;
+        font-size: 0.78rem !important;
+        line-height: 1.55 !important;
+        gap: 6px !important;
     }
 
     .founders-note-content {
@@ -3459,8 +3459,9 @@ body.menu-open .menu-drawer {
     }
 
     .founders-note-content-wrapper {
-        min-height: auto !important;
-        padding: 24px 16px !important;
+        justify-content: flex-start;
+        padding: 70px 20px 20px !important;
+        overflow-y: auto;
     }
 
     .founders-note-signature-container {
