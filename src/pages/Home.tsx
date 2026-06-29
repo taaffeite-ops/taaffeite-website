@@ -465,8 +465,20 @@ export const Home: React.FC = () => {
 
   // Hero Background Images Slideshow
   const heroImages = [
-    { src: "/assets/05 PHOTOS/Proposal/0039.webp", width: 4671, height: 7006 },
-    { src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316.webp", width: 3600, height: 2400 },
+    {
+      src: "/assets/05 PHOTOS/Proposal/0039-lg.webp",
+      width: 4671,
+      height: 7006,
+      srcSet: "/assets/05 PHOTOS/Proposal/0039-sm.webp 600w, /assets/05 PHOTOS/Proposal/0039-md.webp 1200w, /assets/05 PHOTOS/Proposal/0039-lg.webp 2000w",
+      sizes: "100vw"
+    },
+    {
+      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316-lg.webp",
+      width: 3600,
+      height: 2400,
+      srcSet: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316-sm.webp 600w, /assets/05 PHOTOS/Haldi-Mehandi/AKR03316-md.webp 1200w, /assets/05 PHOTOS/Haldi-Mehandi/AKR03316-lg.webp 2000w",
+      sizes: "100vw"
+    },
     { src: "/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.webp", width: 4608, height: 3072 },
     { src: "/assets/05 PHOTOS/Weddings/AKR07379.webp", width: 3600, height: 2400 }
   ];
@@ -507,16 +519,15 @@ export const Home: React.FC = () => {
                 eager={idx === 0}
                 containerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                 aspectRatio="unset"
-                // sizes='100vw' on the LCP image (idx===0) tells the preload scanner the image fills
-                // the full viewport. Future CDN integration: add srcSet with resized variants here.
-                {...(idx === 0 ? { sizes: '100vw' } : {})}
+                srcSet={img.srcSet}
+                sizes={img.sizes}
               />
             ))}
           </div>
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <OptimizedImage
-              src="/assets/images/logo.png"
+              src="/assets/images/logo.webp"
               alt="Taaffeite Events"
               className="hero-brand-logo"
               width={180}
@@ -579,7 +590,9 @@ export const Home: React.FC = () => {
                 {/* Background Image wrapper */}
                 <div className="founders-note-bg-image">
                   <OptimizedImage
-                    src="/assets/images/founders3.png"
+                    src="/assets/images/founders3.webp"
+                    srcSet="/assets/images/founders3-sm.webp 600w, /assets/images/founders3-lg.webp 1200w"
+                    sizes="(max-width: 600px) 100vw, 1200px"
                     alt="Anya Daisy Vergis & Sipporah - Founders of Taaffeite Events"
                     width={1200}
                     height={800}
