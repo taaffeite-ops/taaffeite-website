@@ -3483,3 +3483,32 @@ body.menu-open .menu-drawer {
         padding: 10px 0 !important;
     }
 }
+
+/* Native CSS Scroll Snapping for Premium Performance */
+html.has-scroll-snap {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+.hero-section,
+.showcase-snap-point,
+.glimpse-section,
+.cta-section,
+.quick-enquiry-section,
+.site-footer {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.showcase-snap-point {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    pointer-events: none;
+    margin-top: -100vh;
+    z-index: 5;
+}
+
+.showcase-snap-point:first-child {
+    margin-top: 0;
+}

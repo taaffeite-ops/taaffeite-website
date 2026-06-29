@@ -77,111 +77,13 @@ export const Home: React.FC = () => {
   // Wire scroll-reveal animations for the whole page
   useRevealAnimation();
 
-  // ── Wheel-event snap: one scroll = one slide ────────────────────────────
-  // Intercepts wheel events while a sticky showcase is pinned and immediately
-  // advances one slide, smooth-scrolling the window to the matching position
-  // so the scroll-position-based slide logic stays perfectly in sync.
-  // ── Wheel-event snap: deferred with setTimeout(0) to yield to first paint ──
+  // Enable scroll snap class on document root for home page only
   useEffect(() => {
-    // removeListener is captured after the timeout fires so cleanup can call it
-    // even when the component unmounts after the listener was registered.
-    let removeListener: (() => void) | null = null;
-
-    const timerId = window.setTimeout(() => {
-      let snapLocked = false;
-      const SNAP_MS = 900; // matches CSS transition duration
-
-      const snapSection = (
-        containerEl: HTMLDivElement | null,
-        slideRef: React.MutableRefObject<number>,
-        maxSlide: number,
-        advance: (next: number) => void,
-        dir: number
-      ): boolean => {
-        if (!containerEl) return false;
-        const rect = containerEl.getBoundingClientRect();
-        // Section is sticky-pinned when its top <= 0 and bottom is still on screen
-        const isActive = rect.top <= 2 && rect.bottom > window.innerHeight - 2;
-        if (!isActive) return false;
-
-        const next = slideRef.current + dir;
-
-        // If going before first or after last slide, let natural scroll continue
-        if (next < 0 || next > maxSlide) return false;
-
-        // Snap this event
-        advance(next);
-
-        // Scroll window to the position that matches the new slide
-        const containerScrollTop = containerEl.getBoundingClientRect().top + window.scrollY;
-        const totalScrollable = containerEl.offsetHeight - window.innerHeight;
-        const targetProgress = next / maxSlide;
-        window.scrollTo({
-          top: containerScrollTop + totalScrollable * targetProgress + 1,
-          behavior: 'smooth',
-        });
-
-        return true;
-      };
-
-      const handleWheel = (e: WheelEvent) => {
-        if (snapLocked) {
-          // Still mid-transition — swallow extra scroll events so they don't
-          // accidentally scroll past the current sticky section.
-          const aboutRect = aboutShowcaseRef.current?.getBoundingClientRect();
-          const foundersRect = foundersShowcaseRef.current?.getBoundingClientRect();
-          const insideSticky =
-            (aboutRect && aboutRect.top <= 2 && aboutRect.bottom > window.innerHeight - 2) ||
-            (foundersRect && foundersRect.top <= 2 && foundersRect.bottom > window.innerHeight - 2);
-          if (insideSticky) e.preventDefault();
-          return;
-        }
-
-        const dir = e.deltaY > 0 ? 1 : -1;
-        let handled = false;
-
-        // About showcase
-        handled = snapSection(
-          aboutShowcaseRef.current,
-          activeAboutSlideRef,
-          2,
-          (next) => {
-            lastSlideTransitionTime.current = Date.now();
-            setActiveAboutSlide(next);
-          },
-          dir
-        );
-
-        // Founders showcase
-        if (!handled) {
-          handled = snapSection(
-            foundersShowcaseRef.current,
-            activeFoundersSlideRef,
-            2,
-            (next) => {
-              setFoundersScrollProgress((next / 2) * 0.99); // keep title-zoom in sync
-              setActiveFoundersSlide(next);
-            },
-            dir
-          );
-        }
-
-        if (handled) {
-          e.preventDefault();
-          snapLocked = true;
-          setTimeout(() => { snapLocked = false; }, SNAP_MS);
-        }
-      };
-
-      window.addEventListener('wheel', handleWheel, { passive: false });
-      removeListener = () => window.removeEventListener('wheel', handleWheel);
-    }, 0);
-
+    document.documentElement.classList.add('has-scroll-snap');
     return () => {
-      clearTimeout(timerId);
-      removeListener?.();
+      document.documentElement.classList.remove('has-scroll-snap');
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // Quick Enquiry Form States
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
@@ -548,6 +450,9 @@ export const Home: React.FC = () => {
 
       {/* FOUNDERS NOTE SHOWCASE SECTION */}
       <div className="founders-showcase-container" id="founders-showcase" ref={foundersShowcaseRef}>
+        <div className="showcase-snap-point"></div>
+        <div className="showcase-snap-point"></div>
+        <div className="showcase-snap-point"></div>
         <div className="founders-showcase-sticky">
 
           {/* Slide 0: Why Taaffeite Title Entry */}
@@ -670,6 +575,9 @@ export const Home: React.FC = () => {
 
       {/* 2. SCROLL-LINKED ABOUT SECTION (3 PARTS) */}
       <div className="about-showcase-container" id="about-showcase" ref={aboutShowcaseRef}>
+        <div className="showcase-snap-point"></div>
+        <div className="showcase-snap-point"></div>
+        <div className="showcase-snap-point"></div>
         <div className="about-showcase-sticky">
 
           {/* Slide 1 */}
