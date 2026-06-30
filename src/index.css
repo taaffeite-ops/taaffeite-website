@@ -557,7 +557,7 @@ body.menu-open .menu-drawer {
 .hero-brand-logo-top-left {
     position: absolute;
     top: 10px;
-    left: 15px;
+    left: -12px;
     z-index: 10;
     width: 120px;
     height: 120px;
