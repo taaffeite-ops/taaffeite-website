@@ -3,8 +3,78 @@ import { Link } from 'react-router-dom';
 import { OptimizedImage } from '../components/OptimizedImage';
 import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
+const FoundersSlide2Content: React.FC = () => {
+  return (
+    <section className="founders-grid-section">
+      <div className="founders-pillars-container">
+        <div className="founders-pillars-header">
+          <h2 className="founders-pillars-title">Story Behind Our <span>Logo</span></h2>
+          <div className="founders-pillars-divider"></div>
+        </div>
+
+        <div className="founders-trio-row">
+          <div className="founders-trio-card founders-trio-img--1">
+            <div className="founders-trio-img-wrapper">
+              <OptimizedImage
+                src="/assets/images/1.webp"
+                alt="Warm Celebrations"
+                width={2400}
+                height={3600}
+                aspectRatio="unset"
+                containerStyle={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
+
+          <div className="founders-trio-card founders-trio-img--2">
+            <div className="founders-trio-img-wrapper">
+              <OptimizedImage
+                src="/assets/images/2.webp"
+                alt="Minimal Styling"
+                width={2400}
+                height={3600}
+                aspectRatio="unset"
+                containerStyle={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
+
+          <div className="founders-trio-card founders-trio-img--3">
+            <div className="founders-trio-img-wrapper">
+              <OptimizedImage
+                src="/assets/images/3.webp"
+                alt="Elegant Design"
+                width={2400}
+                height={3600}
+                aspectRatio="unset"
+                containerStyle={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export const Home: React.FC = () => {
 
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handler);
+    return () => {
+      mediaQuery.removeEventListener('change', handler);
+    };
+  }, []);
 
   // 2. Hero Symmetrical Scroll-Linked Shrink Animation Progress
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -50,7 +120,10 @@ export const Home: React.FC = () => {
 
   // Enable scroll snap class on document root for home page only (Desktop only)
   useEffect(() => {
-    if (window.innerWidth < 768) return;
+    if (isMobile) {
+      document.documentElement.classList.remove('has-scroll-snap');
+      return;
+    }
 
     // Scroll to the top of the page instantly before snap initializes
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
@@ -63,7 +136,7 @@ export const Home: React.FC = () => {
       document.documentElement.classList.remove('has-scroll-snap');
       clearTimeout(timer);
     };
-  }, []);
+  }, [isMobile]);
 
   // Quick Enquiry Form States
   const [enquirySubmitted, setEnquirySubmitted] = useState(false);
@@ -195,7 +268,7 @@ export const Home: React.FC = () => {
   // Snapping steps: 0=hero | 1-3=founders slides | 4-6=about slides | 7=glimpse
   // After Glimpse (Step 7), native scrolling resumes. (Desktop only)
   useEffect(() => {
-    if (window.innerWidth < 768) return;
+    if (isMobile) return;
 
     const TOTAL_STEPS = 8;
     const THROTTLE_MS = 1000;
@@ -340,15 +413,14 @@ export const Home: React.FC = () => {
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('scroll', handleScrollSync);
     };
-  }, []);
+  }, [isMobile]);
 
   // Passive scroll listener for mobile to update slide transitions naturally as they scroll
   useEffect(() => {
-    if (window.innerWidth >= 768) return;
+    if (!isMobile) return;
 
     const handleMobileScroll = () => {
       const fContainer = foundersShowcaseRef.current;
-      const aContainer = aboutShowcaseRef.current;
       const vh = window.innerHeight;
 
       if (fContainer) {
@@ -357,22 +429,10 @@ export const Home: React.FC = () => {
         const total = rect.height - vh;
         if (total > 0) {
           const progress = Math.max(0, Math.min(scrolled / total, 1));
-          const slide = progress < 0.33 ? 0 : progress < 0.66 ? 1 : 2;
+          // On mobile, founders showcase has only 2 slides (Slide 0 and 1)
+          const slide = progress < 0.5 ? 0 : 1;
           if (slide !== activeFoundersSlideRef.current) {
             setActiveFoundersSlide(slide);
-          }
-        }
-      }
-
-      if (aContainer) {
-        const rect = aContainer.getBoundingClientRect();
-        const scrolled = -rect.top;
-        const total = rect.height - vh;
-        if (total > 0) {
-          const progress = Math.max(0, Math.min(scrolled / total, 1));
-          const slide = progress < 0.33 ? 0 : progress < 0.66 ? 1 : 2;
-          if (slide !== activeAboutSlideRef.current) {
-            setActiveAboutSlide(slide);
           }
         }
       }
@@ -380,7 +440,7 @@ export const Home: React.FC = () => {
 
     window.addEventListener('scroll', handleMobileScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleMobileScroll);
-  }, []);
+  }, [isMobile]);
 
 
 
@@ -526,10 +586,10 @@ export const Home: React.FC = () => {
       </div>
 
       {/* FOUNDERS NOTE SHOWCASE SECTION */}
-      <div className="founders-showcase-container" id="founders-showcase" ref={foundersShowcaseRef}>
+      <div className={`founders-showcase-container ${isMobile ? 'is-mobile' : ''}`} id="founders-showcase" ref={foundersShowcaseRef}>
         <div className="showcase-snap-point"></div>
         <div className="showcase-snap-point"></div>
-        <div className="showcase-snap-point"></div>
+        {!isMobile && <div className="showcase-snap-point"></div>}
         <div className="founders-showcase-sticky">
 
           {/* Slide 0: Why Taaffeite Title Entry */}
@@ -539,6 +599,13 @@ export const Home: React.FC = () => {
                 <h1 className="founders-large-title">
                   Why <span>Taaffeite?</span>
                 </h1>
+              </div>
+
+              {/* Scroll Down Indicator - Mobile Only */}
+              <div className="founders-scroll-indicator">
+                <svg className="scroll-indicator-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 5v14M19 12l-7 7-7-7" />
+                </svg>
               </div>
             </section>
           </div>
@@ -550,9 +617,7 @@ export const Home: React.FC = () => {
                 {/* Background Image wrapper */}
                 <div className="founders-note-bg-image">
                   <OptimizedImage
-                    src="/assets/images/founders3.webp"
-                    srcSet="/assets/images/founders3-sm.webp 600w, /assets/images/founders3-lg.jpg 1200w"
-                    sizes="(max-width: 600px) 100vw, 1200px"
+                    src="/assets/images/founders3-lg.webp"
                     alt="Anya Daisy Vergis & Sipporah - Founders of Taaffeite Events"
                     width={1200}
                     height={800}
@@ -593,80 +658,45 @@ export const Home: React.FC = () => {
             </section>
           </div>
 
-          {/* Slide 2: Why Taaffeite — Brand Pillars */}
-          <div className={`founders-showcase-slide ${activeFoundersSlide === 2 ? 'active' : ''}`} id="founders-slide-2">
-            <section className="founders-grid-section">
-              <div className="founders-pillars-container">
-                <div className="founders-pillars-header">
-                  <h2 className="founders-pillars-title">Story Behind Our <span>Logo</span></h2>
-                  <div className="founders-pillars-divider"></div>
-                </div>
-
-                <div className="founders-trio-row">
-                  <div className="founders-trio-card founders-trio-img--1">
-                    <div className="founders-trio-img-wrapper">
-                      <OptimizedImage
-                        src="/assets/images/1.webp"
-                        alt="Warm Celebrations"
-                        width={2400}
-                        height={3600}
-                        aspectRatio="unset"
-                        containerStyle={{ width: '100%', height: '100%' }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="founders-trio-card founders-trio-img--2">
-                    <div className="founders-trio-img-wrapper">
-                      <OptimizedImage
-                        src="/assets/images/2.webp"
-                        alt="Minimal Styling"
-                        width={2400}
-                        height={3600}
-                        aspectRatio="unset"
-                        containerStyle={{ width: '100%', height: '100%' }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="founders-trio-card founders-trio-img--3">
-                    <div className="founders-trio-img-wrapper">
-                      <OptimizedImage
-                        src="/assets/images/3.webp"
-                        alt="Elegant Design"
-                        width={2400}
-                        height={3600}
-                        aspectRatio="unset"
-                        containerStyle={{ width: '100%', height: '100%' }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
+          {/* Slide 2: Why Taaffeite — Brand Pillars (Desktop only inside sticky container) */}
+          {!isMobile && (
+            <div className={`founders-showcase-slide ${activeFoundersSlide === 2 ? 'active' : ''}`} id="founders-slide-2">
+              <FoundersSlide2Content />
+            </div>
+          )}
 
         </div>
       </div>
 
+      {/* Founders Slide 2 Content (Mobile only rendered statically below the showcase container) */}
+      {isMobile && (
+        <div className="founders-showcase-slide-static" id="founders-slide-2-static">
+          <FoundersSlide2Content />
+        </div>
+      )}
+
       {/* 2. SCROLL-LINKED ABOUT SECTION (3 PARTS) */}
-      <div className="about-showcase-container" id="about-showcase" ref={aboutShowcaseRef}>
-        <div className="showcase-snap-point"></div>
-        <div className="showcase-snap-point"></div>
-        <div className="showcase-snap-point"></div>
+      <div className={`about-showcase-container ${isMobile ? 'is-static' : ''}`} id="about-showcase" ref={aboutShowcaseRef}>
+        {!isMobile && (
+          <>
+            <div className="showcase-snap-point"></div>
+            <div className="showcase-snap-point"></div>
+            <div className="showcase-snap-point"></div>
+          </>
+        )}
         <div className="about-showcase-sticky">
 
           {/* Slide 1 */}
           <div className={`about-showcase-slide ${activeAboutSlide === 0 ? 'active' : ''}`} id="about-slide-0">
             <div className="about-showcase-grid">
-              <div className="about-showcase-info">
+              <div className="about-showcase-info reveal-on-mobile">
                 <h3 className="about-showcase-title">It Starts With Your Story</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
                   Every celebration begins with people, not plans.Before we think about colours, venues, or timelines, we take time to understand who you are, what matters to your family, and the moments you want to remember years from now. Every decision we make grows from your story, your traditions, and your vision, creating a celebration that feels deeply personal from beginning to end.
                 </p>
               </div>
-              <div className="about-showcase-image-wrapper">
+              <div className="about-showcase-image-wrapper reveal-on-mobile">
                 <OptimizedImage
                   src="/assets/05 PHOTOS/Weddings/AKR05567.webp"
                   alt="Taaffeite Beliefs & Proposal Setup"
@@ -682,14 +712,14 @@ export const Home: React.FC = () => {
           {/* Slide 2 */}
           <div className={`about-showcase-slide ${activeAboutSlide === 1 ? 'active' : ''}`} id="about-slide-1">
             <div className="about-showcase-grid">
-              <div className="about-showcase-info">
+              <div className="about-showcase-info reveal-on-mobile">
                 <h3 className="about-showcase-title">Inspired by Rarity</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
                   Taaffeite is one of the rarest gemstones in the world, and that belief shapes everything we create. We have never believed in celebrations that look copied or predictable. Every couple, every family, and every story deserves something uniquely their own. That is why we approach every event with fresh ideas, thoughtful design, and an unwavering attention to detail, creating experiences that feel timeless rather than trendy.
                 </p>
               </div>
-              <div className="about-showcase-image-wrapper">
+              <div className="about-showcase-image-wrapper reveal-on-mobile">
                 <OptimizedImage
                   src="/assets/05 PHOTOS/Weddings/Sanhita & Benny-317 2.webp"
                   alt="Taaffeite Luxury Wedding Ceremony Setup"
@@ -705,14 +735,14 @@ export const Home: React.FC = () => {
           {/* Slide 3 */}
           <div className={`about-showcase-slide ${activeAboutSlide === 2 ? 'active' : ''}`} id="about-slide-2">
             <div className="about-showcase-grid">
-              <div className="about-showcase-info">
+              <div className="about-showcase-info reveal-on-mobile">
                 <h3 className="about-showcase-title">Designed So You Can Be Present</h3>
                 <div className="about-slide-gold-line"></div>
                 <p className="about-showcase-desc">
                   The most memorable celebrations are the ones where you never have to think about what comes next. While you enjoy every conversation, embrace every loved one, and live every moment, we quietly manage everything behind the scenes. From planning and coordination to the smallest finishing touches, every detail is carefully orchestrated so your celebration unfolds effortlessly, exactly as it should.
                 </p>
               </div>
-              <div className="about-showcase-image-wrapper">
+              <div className="about-showcase-image-wrapper reveal-on-mobile">
                 <OptimizedImage
                   src="/assets/05 PHOTOS/Reception/Weva1701.webp"
                   alt="Taaffeite Luxury Reception Design"

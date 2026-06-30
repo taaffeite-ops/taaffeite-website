@@ -35,7 +35,7 @@ export const Media: React.FC = () => {
     { src: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02778.webp', alt: 'Festive Bohemian Lounge Styling', width: 2400, height: 3600 },
     { src: '/assets/05 PHOTOS/Proposal/0041.webp', alt: 'Delicate Fairy Lights Tunnel Setup', width: 4579, height: 6844 },
     { src: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_44222.webp', alt: 'Glow Signage and Neon Tunnel Archway', width: 3651, height: 4564 },
-    { src: '/assets/05 PHOTOS/Weddings/IMG_7087.webp', alt: 'Arching Pastel Pink Blossoms Setup', width: 4752, height: 3168 },
+    { src: '/assets/05 PHOTOS/Weddings/IMG_7087.webp', alt: 'Arching Pastel Pink Blossoms Setup', width: 3168, height: 4752 },
     { src: '/assets/05 PHOTOS/Haldi-Mehandi/AKR03301.webp', alt: 'Vibrant Yellow Backdrop and Drapes', width: 2400, height: 3600 },
     { src: '/assets/05 PHOTOS/Proposal/0044.webp', alt: 'Heart-shaped Warm Light Installations', width: 6315, height: 4210 },
     { src: '/assets/05 PHOTOS/Reception/WEVA1312 2.webp', alt: 'Gilded Tableware and Olive Table Runners', width: 3651, height: 5477 },

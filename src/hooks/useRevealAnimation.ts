@@ -8,7 +8,7 @@ import { useEffect } from 'react';
  */
 export function useRevealAnimation() {
   useEffect(() => {
-    const selectors = '.reveal-up, .reveal-fade, .reveal-scale, .reveal-clip, .reveal-from-left, .reveal-from-right';
+    const selectors = '.reveal-up, .reveal-fade, .reveal-scale, .reveal-clip, .reveal-from-left, .reveal-from-right, .reveal-on-mobile';
 
     // Hoist the observer reference so the cleanup function can disconnect it
     // even if the idle callback fires after unmount.
