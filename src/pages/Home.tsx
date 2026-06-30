@@ -216,7 +216,7 @@ const FoundersSlide2Content: React.FC = () => {
 export const Home: React.FC = () => {
 
 
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 767px)');
