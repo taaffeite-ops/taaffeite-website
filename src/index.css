@@ -3609,31 +3609,25 @@ body.menu-open .menu-drawer {
     }
 
     /* Mobile Touch-Swipe Gallery for Slide 3 */
+    .founders-trio-slider-wrapper {
+        overflow: hidden !important;
+        width: 100% !important;
+        touch-action: pan-y !important;
+    }
+
     .founders-trio-row {
+        display: flex !important;
         flex-direction: row !important;
-        overflow-x: auto !important;
-        scroll-snap-type: x mandatory !important;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
         gap: 16px !important;
         padding: 10px 30px 60px !important; /* Increased bottom padding to accommodate card shadow without clipping */
-        width: 100% !important;
+        width: max-content !important;
         justify-content: flex-start !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-
-    .founders-trio-row::-webkit-scrollbar {
-        display: none;
-    }
-
-    .founders-trio-row.is-autoscrolling {
-        scroll-snap-type: none !important;
+        will-change: transform;
     }
 
     .founders-trio-card {
-        flex: 0 0 75% !important;
+        flex: 0 0 280px !important;
         max-width: 280px !important;
-        scroll-snap-align: center !important;
         opacity: 1;
     }
 
