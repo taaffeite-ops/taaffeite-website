@@ -1868,6 +1868,11 @@ body.menu-open .menu-drawer {
     margin: 0;
 }
 
+.services-page-container {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 .services-grid-list {
     max-width: 1200px;
     margin: 80px auto;
