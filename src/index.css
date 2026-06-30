@@ -3314,6 +3314,12 @@ body.menu-open .menu-drawer {
     opacity: 1; /* Default/Mobile visible */
 }
 
+@media(min-width: 768px) {
+    .founders-trio-card.duplicate {
+        display: none !important;
+    }
+}
+
 .founders-trio-img-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1.1;
@@ -3618,6 +3624,10 @@ body.menu-open .menu-drawer {
 
     .founders-trio-row::-webkit-scrollbar {
         display: none;
+    }
+
+    .founders-trio-row.is-autoscrolling {
+        scroll-snap-type: none !important;
     }
 
     .founders-trio-card {

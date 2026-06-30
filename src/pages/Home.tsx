@@ -4,6 +4,122 @@ import { OptimizedImage } from '../components/OptimizedImage';
 import { useRevealAnimation } from '../hooks/useRevealAnimation';
 
 const FoundersSlide2Content: React.FC = () => {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const isInteractingRef = useRef(false);
+  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row) return;
+
+    let animationId: number;
+    const speed = 0.5; // pixels per frame
+    let scrollPos = row.scrollLeft;
+
+    let cachedLoopWidth = 0;
+    let cachedIsScrollable = false;
+
+    const updateCachedDimensions = () => {
+      if (row.children.length >= 6) {
+        const firstDup = row.children[3] as HTMLElement;
+        const firstOrig = row.children[0] as HTMLElement;
+        if (firstDup && firstOrig) {
+          cachedLoopWidth = firstDup.offsetLeft - firstOrig.offsetLeft;
+        }
+        cachedIsScrollable = row.scrollWidth > row.clientWidth;
+      }
+    };
+
+    // Calculate dimensions after a small delay to ensure images/layout are ready
+    const initTimeout = setTimeout(() => {
+      updateCachedDimensions();
+      scrollPos = row.scrollLeft;
+    }, 800);
+
+    const step = () => {
+      if (!isInteractingRef.current && cachedIsScrollable && cachedLoopWidth > 0) {
+        scrollPos += speed;
+
+        if (scrollPos >= cachedLoopWidth) {
+          scrollPos -= cachedLoopWidth;
+        }
+        row.scrollLeft = Math.round(scrollPos); // Write-only operation to avoid layout thrashing
+      }
+      animationId = requestAnimationFrame(step);
+    };
+
+    // Enable autoscroll styling initially
+    row.classList.add('is-autoscrolling');
+    animationId = requestAnimationFrame(step);
+
+    const handleInteractionStart = () => {
+      isInteractingRef.current = true;
+      row.classList.remove('is-autoscrolling');
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+    };
+
+    const handleInteractionEnd = () => {
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+      interactionTimeoutRef.current = setTimeout(() => {
+        scrollPos = row.scrollLeft;
+        isInteractingRef.current = false;
+        row.classList.add('is-autoscrolling');
+      }, 2000); // 2 seconds delay after last interaction
+    };
+
+    const handleScroll = () => {
+      if (cachedLoopWidth > 0) {
+        let currentScroll = row.scrollLeft;
+
+        // Wrap around during manual swiping
+        if (currentScroll >= cachedLoopWidth + 20) {
+          currentScroll -= cachedLoopWidth;
+          row.scrollLeft = currentScroll;
+        } else if (currentScroll <= 5) {
+          currentScroll += cachedLoopWidth;
+          row.scrollLeft = currentScroll;
+        }
+        scrollPos = currentScroll;
+      }
+      if (isInteractingRef.current) {
+        handleInteractionEnd();
+      }
+    };
+
+    row.addEventListener('touchstart', handleInteractionStart, { passive: true });
+    row.addEventListener('touchend', handleInteractionEnd, { passive: true });
+    row.addEventListener('touchcancel', handleInteractionEnd, { passive: true });
+    row.addEventListener('mousedown', handleInteractionStart);
+    row.addEventListener('mouseup', handleInteractionEnd);
+    row.addEventListener('mouseleave', handleInteractionEnd);
+    row.addEventListener('wheel', handleInteractionStart, { passive: true });
+    row.addEventListener('scroll', handleScroll);
+
+    // Update dimensions on resize
+    window.addEventListener('resize', updateCachedDimensions);
+
+    return () => {
+      clearTimeout(initTimeout);
+      cancelAnimationFrame(animationId);
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+      row.removeEventListener('touchstart', handleInteractionStart);
+      row.removeEventListener('touchend', handleInteractionEnd);
+      row.removeEventListener('touchcancel', handleInteractionEnd);
+      row.removeEventListener('mousedown', handleInteractionStart);
+      row.removeEventListener('mouseup', handleInteractionEnd);
+      row.removeEventListener('mouseleave', handleInteractionEnd);
+      row.removeEventListener('wheel', handleInteractionStart);
+      row.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateCachedDimensions);
+    };
+  }, []);
+
   return (
     <section className="founders-grid-section">
       <div className="founders-pillars-container">
@@ -12,7 +128,7 @@ const FoundersSlide2Content: React.FC = () => {
           <div className="founders-pillars-divider"></div>
         </div>
 
-        <div className="founders-trio-row">
+        <div className="founders-trio-row" ref={rowRef}>
           <div className="founders-trio-card founders-trio-img--1">
             <div className="founders-trio-img-wrapper">
               <OptimizedImage
@@ -40,6 +156,46 @@ const FoundersSlide2Content: React.FC = () => {
           </div>
 
           <div className="founders-trio-card founders-trio-img--3">
+            <div className="founders-trio-img-wrapper">
+              <OptimizedImage
+                src="/assets/images/3.webp"
+                alt="Elegant Design"
+                width={2400}
+                height={3600}
+                aspectRatio="unset"
+                containerStyle={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
+
+          {/* Duplicated set for seamless loop */}
+          <div className="founders-trio-card founders-trio-img--1 duplicate">
+            <div className="founders-trio-img-wrapper">
+              <OptimizedImage
+                src="/assets/images/1.webp"
+                alt="Warm Celebrations"
+                width={2400}
+                height={3600}
+                aspectRatio="unset"
+                containerStyle={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
+
+          <div className="founders-trio-card founders-trio-img--2 duplicate">
+            <div className="founders-trio-img-wrapper">
+              <OptimizedImage
+                src="/assets/images/2.webp"
+                alt="Minimal Styling"
+                width={2400}
+                height={3600}
+                aspectRatio="unset"
+                containerStyle={{ width: '100%', height: '100%' }}
+              />
+            </div>
+          </div>
+
+          <div className="founders-trio-card founders-trio-img--3 duplicate">
             <div className="founders-trio-img-wrapper">
               <OptimizedImage
                 src="/assets/images/3.webp"
