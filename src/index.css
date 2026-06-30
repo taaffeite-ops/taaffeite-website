@@ -3314,12 +3314,6 @@ body.menu-open .menu-drawer {
     opacity: 1; /* Default/Mobile visible */
 }
 
-@media(min-width: 768px) {
-    .founders-trio-card.duplicate {
-        display: none !important;
-    }
-}
-
 .founders-trio-img-wrapper {
     width: 100%;
     aspect-ratio: 1 / 1.1;
@@ -3340,15 +3334,13 @@ body.menu-open .menu-drawer {
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-@media (hover: hover) and (min-width: 768px) {
-    .founders-trio-card:hover .founders-trio-img-wrapper {
-        transform: translateY(-6px);
-        box-shadow: 0 20px 40px rgba(197, 160, 89, 0.2);
-    }
+.founders-trio-card:hover .founders-trio-img-wrapper {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(197, 160, 89, 0.2);
+}
 
-    .founders-trio-card:hover .founders-trio-img-wrapper img {
-        transform: scale(1.05);
-    }
+.founders-trio-card:hover .founders-trio-img-wrapper img {
+    transform: scale(1.05);
 }
 
 /* Entrance animation */
@@ -3628,10 +3620,6 @@ body.menu-open .menu-drawer {
         display: none;
     }
 
-    .founders-trio-row.is-autoscrolling {
-        scroll-snap-type: none !important;
-    }
-
     .founders-trio-card {
         flex: 0 0 75% !important;
         max-width: 280px !important;
@@ -3643,11 +3631,6 @@ body.menu-open .menu-drawer {
         border-radius: 40px 10px 40px 10px !important;
         aspect-ratio: 4 / 5 !important;
         border: 1px solid rgba(197, 160, 89, 0.45) !important;
-        transition: none !important;
-    }
-
-    .founders-trio-img-wrapper img {
-        transition: none !important;
     }
 
     .founders-grid-container {
