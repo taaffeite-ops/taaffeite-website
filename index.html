@@ -157,7 +157,37 @@
     })();
   </script>
 
-  <div id="root"></div>
+  <div id="root">
+    <!-- Static Hero Image and Logo Placeholder to Eliminate LCP Hydration Delay -->
+    <div style="position: relative; width: 100vw; height: 100vh; background-color: #000; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+      <!-- Hero Background Image (same as first image in hero slideshow) -->
+      <img 
+        src="/assets/05 PHOTOS/Proposal/0039-lg.webp" 
+        srcset="/assets/05 PHOTOS/Proposal/0039-sm.webp 600w, /assets/05 PHOTOS/Proposal/0039-md.webp 1200w, /assets/05 PHOTOS/Proposal/0039-lg.webp 2000w"
+        sizes="100vw"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.7;" 
+        alt="Luxury Celebration Background"
+        fetchpriority="high"
+      />
+      <!-- Hero Dark Overlay -->
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%); z-index: 2;"></div>
+      <!-- Logo top left placeholder matching hero-brand-logo-top-left -->
+      <div class="static-logo-placeholder" style="position: absolute; top: 10px; left: -12px; z-index: 10; width: 120px; height: 120px; filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.35));">
+        <img src="/assets/images/logo.webp" style="width: 100%; height: 100%; object-fit: contain;" alt="Taaffeite Events Logo" />
+      </div>
+      <!-- Media query style classes for larger devices matching CSS layout exactly -->
+      <style>
+        @media (min-width: 768px) {
+          .static-logo-placeholder {
+            top: 5px !important;
+            left: 10px !important;
+            width: 150px !important;
+            height: 140px !important;
+          }
+        }
+      </style>
+    </div>
+  </div>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
