@@ -126,8 +126,8 @@
       }
 
       if (document.readyState === 'complete') {
-        // Visual buffer of 600ms if page is already cached/complete
-        setTimeout(dismissLoader, 600);
+        // Visual buffer of 2000ms if page is already cached/complete
+        setTimeout(dismissLoader, 2000);
       } else {
         var startTime = Date.now();
         var dismissed = false;
@@ -137,7 +137,7 @@
           if (dismissed) return;
           dismissed = true;
           var elapsed = Date.now() - startTime;
-          var delay = Math.max(0, 600 - elapsed); // preserve 600ms min display time
+          var delay = Math.max(0, 2000 - elapsed); // preserve 2000ms min display time
           setTimeout(dismissLoader, delay);
         }
 
@@ -149,8 +149,8 @@
         // (e.g. JS errors, very old browsers). No longer the primary path.
         window.addEventListener('load', tryDismiss, { once: true });
 
-        // Safety valve: reduced from 5s to 3s
-        setTimeout(dismissLoader, 3000);
+        // Safety valve: wait up to 8s if React loading is slow, otherwise tryDismiss handles the 2s min duration
+        setTimeout(dismissLoader, 8000);
       }
     })();
   </script>
