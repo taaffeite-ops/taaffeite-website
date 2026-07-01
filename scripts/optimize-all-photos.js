@@ -46,9 +46,9 @@ async function run() {
       const metadata = await sharp(inputBuffer).metadata();
       const originalSize = inputBuffer.length;
 
-      // If the image is already reasonable size (width <= 1000px) and it's webp, skip
-      if (metadata.width <= 1000 && path.extname(file).toLowerCase() === '.webp') {
-        console.log(`Skipping (already optimized): ${path.relative(rootDir, file)} (${metadata.width}x${metadata.height})`);
+      // If the image is already reasonable size (width <= 800px) and it's webp, skip
+      if (metadata.width <= 800 && path.extname(file).toLowerCase() === '.webp') {
+        console.log(`Skipping (already optimized <= 800px): ${path.relative(rootDir, file)} (${metadata.width}x${metadata.height})`);
         continue;
       }
 
@@ -59,17 +59,17 @@ async function run() {
       const dirName = path.dirname(file);
 
       let finalPipeline = sharp(inputBuffer);
-      if (metadata.width > 1000) {
-        finalPipeline = finalPipeline.resize(1000, null, { fit: 'inside', withoutEnlargement: true });
+      if (metadata.width > 800) {
+        finalPipeline = finalPipeline.resize(800, null, { fit: 'inside', withoutEnlargement: true });
       }
 
       let outputBuffer;
       if (ext === '.webp') {
-        outputBuffer = await finalPipeline.webp({ quality: 80 }).toBuffer();
+        outputBuffer = await finalPipeline.webp({ quality: 75 }).toBuffer();
       } else if (ext === '.png') {
         outputBuffer = await finalPipeline.png({ compressionLevel: 9 }).toBuffer();
       } else {
-        outputBuffer = await finalPipeline.jpeg({ quality: 80 }).toBuffer();
+        outputBuffer = await finalPipeline.jpeg({ quality: 75 }).toBuffer();
       }
 
       // Write output buffer back to file (this is safe since the file is not locked)
