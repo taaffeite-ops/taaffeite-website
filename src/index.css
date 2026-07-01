@@ -3605,8 +3605,8 @@ body.menu-open .menu-drawer {
     }
 
     .founders-note-content-wrapper {
-        justify-content: flex-start;
-        padding: 60px 20px 20px !important;
+        justify-content: center;
+        padding: 40px 20px 30px !important;
         overflow-y: auto;
     }
 
