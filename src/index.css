@@ -2531,13 +2531,13 @@ body.menu-open .menu-drawer {
 
 /* Lightbox Modal */
 .lightbox-modal {
-    position: fixed;
+    position: fixed !important;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(10, 10, 10, 0.96);
-    z-index: 100000;
+    z-index: 100000 !important;
     display: none;
     align-items: center;
     justify-content: center;
@@ -3856,7 +3856,7 @@ html.has-scroll-snap {
 
 .home-page-container > *:not(canvas),
 .services-page-container > *,
-.media-page-container > *,
+.media-page-container > *:not(.lightbox-modal),
 .enquire-page-container > * {
     position: relative;
     z-index: 3;
