@@ -66,7 +66,7 @@ const MobileLogoCarousel: React.FC = () => {
     }
   }, [transitionEnabled]);
 
-  // Auto-scroll loop effect: advances slides every 3 seconds when idle
+  // Auto-scroll loop effect: advances slides every 2 seconds when idle
   useEffect(() => {
     if (isDragging || isTransitioning) return;
 
@@ -74,7 +74,7 @@ const MobileLogoCarousel: React.FC = () => {
       setIsTransitioning(true);
       setTransitionEnabled(true);
       setCurrentIndex(prev => prev + 1);
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [isDragging, isTransitioning]);
@@ -94,7 +94,7 @@ const MobileLogoCarousel: React.FC = () => {
     if (!isDragging || isTransitioning) return;
     const touch = e.touches[0];
     currentXRef.current = touch.clientX;
-    
+
     const diffX = touch.clientX - startXRef.current;
     const diffY = touch.clientY - startYRef.current;
 
@@ -157,13 +157,13 @@ const MobileLogoCarousel: React.FC = () => {
 
   const trackStyle: React.CSSProperties = {
     transform: `translate3d(${translateOffset}px, 0, 0)`,
-    transition: transitionEnabled && !isDragging ? 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
+    transition: transitionEnabled && !isDragging ? 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
   };
 
   return (
     <div className="mobile-carousel-container" ref={containerRef}>
-      <div 
-        className="mobile-carousel-track" 
+      <div
+        className="mobile-carousel-track"
         style={trackStyle}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -181,7 +181,7 @@ const MobileLogoCarousel: React.FC = () => {
                 width: `${cardWidth}px`,
                 margin: `0 ${gap / 2}px`,
                 boxSizing: 'border-box',
-                transition: transitionEnabled && !isDragging ? 'opacity 0.45s ease, transform 0.45s ease' : 'none',
+                transition: transitionEnabled && !isDragging ? 'opacity 0.3s ease, transform 0.3s ease' : 'none',
                 opacity: isActive ? 1 : 0.4,
                 transform: isActive ? 'scale(1)' : 'scale(0.88)',
               }}

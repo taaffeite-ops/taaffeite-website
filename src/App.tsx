@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { MenuDrawer } from './components/MenuDrawer';
 import { Footer } from './components/Footer';
 import { Analytics } from '@vercel/analytics/react';
+import { InteractiveBackground } from './components/InteractiveBackground';
 
 // Lazy load pages for performance optimization (code splitting)
 const Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
@@ -111,6 +112,7 @@ function App() {
       <ScrollToTop />
       <ScrollRevealTrigger />
       <div className="app-container">
+        <InteractiveBackground />
         <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <MenuDrawer isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         
