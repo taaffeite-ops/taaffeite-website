@@ -9,6 +9,7 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => 
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const removeInteractionListenersRef = useRef<(() => void) | null>(null);
+  const wasPlayingRef = useRef(false);
 
   useEffect(() => {
     // Instantiate global background audio
@@ -55,9 +56,36 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => 
     window.addEventListener('scroll', startPlay, { passive: true });
     window.addEventListener('touchstart', startPlay, { passive: true });
 
+    // Handle backgrounding / minimizing / tab switching
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (audioRef.current && !audioRef.current.paused) {
+          audioRef.current.pause();
+          wasPlayingRef.current = true;
+          setIsPlaying(false);
+        } else {
+          wasPlayingRef.current = false;
+        }
+      } else {
+        if (wasPlayingRef.current && audioRef.current) {
+          audioRef.current.play()
+            .then(() => {
+              setIsPlaying(true);
+            })
+            .catch((err) => {
+              console.log("Failed to resume audio on visibility change:", err.message);
+            });
+          wasPlayingRef.current = false;
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
       audio.pause();
       removeInteractionListeners();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
 
