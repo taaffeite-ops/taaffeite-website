@@ -578,7 +578,7 @@ body.menu-open .menu-drawer {
 @media(min-width: 768px) {
     .hero-brand-logo-top-left {
         top: 5px;
-        left: 10px;
+        left: -15px;
         width: 150px;
         height: 140px;
     }
