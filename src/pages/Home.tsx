@@ -267,14 +267,14 @@ export const Home: React.FC = () => {
         />
       </Suspense>
 
-      {/* STORY BEHIND OUR LOGO SECTION (SEPARATE SECTION) */}
-      <Suspense fallback={<div style={{ minHeight: '600px', backgroundColor: 'var(--bg-cream)' }} />}>
-        <LogoStorySection isMobile={isMobile} />
-      </Suspense>
-
       {/* SCHEDULE OF THE DAY & VERTICAL JOURNEY TIMELINE */}
       <Suspense fallback={<div style={{ minHeight: '600px', backgroundColor: 'var(--bg-cream)' }} />}>
         <JourneyTimeline />
+      </Suspense>
+
+      {/* STORY BEHIND OUR LOGO SECTION (SEPARATE SECTION) */}
+      <Suspense fallback={<div style={{ minHeight: '600px', backgroundColor: 'var(--bg-cream)' }} />}>
+        <LogoStorySection isMobile={isMobile} />
       </Suspense>
 
       {/* 2. SCROLL-LINKED ABOUT SECTION (3 PARTS) */}
