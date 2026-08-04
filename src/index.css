@@ -206,7 +206,8 @@ a {
 @media (max-width: 768px) {
     .site-header {
         top: 8px !important;
-        width: 88% !important;
+        width: 90% !important;
+        min-width: 0 !important;
         padding: 8px 16px !important;
         border-radius: 30px !important;
     }
