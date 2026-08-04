@@ -1,0 +1,150 @@
+import React, { useState, useEffect, Suspense } from 'react';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Header } from './components/Header';
+import { Analytics } from '@vercel/analytics/react';
+import { ReactLenis } from 'lenis/react';
+import 'lenis/dist/lenis.css';
+
+// Lazy load pages for performance optimization (code splitting)
+const Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
+const Services = React.lazy(() => import('./pages/Services').then(module => ({ default: module.Services })));
+const Media = React.lazy(() => import('./pages/Media').then(module => ({ default: module.Media })));
+const Enquire = React.lazy(() => import('./pages/Enquire').then(module => ({ default: module.Enquire })));
+
+// Lazy load non-critical components
+const Footer = React.lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
+
+// Scroll to top component on route changes
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+  }, [pathname]);
+  
+  return null;
+};
+
+// Global scroll reveal observer trigger
+const ScrollRevealTrigger: React.FC = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    let observer: IntersectionObserver | null = null;
+
+    const setupReveal = () => {
+      if (observer) {
+        observer.disconnect();
+      }
+
+      const revealElements = document.querySelectorAll('.reveal-on-scroll');
+      
+      if ('IntersectionObserver' in window && revealElements.length > 0) {
+        observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => {
+          if (!el.classList.contains('active') && observer) {
+            observer.observe(el);
+          }
+        });
+      } else if (!('IntersectionObserver' in window)) {
+        revealElements.forEach(el => el.classList.add('active'));
+      }
+    };
+
+    // Reset reveal elements active class on pathname change to animate them again
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    revealElements.forEach(el => {
+      el.classList.remove('active');
+    });
+
+    // Deferred timers catch lazy-loaded content after route transitions.
+    // The immediate synchronous call is intentionally omitted — useRevealAnimation
+    // in each page component handles initial setup via requestIdleCallback.
+    const timer1 = setTimeout(setupReveal, 100);
+    const timer2 = setTimeout(setupReveal, 350);
+    const timer3 = setTimeout(setupReveal, 800);
+
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, [pathname]);
+
+  return null;
+};
+
+function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Signal to the global loader that React has mounted and the page is ready.
+  // Also configure scroll restoration to manual to prevent automatic snap-to-old scroll positions.
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    document.dispatchEvent(new Event('react-ready'));
+  }, []);
+
+
+
+  return (
+    <ReactLenis root>
+      <Router>
+        <ScrollToTop />
+        <ScrollRevealTrigger />
+        <div className="app-container">
+          <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+          
+          <main className="main-content">
+            <Suspense fallback={
+              <div className="page-loader" style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                fontFamily: 'var(--font-sans)',
+                color: 'var(--color-gold)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                fontSize: '0.9rem'
+              }}>
+                Loading...
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/media" element={<Media />} />
+                <Route path="/enquire" element={<Enquire />} />
+                {/* Fallback redirect */}
+                <Route path="*" element={<Home />} />
+              </Routes>
+            </Suspense>
+          </main>
+          
+          <Suspense fallback={<div style={{ minHeight: '300px', backgroundColor: 'var(--color-navy)' }} />}>
+            <Footer />
+          </Suspense>
+        </div>
+        <Analytics />
+      </Router>
+    </ReactLenis>
+  );
+}
+
+export default App;
