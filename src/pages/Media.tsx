@@ -850,12 +850,11 @@ export const Media: React.FC = () => {
         <div className="media-masonry" id="gallery-grid">
           {photos.slice(0, visibleCount).map((photo, index) => (
             <div
-              key={index}
-              className="media-item reveal-scale"
+              key={photo.src}
+              className="media-item"
               onClick={() => openLightbox(index)}
               style={{
                 cursor: 'pointer',
-                transitionDelay: `${(index % 4) * 0.06}s`,
               }}
             >
               <OptimizedImage
@@ -863,7 +862,7 @@ export const Media: React.FC = () => {
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                eager={index < 2}
+                eager={index < 4}
               />
             </div>
           ))}
