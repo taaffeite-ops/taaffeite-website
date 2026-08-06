@@ -22,19 +22,14 @@ export default defineConfig({
     reportCompressedSize: false,
     rollupOptions: {
       output: {
-        // Granular vendor code splitting to keep JS chunks lean and avoid monolithic vendor execution
+        // Split heavy vendor libs into a separate chunk so the main bundle
+        // is smaller and hydrates faster, reducing LCP render delay
         manualChunks(id) {
-          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
-            return 'react-vendor';
-          }
-          if (id.includes('node_modules/react-router-dom/') || id.includes('node_modules/react-router/')) {
-            return 'router-vendor';
-          }
-          if (id.includes('node_modules/lenis/')) {
-            return 'lenis-vendor';
-          }
-          if (id.includes('node_modules/@vercel/')) {
-            return 'analytics-vendor';
+          if (id.includes('node_modules/react/') ||
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/react-router-dom/') ||
+              id.includes('node_modules/react-router/')) {
+            return 'vendor';
           }
         }
       }

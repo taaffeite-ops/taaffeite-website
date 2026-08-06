@@ -13,7 +13,6 @@ export const Media: React.FC = () => {
   useRevealAnimation();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [fadeActive, setFadeActive] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(18);
 
   const photos: MediaPhoto[] = [
     {
@@ -459,27 +458,13 @@ export const Media: React.FC = () => {
     }, 200);
   };
 
-  // Progressive batch rendering to drastically reduce initial DOM size
-  useEffect(() => {
-    const handleScroll = () => {
-      if (visibleCount >= photos.length) return;
-      const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.offsetHeight - 900;
-      if (scrollPosition >= threshold) {
-        setVisibleCount(prev => Math.min(prev + 12, photos.length));
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [visibleCount, photos.length]);
-
   return (
     <div className="media-page-container">
-      {/* MEDIA HERO */}
-      <section className="media-hero">
-        <h1 className="media-title reveal-fade">Visual Log</h1>
-        <p className="media-subtitle reveal-up">Refined aesthetics. Enduring memories.</p>
+      {/* PAGE BANNER */}
+      <section className="page-banner">
+        <h1>Media & Impressions</h1>
+        <div className="page-banner-diamond"></div>
+        <p>A visual gallery of our signature celebrations</p>
       </section>
 
       {/* MEDIA INTRO */}
@@ -493,10 +478,10 @@ export const Media: React.FC = () => {
       {/* MASONRY GALLERY */}
       <section className="gallery-section">
         <div className="media-masonry" id="gallery-grid">
-          {photos.slice(0, visibleCount).map((photo, index) => (
+          {photos.map((photo, index) => (
             <div
               key={index}
-              className="media-item reveal-scale active"
+              className="media-item reveal-scale"
               onClick={() => openLightbox(index)}
               style={{
                 cursor: 'pointer',
