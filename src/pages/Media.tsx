@@ -13,6 +13,7 @@ export const Media: React.FC = () => {
   useRevealAnimation();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [fadeActive, setFadeActive] = useState(true);
+  const [visibleCount, setVisibleCount] = useState(16);
 
   const photos: MediaPhoto[] = [
     {
@@ -368,24 +369,7 @@ export const Media: React.FC = () => {
       alt: "Ornate silk drapes and gold pillar wedding details by Taaffeite Events — Bangalore wedding planners",
       width: 5760,
       height: 8640
-    }
-import React, { useState, useEffect } from 'react';
-import { OptimizedImage } from '../components/OptimizedImage';
-import { useRevealAnimation } from '../hooks/useRevealAnimation';
-
-interface MediaPhoto {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-}
-
-export const Media: React.FC = () => {
-  useRevealAnimation();
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [fadeActive, setFadeActive] = useState(true);
-
-  const photos: MediaPhoto[] = [
+    },
     {
       src: "/assets/05 PHOTOS/1/0013.webp",
       alt: "Bespoke grand mandap floral arch design by Taaffeite Events — luxury wedding planners in Bangalore",
@@ -829,6 +813,21 @@ export const Media: React.FC = () => {
     }, 200);
   };
 
+  // Progressive batch rendering: render initial 16 items for fast LCP/FCP, load remaining in batches on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (visibleCount >= photos.length) return;
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const threshold = document.documentElement.offsetHeight - 800;
+      if (scrollPosition >= threshold) {
+        setVisibleCount(prev => Math.min(prev + 12, photos.length));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [visibleCount, photos.length]);
+
   return (
     <div className="media-page-container">
       {/* PAGE BANNER */}
@@ -849,14 +848,14 @@ export const Media: React.FC = () => {
       {/* MASONRY GALLERY */}
       <section className="gallery-section">
         <div className="media-masonry" id="gallery-grid">
-          {photos.map((photo, index) => (
+          {photos.slice(0, visibleCount).map((photo, index) => (
             <div
               key={index}
               className="media-item reveal-scale"
               onClick={() => openLightbox(index)}
               style={{
                 cursor: 'pointer',
-                transitionDelay: `${(index % 4) * 0.08}s`,
+                transitionDelay: `${(index % 4) * 0.06}s`,
               }}
             >
               <OptimizedImage
@@ -864,7 +863,7 @@ export const Media: React.FC = () => {
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                eager={index < 8}
+                eager={index < 2}
               />
             </div>
           ))}
