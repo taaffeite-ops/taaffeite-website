@@ -10,6 +10,8 @@ export function useRevealAnimation() {
   useEffect(() => {
     const selectors = '.reveal-up, .reveal-fade, .reveal-scale, .reveal-clip, .reveal-from-left, .reveal-from-right, .reveal-on-mobile';
 
+    // Hoist the observer reference so the cleanup function can disconnect it
+    // even if the idle callback fires after unmount.
     let observer: IntersectionObserver | null = null;
 
     const setup = () => {
@@ -25,16 +27,28 @@ export function useRevealAnimation() {
             }
           });
         },
-        { threshold: 0.01, rootMargin: '150px 0px 150px 0px' }
+        { threshold: 0.10, rootMargin: '0px 0px -30px 0px' }
       );
 
       revealEls.forEach((el) => observer!.observe(el));
     };
 
-    // Run setup immediately so elements in view reveal instantly without waiting for scroll/idle
-    setup();
+    // Push setup off the critical render task.
+    // timeout:2000 ensures it still runs even if the browser is busy.
+    // Falls back to setTimeout for Safari which doesn't support requestIdleCallback.
+    let idleId: number;
+    if (typeof requestIdleCallback !== 'undefined') {
+      idleId = requestIdleCallback(setup, { timeout: 2000 });
+    } else {
+      idleId = window.setTimeout(setup, 200) as unknown as number;
+    }
 
     return () => {
+      if (typeof cancelIdleCallback !== 'undefined') {
+        cancelIdleCallback(idleId);
+      } else {
+        clearTimeout(idleId);
+      }
       observer?.disconnect();
     };
   }, []);
