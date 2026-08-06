@@ -13,7 +13,6 @@ export const Media: React.FC = () => {
   useRevealAnimation();
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [fadeActive, setFadeActive] = useState(true);
-  const [visibleCount, setVisibleCount] = useState(16);
 
   const photos: MediaPhoto[] = [
     {
@@ -813,21 +812,6 @@ export const Media: React.FC = () => {
     }, 200);
   };
 
-  // Progressive batch rendering: render initial 16 items for fast LCP/FCP, load remaining in batches on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (visibleCount >= photos.length) return;
-      const scrollPosition = window.innerHeight + window.scrollY;
-      const threshold = document.documentElement.offsetHeight - 800;
-      if (scrollPosition >= threshold) {
-        setVisibleCount(prev => Math.min(prev + 12, photos.length));
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [visibleCount, photos.length]);
-
   return (
     <div className="media-page-container">
       {/* PAGE BANNER */}
@@ -848,13 +832,14 @@ export const Media: React.FC = () => {
       {/* MASONRY GALLERY */}
       <section className="gallery-section">
         <div className="media-masonry" id="gallery-grid">
-          {photos.slice(0, visibleCount).map((photo, index) => (
+          {photos.map((photo, index) => (
             <div
-              key={photo.src}
-              className="media-item"
+              key={index}
+              className="media-item reveal-scale"
               onClick={() => openLightbox(index)}
               style={{
                 cursor: 'pointer',
+                transitionDelay: `${(index % 4) * 0.08}s`,
               }}
             >
               <OptimizedImage
@@ -862,7 +847,7 @@ export const Media: React.FC = () => {
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                eager={index < 4}
+                eager={index < 8}
               />
             </div>
           ))}
