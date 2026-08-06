@@ -46,9 +46,9 @@ async function run() {
       const metadata = await sharp(inputBuffer).metadata();
       const originalSize = inputBuffer.length;
 
-      // If the image is already reasonable size (width <= 500px) and it's webp, skip
-      if (metadata.width <= 500 && path.extname(file).toLowerCase() === '.webp') {
-        console.log(`Skipping (already optimized <= 500px): ${path.relative(rootDir, file)} (${metadata.width}x${metadata.height})`);
+      // If the image is already reasonable size (width <= 800px) and it's webp, skip
+      if (metadata.width <= 800 && path.extname(file).toLowerCase() === '.webp') {
+        console.log(`Skipping (already optimized <= 800px): ${path.relative(rootDir, file)} (${metadata.width}x${metadata.height})`);
         continue;
       }
 
@@ -59,8 +59,8 @@ async function run() {
       const dirName = path.dirname(file);
 
       let finalPipeline = sharp(inputBuffer);
-      if (metadata.width > 500) {
-        finalPipeline = finalPipeline.resize(500, null, { fit: 'inside', withoutEnlargement: true });
+      if (metadata.width > 800) {
+        finalPipeline = finalPipeline.resize(800, null, { fit: 'inside', withoutEnlargement: true });
       }
 
       let outputBuffer;
