@@ -17,13 +17,13 @@ export const Footer: React.FC = () => {
         {/* Brand description */}
         <div className="footer-brand">
           <OptimizedImage
-            src="/assets/images/logo.webp"
+            src="/assets/images/navbar-logo.webp"
             alt="Taaffeite Events Logo"
             className="footer-logo"
-            width={80}
-            height={80}
+            width={62}
+            height={62}
             objectFit="contain"
-            containerStyle={{ width: '80px', height: '80px', backgroundColor: 'transparent' }}
+            containerStyle={{ width: '62px', height: '62px', backgroundColor: 'transparent' }}
           />
           <p className="footer-desc">
             Taaffeite is a high-end luxury events planning agency specializing in elegant, warm, and minimal celebrations. Named after one of the rarest gemstones in the world.

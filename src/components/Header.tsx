@@ -158,13 +158,11 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => 
       <header className={`site-header ${headerLoaded ? 'header-animated' : ''} ${isScrolled || !isHomePage ? 'scrolled' : 'at-top'} ${isScrolled ? 'is-scrolled' : ''} ${isVisible ? 'nav-visible' : 'nav-hidden'} ${isMenuOpen ? 'menu-expanded' : ''}`}>
         <div className="header-top-row">
           {/* Mobile-only logo inside header */}
-          {isHomePage && (
-            <div className="header-brand-left mobile-only">
-              <Link to="/" className="header-logo-link" aria-label="Taaffeite Events Home" onClick={() => setIsMenuOpen && setIsMenuOpen(false)}>
-                <img src="/assets/images/navbar-logo.webp" alt="Taaffeite Events Logo" className="header-logo-img" />
-              </Link>
-            </div>
-          )}
+          <div className="header-brand-left mobile-only">
+            <Link to="/" className="header-logo-link" aria-label="Taaffeite Events Home" onClick={() => setIsMenuOpen && setIsMenuOpen(false)}>
+              <img src="/assets/images/navbar-logo.webp" alt="Taaffeite Events Logo" className="header-logo-img" />
+            </Link>
+          </div>
 
           <nav className="header-top-nav">
             <Link to="/" className={`top-nav-link ${location.pathname === '/' ? 'active' : ''}`}>HOME</Link>
@@ -175,24 +173,22 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => 
 
           <div className="header-controls">
             {/* Mobile-only sound control inside header */}
-            {isHomePage && (
-              <button 
-                className="sound-toggle mobile-only" 
-                id="sound-toggle-mobile" 
-                onClick={toggleSound}
-                aria-label={isPlaying ? "Mute Background Music" : "Unmute Background Music"}
-              >
-                {isPlaying ? (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24">
-                    <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73l4.27 4.27L19.54 21 20.8 19.73 4.27 3zM14 7h4V3h-6v4.18l2 2V7z"/>
-                  </svg>
-                )}
-              </button>
-            )}
+            <button 
+              className="sound-toggle mobile-only" 
+              id="sound-toggle-mobile" 
+              onClick={toggleSound}
+              aria-label={isPlaying ? "Mute Background Music" : "Unmute Background Music"}
+            >
+              {isPlaying ? (
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24">
+                  <path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73l4.27 4.27L19.54 21 20.8 19.73 4.27 3zM14 7h4V3h-6v4.18l2 2V7z"/>
+                </svg>
+              )}
+            </button>
 
             {/* Mobile Accordion Dropdown Menu Toggle Button */}
             <button

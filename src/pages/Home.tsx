@@ -40,8 +40,8 @@ export const Home: React.FC = () => {
     };
   }, []);
 
-  // 2. Hero Symmetrical Scroll-Linked Shrink Animation Progress
-  const [scrollProgress, setScrollProgress] = useState(0);
+  // 2. Hero Symmetrical Scroll-Linked Shrink Animation Ref
+  const heroSectionRef = useRef<HTMLElement>(null);
 
   // 3. Hero Quotes Slider States
   const [activeQuote, setActiveQuote] = useState(0);
@@ -84,17 +84,22 @@ export const Home: React.FC = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
   }, []);
 
-  // Hero Section Symmetrical Shrink on Scroll (Hardware Accelerated)
+  // Hero Section Symmetrical Shrink on Scroll (Hardware Accelerated Direct Mutation)
   useEffect(() => {
     let ticking = false;
 
     const handleHeroScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          const windowHeight = window.innerHeight;
-          const progress = Math.min(scrollY / windowHeight, 1);
-          setScrollProgress(progress);
+          if (heroSectionRef.current) {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const progress = Math.min(scrollY / windowHeight, 1);
+            const scale = 1 - progress * 0.18;
+            const radius = progress * 40;
+            heroSectionRef.current.style.transform = `scale(${scale})`;
+            heroSectionRef.current.style.borderRadius = `${radius}px`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -102,6 +107,9 @@ export const Home: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleHeroScroll, { passive: true });
+    // Run once on mount to set initial state
+    handleHeroScroll();
+
     return () => {
       window.removeEventListener('scroll', handleHeroScroll);
     };
@@ -159,83 +167,66 @@ export const Home: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScrollTransitions);
   }, [isMobile]);
 
-  // Hero Background Images Slideshow
+  // Hero Background Images Slideshow (3 slides)
   const heroImages = [
     {
-      src: "/assets/05 PHOTOS/Proposal/0039-lg.webp",
-      width: 4671,
-      height: 7006,
-      srcSet: "/assets/05 PHOTOS/Proposal/0039-sm.webp 600w, /assets/05 PHOTOS/Proposal/0039-md.webp 1200w, /assets/05 PHOTOS/Proposal/0039-lg.webp 2000w",
-      sizes: "100vw"
+      src: "/assets/05 PHOTOS/1/0063.webp",
+      width: 5398,
+      height: 3677
     },
     {
-      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316-lg.webp",
+      src: "/assets/05 PHOTOS/1/WhatsApp Image 2026-08-04 at 3.28.42 PM.webp",
+      width: 1411,
+      height: 1600
+    },
+    {
+      src: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316.webp",
       width: 3600,
       height: 2400,
       srcSet: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316-sm.webp 600w, /assets/05 PHOTOS/Haldi-Mehandi/AKR03316-md.webp 1200w, /assets/05 PHOTOS/Haldi-Mehandi/AKR03316-lg.webp 2000w",
       sizes: "100vw"
-    },
-    { src: "/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.webp", width: 4608, height: 3072 },
-    { src: "/assets/05 PHOTOS/Weddings/AKR07379.webp", width: 3600, height: 2400 }
+    }
   ];
   const [heroImageIndex, setHeroImageIndex] = useState(0);
-  const [loadSlideshow, setLoadSlideshow] = useState(false);
-
-  // Defer rendering of slideshow secondary images to let the first image (LCP) paint immediately
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoadSlideshow(true);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  const [baseImageIndex, setBaseImageIndex] = useState(0);
 
   // Interval for Hero Background Slideshow (4 seconds)
   useEffect(() => {
     const interval = setInterval(() => {
-      setHeroImageIndex(prev => (prev + 1) % heroImages.length);
+      setHeroImageIndex(prev => {
+        const next = (prev + 1) % heroImages.length;
+        setTimeout(() => {
+          setBaseImageIndex(next);
+        }, 1500);
+        return next;
+      });
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
-
-  const scale = 1 - scrollProgress * 0.18;
-  const heroStyle = {
-    '--hero-scale': scale,
-    '--hero-radius': `${scrollProgress * 40}px`
-  } as React.CSSProperties;
+  }, [heroImages.length]);
 
   return (
     <div className="home-page-container">
 
       {/* 1. HERO SECTION WRAPPER WITH SHRINK ANIMATION */}
       <div className="hero-wrapper">
-        <section className="hero-section" style={heroStyle}>
+        <section className="hero-section" ref={heroSectionRef}>
           <div className="hero-slideshow-container">
-            {/* LCP hero image: eagerly loaded, high priority, rendered immediately */}
-            <OptimizedImage
-              src={heroImages[0].src}
-              width={heroImages[0].width}
-              height={heroImages[0].height}
-              alt="Luxury wedding celebration by Taaffeite Events, premium event planners in Bangalore, India"
-              className={`hero-slide-img ${heroImageIndex === 0 ? 'active' : ''}`}
-              eager={true}
-              containerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-              aspectRatio="unset"
-              srcSet={heroImages[0].srcSet}
-              sizes={heroImages[0].sizes}
-            />
-            {/* Secondary slideshow images: deferred until 2 seconds after mount */}
-            {loadSlideshow && heroImages.slice(1).map((img, idx) => {
-              const actualIdx = idx + 1;
+            {heroImages.map((img, idx) => {
+              const isActive = idx === heroImageIndex;
+              const isBase = idx === baseImageIndex;
               return (
                 <OptimizedImage
-                  key={actualIdx}
+                  key={idx}
                   src={img.src}
                   width={img.width}
                   height={img.height}
-                  alt={`Bespoke luxury celebration ${actualIdx + 1} by Taaffeite Events — top wedding planners in Bangalore`}
-                  className={`hero-slide-img ${actualIdx === heroImageIndex ? 'active' : ''}`}
+                  alt={`Bespoke luxury event celebration ${idx + 1} by Taaffeite Events — luxury event planners in Bangalore`}
+                  className={`hero-slide-img ${isActive ? 'active' : ''} ${isBase ? 'base' : ''}`}
+                  eager={idx === 0}
                   containerStyle={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                   aspectRatio="unset"
+                  srcSet={img.srcSet}
+                  sizes={img.sizes}
                 />
               );
             })}

@@ -166,14 +166,16 @@ a {
 /* Header & Navigation Styles */
 .site-header {
     position: fixed;
-    top: 16px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 35%;
-    max-width: 480px;
-    min-width: 420px;
+    width: auto;
+    min-width: max-content;
+    max-width: calc(100vw - 32px);
     z-index: 1000;
-    padding: 10px 24px;
+    padding: 10px 36px;
+    min-height: 48px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -189,17 +191,13 @@ a {
 
 @media (min-width: 1200px) {
     .site-header {
-        width: 32%;
-        max-width: 500px;
-        padding: 12px 32px;
+        padding: 12px 40px;
     }
 }
 
 @media (max-width: 991px) and (min-width: 769px) {
     .site-header {
-        width: 50%;
-        min-width: 360px;
-        padding: 10px 20px;
+        padding: 10px 32px;
     }
 }
 
@@ -259,8 +257,8 @@ a {
 .dropdown-nav-item {
     font-family: var(--font-sans);
     font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
+    font-weight: 500;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--color-charcoal);
     padding: 6px 16px;
@@ -364,6 +362,7 @@ a {
     position: fixed;
     top: 20px;
     left: 5%;
+    min-height: 48px;
     z-index: 1001;
     display: flex;
     align-items: center;
@@ -380,6 +379,7 @@ a {
     position: fixed;
     top: 20px;
     right: 5%;
+    min-height: 48px;
     z-index: 1001;
     display: flex;
     align-items: center;
@@ -420,6 +420,15 @@ a {
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), height 0.4s ease, filter 0.4s ease;
 }
 
+.floating-brand-left .header-logo-img {
+    height: 68px;
+}
+
+.floating-sound-control .sound-toggle {
+    width: 46px;
+    height: 46px;
+}
+
 .site-header.scrolled .header-logo-img {
     height: 62px;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
@@ -443,8 +452,9 @@ a {
 .header-top-nav {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: clamp(20px, 2.5vw, 40px);
     z-index: 102;
+    white-space: nowrap;
 }
 
 @media (max-width: 768px) {
@@ -461,12 +471,13 @@ a {
 .top-nav-link {
     font-family: var(--font-sans);
     font-size: 0.85rem;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: #ffffff;
     position: relative;
     padding-bottom: 4px;
+    white-space: nowrap;
     transition: color 0.4s ease;
 }
 
@@ -777,8 +788,11 @@ body.menu-open .menu-drawer {
 }
 
 .menu-nav-links a {
-    font-family: var(--font-serif);
-    font-size: 2rem;
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
     display: inline-block;
     position: relative;
     padding-bottom: 5px;
@@ -858,7 +872,7 @@ body.menu-open .menu-drawer {
     will-change: transform, border-radius;
     transform: scale(var(--hero-scale, 1));
     border-radius: var(--hero-radius, 0px);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: none;
 }
 
 .hero-logo-hero {
@@ -928,11 +942,19 @@ body.menu-open .menu-drawer {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out;
+    z-index: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-slide-img.base {
+    opacity: 1;
+    z-index: 1;
+    transition: none;
 }
 
 .hero-slide-img.active {
-    opacity: 0.7;
+    opacity: 1;
+    z-index: 2;
 }
 
 .hero-overlay {
@@ -942,7 +964,7 @@ body.menu-open .menu-drawer {
     width: 100%;
     height: 100%;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
-    z-index: 2;
+    z-index: 3;
 }
 
 .hero-content {
@@ -1054,7 +1076,7 @@ body.menu-open .menu-drawer {
 
 .hero-enquire-btn {
     display: inline-block;
-    margin-top: 35px;
+    margin-top: 65px;
     padding: 14px 42px;
     font-family: var(--font-sans);
     font-size: 0.75rem;
@@ -1070,6 +1092,12 @@ body.menu-open .menu-drawer {
     cursor: pointer;
     position: relative;
     z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .hero-enquire-btn {
+        margin-top: 50px;
+    }
 }
 
 .site-header.scrolled .sound-toggle {
@@ -2034,10 +2062,12 @@ body.menu-open .menu-drawer {
 }
 
 .footer-logo {
-    height: 80px;
-    width: 80px;
+    height: 62px;
+    width: auto;
+    max-width: 62px;
     object-fit: contain;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.22));
 }
 
 .footer-desc {
