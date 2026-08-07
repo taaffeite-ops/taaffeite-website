@@ -106,7 +106,7 @@ export const AboutShowcase = React.memo(React.forwardRef<HTMLDivElement, AboutSh
           <div ref={slide1Ref} className="about-showcase-card">
             <div className="about-card-bg-wrapper">
               <OptimizedImage
-                src="/assets/05 PHOTOS/Weddings/AKR04789.webp"
+                src="/assets/05 PHOTOS/1/ChatGPT.webp"
                 alt="Luxury wedding ceremony decor by Taaffeite Events — top wedding planners in Bangalore, Bengaluru"
                 className="about-card-bg-image"
                 width={8640}
