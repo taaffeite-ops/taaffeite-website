@@ -3563,16 +3563,17 @@ body.menu-open .menu-drawer {
     display: inline-block;
     vertical-align: bottom;
     white-space: nowrap;
-    /* Extra padding prevents Mac's wider ligature glyphs (e.g. 'ff') from being clipped */
-    padding: 0.1em 0.08em;
-    margin: -0.1em -0.08em;
-    clip-path: inset(0 100% 0 0);
+    /* Negative inset on active state gives glyph ink room beyond element box.
+       Use large hidden clip initially (right=200% overshoots safely). */
+    clip-path: inset(0 200% 0 0);
     transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: clip-path;
 }
 
 .founders-showcase-slide.active .reveal-word {
-    clip-path: inset(0 0% 0 0);
+    /* Negative insets expand the clip region beyond the element's own box,
+       preventing Mac/iOS from cropping serif glyph ink (e.g. top of 'f') */
+    clip-path: inset(-0.25em -0.25em);
 }
 
 .founders-showcase-slide.active .gold-reveal-word {
@@ -3582,6 +3583,12 @@ body.menu-open .menu-drawer {
 
 .reveal-char {
     display: inline-block;
+    /* Vertical padding lets ascenders/descenders render without cropping
+       on Mac and iOS where serif glyphs exceed the inline-block box */
+    padding-top: 0.15em;
+    padding-bottom: 0.1em;
+    margin-top: -0.15em;
+    margin-bottom: -0.1em;
     transform: translateX(-20px);
     opacity: 0;
     filter: blur(2px);
