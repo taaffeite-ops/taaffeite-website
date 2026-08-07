@@ -50,13 +50,13 @@ export const FoundersShowcase = React.memo(React.forwardRef<HTMLDivElement, Foun
           <div className={`founders-showcase-slide ${isSlide0Active ? 'active' : ''} ${activeFoundersSlide > 0 ? 'exited' : ''}`} id="founders-slide-0">
             <section className="founders-title-section">
               <div className="founders-title-card-content">
-                <h1 className="founders-large-title">
-                  <span className="reveal-word">
+                <h1 className="founders-large-title" aria-label="Why Taaffeite?">
+                  <span className="reveal-word" aria-hidden="true">
                     {"Why".split('').map((char, idx) => (
                       <span key={idx} className="reveal-char" style={{ transitionDelay: `${idx * 0.04}s` }}>{char}</span>
                     ))}
                   </span>{" "}
-                  <span className="reveal-word gold-reveal-word">
+                  <span className="reveal-word gold-reveal-word" aria-hidden="true">
                     {"Taaffeite?".split('').map((char, idx) => (
                       <span key={idx} className="reveal-char" style={{ transitionDelay: `${(4 + idx) * 0.04}s` }}>{char}</span>
                     ))}

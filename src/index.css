@@ -3552,6 +3552,11 @@ body.menu-open .menu-drawer {
     line-height: 1.25;
     overflow: visible;
     padding: 0 15px;
+    /* Disable ligatures so Safari WebKit/CoreText does not break 'ff' across split character spans */
+    font-variant-ligatures: none !important;
+    -webkit-font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
+    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
 }
 
 .founders-large-title .gold-reveal-word,
@@ -3563,17 +3568,22 @@ body.menu-open .menu-drawer {
     display: inline-block;
     vertical-align: bottom;
     white-space: nowrap;
-    /* No clip-path here — clip-path: inset() clips serif glyph ink in Safari/WebKit.
-       The reveal is handled by opacity + translateX on each .reveal-char instead. */
+    font-variant-ligatures: none !important;
+    -webkit-font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
+    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
 }
 
 
 .reveal-char {
     display: inline-block;
+    vertical-align: bottom;
     transform: translateX(-20px);
     opacity: 0;
-    /* No filter here: filter: blur() in Safari forces tight GPU compositing layers
-       per character that clip serif glyph ink (e.g. top of 'f') outside the box */
+    font-variant-ligatures: none !important;
+    -webkit-font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
+    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
     transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
         opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform, opacity;
