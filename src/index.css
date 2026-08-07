@@ -3396,8 +3396,7 @@ body.menu-open .menu-drawer {
     width: 100%;
     height: 100vh;
     background-color: var(--bg-cream);
-    /* Use clip instead of hidden so Mac glyph edges (e.g. 'ff' ligatures) aren't cut */
-    overflow: clip;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3552,11 +3551,7 @@ body.menu-open .menu-drawer {
     line-height: 1.25;
     overflow: visible;
     padding: 0 15px;
-    /* Disable ligatures so Safari WebKit/CoreText does not break 'ff' across split character spans */
-    font-variant-ligatures: none !important;
-    -webkit-font-variant-ligatures: none !important;
-    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
-    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
+    /* No ligature rules here: fix is scoped narrowly to .reveal-char below */
 }
 
 .founders-large-title .gold-reveal-word,
@@ -3564,37 +3559,125 @@ body.menu-open .menu-drawer {
     color: var(--color-gold);
 }
 
+/* Word-level wipe animation — clips the whole word in, then reveals left-to-right.
+   Active state uses a negative inset so glyph ascenders/descenders never get cropped
+   by the clip region boundary. Disabled for Safari via @supports below. */
 .reveal-word {
     display: inline-block;
     vertical-align: bottom;
     white-space: nowrap;
-    font-variant-ligatures: none !important;
-    -webkit-font-variant-ligatures: none !important;
-    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
-    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
+    clip-path: inset(0 200% 0 0);
+    transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: clip-path;
 }
 
+.founders-showcase-slide.active .reveal-word {
+    /* Negative insets expand the clip region 0.25em beyond the element box on all
+       sides, so glyph ink (e.g. Playfair f top curl) is never cropped. */
+    clip-path: inset(-0.25em -0.25em);
+}
 
+.founders-showcase-slide.active .gold-reveal-word {
+    transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.16s;
+}
+
+/* Character-level slide + fade + blur-in animation.
+   font-variant-ligatures: none is scoped only here (not on the parent .founders-large-title
+   or on .reveal-word) so other headings on the site that use the same font keep their
+   ligatures. !important is intentionally omitted — .reveal-char specificity [0,1,0]
+   is sufficient to override the browser's inherited default (none needed).
+
+   WHY: Safari's CoreText engine tries to form an 'ff' ligature across adjacent
+   <span> boundaries. Each character lives in its own display:inline-block span with
+   a unique transitionDelay inline style, which means they are separate CSS text runs.
+   CoreText sees 'f' + 'f' in consecutive text runs and attempts ligature substitution;
+   when it fails across a DOM boundary it collapses the glyphs to zero-width.
+   Disabling ligatures on single-character spans is safe — a single character can
+   never form a ligature with itself anyway. */
 .reveal-char {
     display: inline-block;
     vertical-align: bottom;
     transform: translateX(-20px);
     opacity: 0;
-    font-variant-ligatures: none !important;
-    -webkit-font-variant-ligatures: none !important;
-    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
-    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0 !important;
+    filter: blur(2px);
+    font-variant-ligatures: none;
+    -webkit-font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0;
+    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0;
     transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity;
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity, filter;
 }
 
 .founders-showcase-slide.active .reveal-char {
     transform: translateX(0);
     opacity: 1;
-    /* filter: none ensures no compositing layer is created in Safari,
-       allowing font glyphs to overflow their element box freely */
-    filter: none;
+    filter: blur(0px);
+}
+
+/* ── Safari-only overrides ─────────────────────────────────────────────────────
+   filter: blur() on display:inline-block in Safari forces each character into its
+   own GPU compositing layer. Safari's compositing layer bounds are tight to the
+   element's layout box; any glyph ink extending beyond that box is cropped.
+   clip-path: inset() has the same problem on WebKit — even negative insets do not
+   reliably expand the clip region in all Safari versions.
+
+   We disable both for WebKit and fall back to the opacity+translateX animation
+   which looks excellent and has no compositing side-effects.
+
+   iOS Safari: @supports (-webkit-touch-callout: none)
+   macOS Safari: @media not all and (min-resolution: 0.001dpcm) + @supports (-webkit-appearance: none)
+   Chrome/Edge match (-webkit-appearance) but also match (min-resolution), so they
+   are excluded by the @media negation.
+   ──────────────────────────────────────────────────────────────────────────── */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari */
+    .reveal-char {
+        filter: none;
+        transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+            opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, opacity;
+    }
+    .founders-showcase-slide.active .reveal-char {
+        filter: none;
+    }
+    .reveal-word {
+        clip-path: none;
+        transition: none;
+        will-change: auto;
+    }
+    .founders-showcase-slide.active .reveal-word,
+    .founders-showcase-slide.active .gold-reveal-word {
+        clip-path: none;
+        transition: none;
+    }
+}
+
+@media not all and (min-resolution: 0.001dpcm) {
+    @supports (-webkit-appearance: none) {
+        /* macOS Safari */
+        .reveal-char {
+            filter: none;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .founders-showcase-slide.active .reveal-char {
+            filter: none;
+        }
+        .reveal-word {
+            clip-path: none;
+            transition: none;
+            will-change: auto;
+        }
+        .founders-showcase-slide.active .reveal-word,
+        .founders-showcase-slide.active .gold-reveal-word {
+            clip-path: none;
+            transition: none;
+        }
+    }
 }
 
 .founders-scroll-indicator {

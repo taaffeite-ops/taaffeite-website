@@ -26,3 +26,7 @@ dist-ssr
 # Environment variables
 .env
 .env.*
+
+# Playwright Test Artifacts
+test-results/
+playwright-report/
