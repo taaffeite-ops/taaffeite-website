@@ -131,10 +131,10 @@ export const Enquire: React.FC = () => {
 
           {/* Left Column: Contact details and links */}
           <div className="enquire-contact-column reveal-up">
-            <span className="enquire-sub-title">Contact & Socials</span>
-            <h2 className="enquire-main-title">Get in Touch</h2>
+            <span className="enquire-sub-title">A NOTE FROM US</span>
+            <h2 className="enquire-main-title">Before you fill this in</h2>
             <p className="enquire-desc">
-              To start planning your signature event, please complete our detailed planning questionnaire on the right. Alternatively, feel free to reach out directly via phone, email, or explore our curated profile listings.
+              We read every enquiry ourselves. Tell us your date, your venue if you've picked one, and whatever you're already dreaming about. We'll get back to you personally, usually within a day.
             </p>
 
             <div className="enquire-contact-details reveal-fade" style={{ transitionDelay: '0.2s' }}>

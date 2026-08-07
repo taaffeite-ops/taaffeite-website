@@ -17,7 +17,7 @@ const marqueeImages = [
     height: 3600
   },
   {
-    src: "/assets/05 PHOTOS/Reception/WEVA1312 2.webp",
+    src: "/assets/05 PHOTOS/1/WhatsApp Image 2026-08-04 at 3.28.43 PM.webp",
     alt: "Luxury wedding reception table styling by Taaffeite Events — event management company in Bangalore",
     width: 3651,
     height: 5477

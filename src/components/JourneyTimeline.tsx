@@ -51,35 +51,35 @@ export const JourneyTimeline: React.FC = () => {
       stepNumber: '01',
       title: 'Discovery',
       description: 'We listen. Your vision, your story, your dreams we understand every detail before we begin.',
-      image: '/assets/05 PHOTOS/1/0073.webp',
+      image: '/assets/05 PHOTOS/1/WhatsApp (1).webp',
       alt: 'Discovery step - understanding vision'
     },
     {
       stepNumber: '02',
       title: 'Planning',
       description: 'Meticulous planning timelines, vendors, budgets all curated to bring your concept to life.',
-      image: '/assets/05 PHOTOS/1/a1dfhgackvbxpfkwmg52.webp',
+      image: '/assets/05 PHOTOS/1/WhatsApp (3).webp',
       alt: 'Planning step - curated concepts'
     },
     {
       stepNumber: '03',
       title: 'Design',
       description: 'Bespoke aesthetics moodboards, decor concepts, florals, lighting designed just for you.',
-      image: '/assets/05 PHOTOS/Reception/WEVA1313 2.webp',
+      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02772.webp',
       alt: 'Design step - bespoke decor aesthetics'
     },
     {
       stepNumber: '04',
       title: 'Coordination',
       description: 'On-day management so you can be fully present every detail handled with precision and grace.',
-      image: '/assets/05 PHOTOS/1/TAASHA-69.webp',
+      image: '/assets/05 PHOTOS/1/WhatsApp Image 2026-08-04 at 3.28.45 PM.webp',
       alt: 'Coordination step - seamless on-day management'
     },
     {
       stepNumber: '05',
       title: 'Celebration',
       description: 'The moment arrives unforgettable, emotional, beautiful. Exactly as you imagined, and more.',
-      image: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.webp',
+      image: '/assets/05 PHOTOS/1/0217.webp',
       alt: 'Celebration step - unforgettable moments'
     }
   ];

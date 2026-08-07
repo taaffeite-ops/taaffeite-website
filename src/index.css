@@ -2710,7 +2710,8 @@ body.menu-open .menu-drawer {
 }
 
 .enquire-main-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+    white-space: nowrap;
     color: var(--color-charcoal);
     margin-bottom: 25px;
 }
