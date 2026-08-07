@@ -3563,22 +3563,12 @@ body.menu-open .menu-drawer {
     display: inline-block;
     vertical-align: bottom;
     white-space: nowrap;
-    /* Negative inset on active state gives glyph ink room beyond element box.
-       Use large hidden clip initially (right=200% overshoots safely). */
-    clip-path: inset(0 200% 0 0);
-    transition: clip-path 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: clip-path;
-}
-
-.founders-showcase-slide.active .reveal-word {
-    /* Negative insets expand the clip region beyond the element's own box,
-       preventing Mac/iOS from cropping serif glyph ink (e.g. top of 'f') */
-    clip-path: inset(-0.25em -0.25em);
+    /* No clip-path here — clip-path: inset() clips serif glyph ink in Safari/WebKit.
+       The reveal is handled by opacity + translateX on each .reveal-char instead. */
 }
 
 .founders-showcase-slide.active .gold-reveal-word {
-    transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: 0.16s;
+    /* gold-reveal-word delay is handled via reveal-char transition-delay */
 }
 
 .reveal-char {
