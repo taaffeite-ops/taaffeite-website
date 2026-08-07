@@ -7,38 +7,6 @@ interface FoundersShowcaseProps {
   activeFoundersSlide: number;
 }
 
-/**
- * Splits a string into units for the reveal animation, keeping adjacent
- * OpenType ligature pairs (ff, fi, fl, ffi, ffl) in a single span.
- *
- * WHY: Safari's CoreText engine tries to form ligatures across separate <span>
- * boundaries. Keeping ligature pairs together in one span means CoreText sees
- * them in a single text run and can form (or not form) the ligature correctly,
- * rather than collapsing both glyphs to zero-width on failure.
- */
-const LIGATURE_PAIRS = ['ffi', 'ffl', 'ff', 'fi', 'fl'];
-
-function groupLigaturePairs(text: string): string[] {
-  const units: string[] = [];
-  let i = 0;
-  while (i < text.length) {
-    let matched = false;
-    for (const pair of LIGATURE_PAIRS) {
-      if (text.slice(i, i + pair.length).toLowerCase() === pair) {
-        units.push(text.slice(i, i + pair.length));
-        i += pair.length;
-        matched = true;
-        break;
-      }
-    }
-    if (!matched) {
-      units.push(text[i]);
-      i++;
-    }
-  }
-  return units;
-}
-
 export const FoundersShowcase = React.memo(React.forwardRef<HTMLDivElement, FoundersShowcaseProps>(({
   isMobile,
   activeFoundersSlide
@@ -73,10 +41,6 @@ export const FoundersShowcase = React.memo(React.forwardRef<HTMLDivElement, Foun
 
   const isSlide0Active = activeFoundersSlide === 0 && isInView;
 
-  // Pre-split the words once. "Taaffeite?" → ['T','a','a','ff','e','i','t','e','?']
-  const whyUnits = groupLigaturePairs('Why');
-  const taaffeiteUnits = groupLigaturePairs('Taaffeite?');
-
   return (
     <>
       <div className={`founders-showcase-container ${isMobile ? 'is-mobile' : ''}`} id="founders-showcase" ref={containerRef}>
@@ -89,17 +53,9 @@ export const FoundersShowcase = React.memo(React.forwardRef<HTMLDivElement, Foun
                 {/* aria-label provides the full readable text for screen readers.
                     aria-hidden on each word span prevents AT from reading
                     out individual characters/ligature units. */}
-                <h1 className="founders-large-title" aria-label="Why Taaffeite?">
-                  <span className="reveal-word" aria-hidden="true">
-                    {whyUnits.map((unit, idx) => (
-                      <span key={idx} className="reveal-char" style={{ transitionDelay: `${idx * 0.04}s` }}>{unit}</span>
-                    ))}
-                  </span>{" "}
-                  <span className="reveal-word gold-reveal-word" aria-hidden="true">
-                    {taaffeiteUnits.map((unit, idx) => (
-                      <span key={idx} className="reveal-char" style={{ transitionDelay: `${(4 + idx) * 0.04}s` }}>{unit}</span>
-                    ))}
-                  </span>
+                <h1 className="founders-large-title">
+                  <span className="reveal-word">Why</span>{" "}
+                  <span className="reveal-word gold-reveal-word">Taaffeite?</span>
                 </h1>
               </div>
 
