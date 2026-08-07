@@ -51,14 +51,14 @@ export const JourneyTimeline: React.FC = () => {
       stepNumber: '01',
       title: 'Discovery',
       description: 'We listen. Your vision, your story, your dreams we understand every detail before we begin.',
-      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR03875.webp',
+      image: '/assets/05 PHOTOS/1/0073.webp',
       alt: 'Discovery step - understanding vision'
     },
     {
       stepNumber: '02',
       title: 'Planning',
       description: 'Meticulous planning timelines, vendors, budgets all curated to bring your concept to life.',
-      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02762.webp',
+      image: '/assets/05 PHOTOS/1/a1dfhgackvbxpfkwmg52.webp',
       alt: 'Planning step - curated concepts'
     },
     {
@@ -72,7 +72,7 @@ export const JourneyTimeline: React.FC = () => {
       stepNumber: '04',
       title: 'Coordination',
       description: 'On-day management so you can be fully present every detail handled with precision and grace.',
-      image: '/assets/05 PHOTOS/Proposal/0044.webp',
+      image: '/assets/05 PHOTOS/1/TAASHA-69.webp',
       alt: 'Coordination step - seamless on-day management'
     },
     {
