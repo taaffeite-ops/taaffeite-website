@@ -18,7 +18,7 @@ export const Services: React.FC = () => {
     {
       id: 'planning',
       title: 'Wedding Planning & Coordination',
-      image: '/assets/05 PHOTOS/Weddings/Sanhita & Benny-317 2.webp',
+      image: '/assets/05 PHOTOS/1/ChatGPT23.webp',
       items: [
         'End-to-end wedding planning',
         'Wedding day coordination',
@@ -31,7 +31,7 @@ export const Services: React.FC = () => {
     {
       id: 'decor',
       title: 'Décor & Styling',
-      image: '/assets/05 PHOTOS/Weddings/AKR05567.webp',
+      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02776.webp',
       items: [
         'Wedding décor conceptualization',
         'Stage & mandap styling',
@@ -56,7 +56,7 @@ export const Services: React.FC = () => {
     {
       id: 'hospitality',
       title: 'Hospitality & Guest Experience',
-      image: '/assets/05 PHOTOS/Haldi-Mehandi/AKR02776.webp',
+      image: '/assets/05 PHOTOS/1/0130.webp',
       items: [
         'Guest management',
         'Welcome experiences',
@@ -69,7 +69,7 @@ export const Services: React.FC = () => {
     {
       id: 'production',
       title: 'Entertainment & Production',
-      image: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_44222.webp',
+      image: '/assets/05 PHOTOS/1/1.webp',
       items: [
         'Artist coordination',
         'Sound & light coordination',
@@ -81,7 +81,7 @@ export const Services: React.FC = () => {
     {
       id: 'logistics',
       title: 'Logistics & Execution',
-      image: '/assets/05 PHOTOS/Reception/SBJR_Ritvika_26Kaushal_Story349.webp',
+      image: '/assets/05 PHOTOS/1/2.webp',
       items: [
         'Venue layout planning',
         'Seating plans',
@@ -135,37 +135,37 @@ export const Services: React.FC = () => {
             return (
               <div key={category.id} className={`service-card-reveal-wrapper ${revealDir}`}>
                 <div className="service-card-new" id={category.id}>
-              <div className="service-image-container">
-                <OptimizedImage
-                  src={category.image}
-                  alt={category.title}
-                  width={800}
-                  height={600}
-                  className="service-bg-image"
-                  containerStyle={{ height: '100%', width: '100%' }}
-                  aspectRatio="unset"
-                />
-                <div className="service-overlay-gradient"></div>
-                <div className="service-title-wrapper">
-                  <h3>{category.title}</h3>
-                  <div className="service-hover-indicator">
-                    <span>View Details</span>
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                  <div className="service-image-container">
+                    <OptimizedImage
+                      src={category.image}
+                      alt={category.title}
+                      width={800}
+                      height={600}
+                      className="service-bg-image"
+                      containerStyle={{ height: '100%', width: '100%' }}
+                      aspectRatio="unset"
+                    />
+                    <div className="service-overlay-gradient"></div>
+                    <div className="service-title-wrapper">
+                      <h3>{category.title}</h3>
+                      <div className="service-hover-indicator">
+                        <span>View Details</span>
+                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="service-hover-details">
-                <h4>What's Included</h4>
-                <ul className="service-items-list-new">
-                  {category.items.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>{/* end service-card-new */}
-          </div>/* end service-card-reveal-wrapper */
+                  <div className="service-hover-details">
+                    <h4>What's Included</h4>
+                    <ul className="service-items-list-new">
+                      {category.items.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>{/* end service-card-new */}
+              </div>/* end service-card-reveal-wrapper */
             );
           })}
         </div>
