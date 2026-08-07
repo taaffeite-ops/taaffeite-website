@@ -3601,10 +3601,6 @@ body.menu-open .menu-drawer {
     transform: translateX(-20px);
     opacity: 0;
     filter: blur(2px);
-    font-variant-ligatures: none;
-    -webkit-font-variant-ligatures: none;
-    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0;
-    -webkit-font-feature-settings: "liga" 0, "clig" 0, "dlig" 0, "hlig" 0, "calt" 0;
     transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
         opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
         filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
