@@ -167,15 +167,15 @@ export const Home: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScrollTransitions);
   }, [isMobile]);
 
-  // Hero Background Images Slideshow (3 slides)
+  // Hero Background Images Slideshow (4 images)
   const heroImages = [
     {
-      src: "/assets/05 PHOTOS/1/0063.webp",
+      src: "/assets/05 PHOTOS/1/0010 (3).webp",
       width: 5398,
       height: 3677
     },
     {
-      src: "/assets/05 PHOTOS/1/WhatsApp Image 2026-08-04 at 3.28.42 PM.webp",
+      src: "/assets/05 PHOTOS/Weddings/AKR07379.webp",
       width: 1411,
       height: 1600
     },
@@ -185,6 +185,11 @@ export const Home: React.FC = () => {
       height: 2400,
       srcSet: "/assets/05 PHOTOS/Haldi-Mehandi/AKR03316-sm.webp 600w, /assets/05 PHOTOS/Haldi-Mehandi/AKR03316-md.webp 1200w, /assets/05 PHOTOS/Haldi-Mehandi/AKR03316-lg.webp 2000w",
       sizes: "100vw"
+    },
+    {
+      src: "/assets/05 PHOTOS/Reception/SBJR_Ritvika_2BKaushal_39266.webp",
+      width: 1000,
+      height: 667
     }
   ];
   const [heroImageIndex, setHeroImageIndex] = useState(0);
