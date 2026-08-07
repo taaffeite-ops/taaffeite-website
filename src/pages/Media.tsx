@@ -481,11 +481,10 @@ export const Media: React.FC = () => {
           {photos.map((photo, index) => (
             <div
               key={index}
-              className="media-item reveal-scale"
+              className="media-item"
               onClick={() => openLightbox(index)}
               style={{
                 cursor: 'pointer',
-                transitionDelay: `${(index % 4) * 0.08}s`,
               }}
             >
               <OptimizedImage
@@ -493,7 +492,7 @@ export const Media: React.FC = () => {
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                eager={index < 8}
+                eager={index < 12}
               />
             </div>
           ))}

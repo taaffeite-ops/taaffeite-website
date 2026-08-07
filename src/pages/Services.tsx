@@ -81,7 +81,7 @@ export const Services: React.FC = () => {
     {
       id: 'logistics',
       title: 'Logistics & Execution',
-      image: '/assets/05 PHOTOS/1/2.webp',
+      image: '/assets/05 PHOTOS/1/3.webp',
       items: [
         'Venue layout planning',
         'Seating plans',

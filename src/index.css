@@ -2590,18 +2590,22 @@ body.menu-open .menu-drawer {
     margin: 0 auto 100px;
     padding: 0 20px;
     column-count: 1;
+    -webkit-column-count: 1;
     column-gap: 30px;
+    -webkit-column-gap: 30px;
 }
 
 @media(min-width: 768px) {
     .media-masonry {
         column-count: 2;
+        -webkit-column-count: 2;
     }
 }
 
 @media(min-width: 992px) {
     .media-masonry {
         column-count: 3;
+        -webkit-column-count: 3;
     }
 }
 
@@ -2609,10 +2613,14 @@ body.menu-open .menu-drawer {
     background-color: #fff;
     margin-bottom: 30px;
     break-inside: avoid;
+    -webkit-column-break-inside: avoid;
     border: 1px solid rgba(197, 160, 89, 0.08);
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
     transition: var(--transition-smooth);
+    opacity: 1 !important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .media-item:hover {
