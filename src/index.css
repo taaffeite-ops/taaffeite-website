@@ -3396,7 +3396,8 @@ body.menu-open .menu-drawer {
     width: 100%;
     height: 100vh;
     background-color: var(--bg-cream);
-    overflow: hidden;
+    /* Use clip instead of hidden so Mac glyph edges (e.g. 'ff' ligatures) aren't cut */
+    overflow: clip;
     display: flex;
     align-items: center;
     justify-content: center;
