@@ -3567,9 +3567,6 @@ body.menu-open .menu-drawer {
        The reveal is handled by opacity + translateX on each .reveal-char instead. */
 }
 
-.founders-showcase-slide.active .gold-reveal-word {
-    /* gold-reveal-word delay is handled via reveal-char transition-delay */
-}
 
 .reveal-char {
     display: inline-block;
