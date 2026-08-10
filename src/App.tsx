@@ -9,7 +9,6 @@ import 'lenis/dist/lenis.css';
 const Home = React.lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
 const Services = React.lazy(() => import('./pages/Services').then(module => ({ default: module.Services })));
 const Media = React.lazy(() => import('./pages/Media').then(module => ({ default: module.Media })));
-const MediaOrganizer = React.lazy(() => import('./pages/MediaOrganizer').then(module => ({ default: module.MediaOrganizer })));
 const Enquire = React.lazy(() => import('./pages/Enquire').then(module => ({ default: module.Enquire })));
 
 // Lazy load non-critical components
@@ -18,11 +17,11 @@ const Footer = React.lazy(() => import('./components/Footer').then(module => ({ 
 // Scroll to top component on route changes
 const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
-  
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
   }, [pathname]);
-  
+
   return null;
 };
 
@@ -39,7 +38,7 @@ const ScrollRevealTrigger: React.FC = () => {
       }
 
       const revealElements = document.querySelectorAll('.reveal-on-scroll');
-      
+
       if ('IntersectionObserver' in window && revealElements.length > 0) {
         observer = new IntersectionObserver((entries, obs) => {
           entries.forEach(entry => {
@@ -110,7 +109,7 @@ function App() {
         <ScrollRevealTrigger />
         <div className="app-container">
           <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
-          
+
           <main className="main-content">
             <Suspense fallback={
               <div className="page-loader" style={{
@@ -131,14 +130,13 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/media" element={<Media />} />
-                <Route path="/media-organizer" element={<MediaOrganizer />} />
                 <Route path="/enquire" element={<Enquire />} />
                 {/* Fallback redirect */}
                 <Route path="*" element={<Home />} />
               </Routes>
             </Suspense>
           </main>
-          
+
           <Suspense fallback={<div style={{ minHeight: '300px', backgroundColor: 'var(--color-navy)' }} />}>
             <Footer />
           </Suspense>
