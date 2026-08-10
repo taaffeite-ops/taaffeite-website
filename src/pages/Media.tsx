@@ -316,8 +316,8 @@ export const Media: React.FC = () => {
       height: 3600
     },
     {
-      src: "/assets/05 PHOTOS/2/SBJR_Ritvika+Kaushal_29313.jpg.webp",
-      alt: "Taaffeite Events 2 decor design — SBJR Ritvika+Kaushal 29313.jpg",
+      src: "/assets/05 PHOTOS/2/SBJR_Ritvika_Kaushal_29313.jpg.webp",
+      alt: "Taaffeite Events 2 decor design — SBJR Ritvika Kaushal 29313.jpg",
       width: 7008,
       height: 4672
     },
