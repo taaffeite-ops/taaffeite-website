@@ -103,7 +103,7 @@ function App() {
 
 
   return (
-    <ReactLenis root>
+    <ReactLenis root options={{ lerp: 0.1, duration: 1.2, smoothWheel: true }}>
       <Router>
         <ScrollToTop />
         <ScrollRevealTrigger />

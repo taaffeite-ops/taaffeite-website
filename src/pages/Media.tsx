@@ -373,12 +373,8 @@ export const Media: React.FC = () => {
 
   // Note: automatic eager preloading of all 40 high-res gallery images has been removed to reduce thread blocking and network saturation.
 
-  // Dynamic preload for the first image to optimize LCP and reset scroll
+  // Dynamic preload for the first image to optimize LCP
   useEffect(() => {
-    const scrollTimer = setTimeout(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
-    }, 50);
-
     const firstPhoto = photos[0];
     if (firstPhoto) {
       const link = document.createElement('link');
@@ -389,10 +385,8 @@ export const Media: React.FC = () => {
       document.head.appendChild(link);
       return () => {
         document.head.removeChild(link);
-        clearTimeout(scrollTimer);
       };
     }
-    return () => clearTimeout(scrollTimer);
   }, []);
 
   // Lock scrolling when lightbox is open
@@ -477,17 +471,15 @@ export const Media: React.FC = () => {
               key={index}
               className="media-item reveal-fade"
               onClick={() => openLightbox(index)}
-              style={{
-                cursor: 'pointer',
-                transitionDelay: `${(index % 6) * 0.08}s`
-              }}
+              style={{ cursor: 'pointer' }}
             >
               <OptimizedImage
                 src={photo.src}
                 alt={photo.alt}
                 width={photo.width}
                 height={photo.height}
-                eager={index < 12}
+                sizes="(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw"
+                eager={index < 6}
               />
             </div>
           ))}
