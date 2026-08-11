@@ -2619,9 +2619,11 @@ body.menu-open .menu-drawer {
     border: 1px solid rgba(197, 160, 89, 0.08);
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-    transition: box-shadow 0.4s ease, border-color 0.4s ease, opacity 0.8s ease-out, transform 0.8s ease-out;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    opacity: 1;
+    transform: none;
 }
 
 .media-item:hover {
@@ -3369,24 +3371,11 @@ body.menu-open .menu-drawer {
     text-align: left;
 }
 
-/* Media Page Masonry Items Reveal Transition */
-.media-masonry .media-item.reveal-on-scroll,
-.media-masonry .media-item.reveal-fade,
-.media-masonry .media-item.reveal-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-    will-change: opacity, transform;
-}
-
-.media-masonry .media-item.reveal-on-scroll.active,
-.media-masonry .media-item.reveal-on-scroll.is-visible,
-.media-masonry .media-item.reveal-fade.active,
-.media-masonry .media-item.reveal-fade.is-visible,
-.media-masonry .media-item.reveal-up.active,
-.media-masonry .media-item.reveal-up.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+/* Media Page Masonry Items — Static display without reveal animations */
+.media-masonry .media-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease !important;
 }
 
 /* Visual stability for conditional form rows to prevent layout shift (CLS) */

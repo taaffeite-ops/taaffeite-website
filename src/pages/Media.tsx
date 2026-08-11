@@ -469,7 +469,7 @@ export const Media: React.FC = () => {
           {photos.map((photo, index) => (
             <div
               key={index}
-              className="media-item reveal-fade"
+              className="media-item"
               onClick={() => openLightbox(index)}
               style={{ cursor: 'pointer' }}
             >
