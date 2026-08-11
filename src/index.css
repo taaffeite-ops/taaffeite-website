@@ -2638,6 +2638,24 @@ body.menu-open .menu-drawer {
     transform: scale(1.035);
 }
 
+/* ── Safari column-masonry fix ──────────────────────────────────────────
+   Safari miscalculates aspect-ratio containers with position:absolute
+   children inside CSS multi-column layouts, causing image containers to
+   collapse to zero height and images to fall to the bottom of the page.
+   Override the OptimizedImage pattern to use natural document flow within
+   .media-item so columns can properly compute each item's height.
+   This does NOT affect OptimizedImage usage elsewhere on the site.        */
+.media-item .optimized-image-container {
+    aspect-ratio: unset !important;
+    overflow: hidden;
+}
+
+.media-item .optimized-image-container .optimized-img {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
 .media-caption {
     padding: 20px;
 }
