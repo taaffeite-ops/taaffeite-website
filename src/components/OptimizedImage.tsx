@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface OptimizedImageProps {
   src: string;
@@ -19,7 +19,7 @@ interface OptimizedImageProps {
   sizes?: string;
 }
 
-export const OptimizedImage: React.FC<OptimizedImageProps> = ({
+const EagerImage: React.FC<OptimizedImageProps> = ({
   src,
   alt,
   width,
@@ -27,7 +27,6 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   className = '',
   imgClassName = '',
   containerClassName = '',
-  eager = false,
   objectFit = 'cover',
   containerStyle = {},
   style = {},
@@ -35,17 +34,103 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   srcSet,
   sizes,
 }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const computedAspectRatio = aspectRatio !== undefined ? aspectRatio : (width && height ? `${width} / ${height}` : undefined);
+  return (
+    <div
+      className={`optimized-image-container ${className} ${containerClassName}`}
+      style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: computedAspectRatio === 'unset' ? undefined : computedAspectRatio,
+        backgroundColor: 'transparent', // transparent to avoid any colored flash for critical assets
+        overflow: 'hidden',
+        ...containerStyle
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="eager"
+        fetchPriority="high"
+        decoding="sync"
+        srcSet={srcSet}
+        sizes={srcSet ? (sizes ?? '100vw') : undefined}
+        className={`optimized-img loaded ${imgClassName}`}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit,
+          ...style
+        }}
+      />
+    </div>
+  );
+};
 
-  const computedAspectRatio =
-    aspectRatio !== undefined
-      ? aspectRatio
-      : width && height
-      ? `${width} / ${height}`
-      : undefined;
+const LazyImage: React.FC<OptimizedImageProps> = ({
+  src,
+  alt,
+  width,
+  height,
+  className = '',
+  imgClassName = '',
+  containerClassName = '',
+  objectFit = 'cover',
+  containerStyle = {},
+  style = {},
+  aspectRatio,
+  srcSet,
+  sizes,
+}) => {
+  const [isInView, setIsInView] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let observer: IntersectionObserver | null = null;
+    const currentContainer = containerRef.current;
+
+    if (currentContainer && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setIsInView(true);
+              if (observer) {
+                observer.unobserve(entry.target);
+              }
+            }
+          });
+        },
+        {
+          rootMargin: '200px 0px 300px 0px', // 300px lookahead (down), 200px lookback (up)
+          threshold: 0.01
+        }
+      );
+
+      observer.observe(currentContainer);
+    } else {
+      // Fallback for browsers that don't support IntersectionObserver
+      setIsInView(true);
+    }
+
+    return () => {
+      if (observer && currentContainer) {
+        observer.unobserve(currentContainer);
+      }
+    };
+  }, []);
+
+  const computedAspectRatio = aspectRatio !== undefined ? aspectRatio : (width && height ? `${width} / ${height}` : undefined);
 
   return (
     <div
+      ref={containerRef}
       className={`optimized-image-container ${className} ${containerClassName}`}
       style={{
         position: 'relative',
@@ -56,30 +141,39 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         ...containerStyle
       }}
     >
-      <img
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        loading={eager ? 'eager' : 'lazy'}
-        fetchPriority={eager ? 'high' : 'auto'}
-        decoding="async"
-        srcSet={srcSet}
-        sizes={srcSet ? (sizes ?? '100vw') : undefined}
-        onLoad={() => setIsLoaded(true)}
-        className={`optimized-img ${imgClassName} ${isLoaded ? 'loaded' : ''}`}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          objectFit,
-          transition: 'opacity 0.4s ease',
-          ...style,
-          opacity: isLoaded || eager ? 1 : 0
-        }}
-      />
+      {isInView && (
+        <img
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          loading="lazy"
+          fetchPriority="auto"
+          decoding="async"
+          srcSet={srcSet}
+          sizes={srcSet ? (sizes ?? '100vw') : undefined}
+          onLoad={() => setIsLoaded(true)}
+          className={`optimized-img ${imgClassName} ${isLoaded ? 'loaded' : ''}`}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit,
+            transition: 'opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
+            ...style,
+            opacity: isLoaded ? (style.opacity !== undefined ? style.opacity : undefined) : 0
+          }}
+        />
+      )}
     </div>
   );
+};
+
+export const OptimizedImage: React.FC<OptimizedImageProps> = (props) => {
+  if (props.eager) {
+    return <EagerImage {...props} />;
+  }
+  return <LazyImage {...props} />;
 };
