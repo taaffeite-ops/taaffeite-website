@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/journal",
+      "destination": "https://rarely-said-journal.vercel.app/journal"
+    },
+    {
+      "source": "/journal/:path*",
+      "destination": "https://rarely-said-journal.vercel.app/journal/:path*"
+    }
+  ]
+}
