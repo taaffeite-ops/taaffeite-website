@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.taaffeiteevents.com/sitemap.xml
+Sitemap: https://www.taaffeiteevents.com/journal/sitemap.xml
