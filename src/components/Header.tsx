@@ -168,6 +168,8 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => 
             <Link to="/" className={`top-nav-link ${location.pathname === '/' ? 'active' : ''}`}>HOME</Link>
             <Link to="/services" className={`top-nav-link ${location.pathname === '/services' ? 'active' : ''}`}>SERVICES</Link>
             <Link to="/media" className={`top-nav-link ${location.pathname === '/media' ? 'active' : ''}`}>MEDIA</Link>
+            {/* Plain anchor, not <Link>: /journal is a separate app served by a Vercel rewrite, not a HashRouter route. */}
+            <a href="/journal" className="top-nav-link">JOURNAL</a>
             <Link to="/enquire" className={`top-nav-link ${location.pathname === '/enquire' ? 'active' : ''}`}>ENQUIRE</Link>
           </nav>
 
@@ -215,6 +217,9 @@ export const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => 
             <Link to="/media" className={`dropdown-nav-item ${location.pathname === '/media' ? 'active' : ''}`} onClick={() => setIsMenuOpen && setIsMenuOpen(false)}>
               MEDIA
             </Link>
+            <a href="/journal" className="dropdown-nav-item" onClick={() => setIsMenuOpen && setIsMenuOpen(false)}>
+              JOURNAL
+            </a>
             <Link to="/enquire" className={`dropdown-nav-item ${location.pathname === '/enquire' ? 'active' : ''}`} onClick={() => setIsMenuOpen && setIsMenuOpen(false)}>
               ENQUIRE
             </Link>
